@@ -84,6 +84,27 @@ def collect_status():
         report['gpu_snapshot'] = gpu.stdout.strip() if gpu.returncode == 0 else 'unavailable'
     except (OSError, subprocess.TimeoutExpired):
         report['gpu_snapshot'] = 'unavailable'
+    zu7={'raw_datasets':{},'experiments':{},'training':{},'training_logs':{},'active_scripts':[]}
+    for path in sorted((ROOT/'data/raw').glob('zu7*/handover_block/*/robot_identity.json')):
+        zu7['raw_datasets'][str(path.parent.relative_to(ROOT))]={'episodes':len(list((path.parent/'data').glob('*.hdf5'))),
+                'identity':json.loads(path.read_text())}
+    for path in sorted((ROOT/'results').glob('zu7*/result*.json')):
+        zu7['experiments'][str(path.relative_to(ROOT))]=json.loads(path.read_text())
+    for path in sorted((ROOT/'checkpoints').glob('smolvla_zu7*/resource_profile.json')):
+        zu7['training'][str(path.relative_to(ROOT))]=json.loads(path.read_text())
+    for path in sorted((ROOT/'logs').glob('train-zu7*.log')):
+        content=tail(path)
+        progress=re.findall(r'Training:\s*\d+%[^\n]*?\s(\d+)/(\d+)\b',content)
+        if progress:zu7['training_logs'][path.name]={'step':int(progress[-1][0]),'total_steps':int(progress[-1][1])}
+    for proc in Path('/proc').glob('[0-9]*'):
+        try:
+            command=(proc/'cmdline').read_bytes().split(b'\0')
+            # Record only project script names, never shell commands/connection arguments.
+            names=[os.fsdecode(x) for x in command if x.startswith(b'scripts/') and any(t in x for t in
+                    [b'zu7',b'training_v2',b'eval_v2',b'policy_server_v2',b'dataset_v2'])]
+            if names and b'python' in command[0]:zu7['active_scripts'].append({'pid':int(proc.name),'scripts':names})
+        except OSError:pass
+    report['zu7']=zu7
     return report
 
 
@@ -106,6 +127,18 @@ def render_markdown(report):
              f"| 最终检查点权重文件存在 | {report['checkpoint_present']} |",
              f"| 数据盘可用 | {report['disk_free_gib']:.2f} GiB |",
              f"| GPU 快照 | {report['gpu_snapshot'].replace(chr(10), '; ')} |", '']
+    zu7=report.get('zu7',{})
+    current=['# 当前 Zu7 修正批次','',f"采样时间：{report['observed_at']}。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。",'',
+             f"活跃项目脚本：{json.dumps(zu7.get('active_scripts',[]),ensure_ascii=False)}",'',
+             '| Zu7 实验产物 | 验收结果 |','| --- | --- |']
+    for path,value in zu7.get('experiments',{}).items():
+        rows=value if isinstance(value,list) else [value]
+        if rows and all('success' in x for x in rows):current.append(f"| {path} | {sum(bool(x['success']) for x in rows)}/{len(rows)} 成功 |")
+    for path,value in zu7.get('raw_datasets',{}).items():current.append(f"| {path} | {value['episodes']} 条原始示教 |")
+    for path,value in zu7.get('training',{}).items():current.append(f"| {path} | completed={value['completed']} |")
+    for path,value in zu7.get('training_logs',{}).items():current.append(f"| {path} | 已观察到 {value['step']}/{value['total_steps']} 步 |")
+    current+=['','下面为已结束的 ALOHA 历史 pilot 快照。不能当作当前 Zu7 实验状态。','']
+    lines=current+lines
     validation = report.get('dataset_validation')
     if validation:
         lines.append(f"转换验证报告：{validation['episodes']} 条、{validation['frames']} 帧，频率 {validation['fps']} Hz，状态语义 {validation['state_semantics']}。")

@@ -24,7 +24,22 @@ nvidia-smi
 
 环境改动后运行各自依赖检查，再用 `scripts/freeze_environment.sh` 更新包清单、源码哈希和 patch。离屏渲染问题用 `scripts/smoke_render.py` 验证真实 RGB 产物；不能只凭 Vulkan 列表判断。
 
-## 数据流程
+## 当前主流程：两台 Zu7
+
+旧ALOHA流程只作历史排错参考。读取`MEMORY.md`与`docs/ZU7_CORRECTION_20261105.md`后，核实最新结果，不重跑已完成批次。
+
+- 机器人配置：`configs/robots/dual_zu7.json`；`scripts/setup_zu7.py`下载固定版本官方模型并生成SAPIEN/cuRobo配置。变更几何/安装必须建立新数据批次，保留旧身份清单。
+- 上游修正入口：`patch_zu7_planner.py`、`patch_zu7_tool_frame.py`、`patch_zu7_task.py`、`patch_zu7_interarm.py`、`patch_collection_budget.py`。首次建立环境依次执行，结束时`freeze_environment.sh`记录父仓库及XPolicyLab patch。
+- 收集：仿真环境运行`python scripts/collect_zu7.py --task-config zu7_collision_smoke`。现有3条已完成，直接重跑会拒绝覆盖。原始目录有robot_identity.json，HDF5有机器人和URDF哈希。
+- 转换：VLA环境`convert_dataset_v2.py --source <绝对HDF5目录> --output <新LeRobot目录> --repo-id <本地ID>`，自动检查实测语义、均匀时间、14维、RGB、身份。
+- 控制验收：仿真环境`eval_v2.py --expert-hdf5 <绝对data目录> --seed-start 0 --episodes 3 --output <新的results绝对目录>`。根据seed.txt选择对应示教，不能用一条示教回放不同随机场景。
+- 训练：`prepare_training_v2.py`生成显式特征配置，再由`run_training_v2.py --config <配置JSON>`训练。已完成的输出拒绝覆盖。检查resource_profile.completed及每个检查点的project_identity.json。
+- 学习闭环：`run_zu7_eval.py --name zu7_<新实验名> --checkpoint <绝对checkpoint路径> --seed-start 0 --episodes 3 --k 8`。包装器在两环境启动自己的服务/仿真并限制运行时间，结束时只清理自己启动的进程。
+- 分析：`analyze_control_traces.py --results <实验目录>`。必须同时看指令和实测速度；低平均误差、指令限速、最终任务成功不能掩盖瞬时碰撞/速度尖峰。
+- 查看：`build_zu7_review.py`生成`results/zu7_review/index.html`和`results/jaka-zu7-review.zip`，与旧pilot页面分开。
+- 参数消融可改控制器并记录实际配置；物理rig、任务几何、URDF和25Hz采样兼容性仍需通过校验。固定噪声与random要作为明确实验条件报告。
+
+## 旧 ALOHA 数据流程（历史）
 
 1. `scripts/configure_smoke.py` 生成 `jaka_smoke`（1 条）与 `jaka_pilot`（50 条）配置；`scripts/patch_sim_timing.py` 应用于已固定版本的 RoboTwin。
 2. 采集入口为 RoboTwin 的 `scripts/collect_data.py handover_block jaka_pilot`。运行前检查现有进程与输出，不重复采集正在运行的批次。
@@ -32,7 +47,7 @@ nvidia-smi
 4. 必须验证 `measured_qpos` 语义、25 Hz 时间戳、14 维形状、有限值与三路 RGB。通过后检查 `results/<数据集目录名>_validation.json`。
 5. `_command_state_v0` 仅为历史排错产物，不与修正后的数据混训。新转换输出不能覆盖旧目录。
 
-## 训练与评测
+## 旧 ALOHA 训练与评测（历史）
 
 - `scripts/train_smoke.sh` 是已完成的 20 步资源检查；其输出目录已存在，不要直接重跑覆盖。
 - `scripts/pilot_pipeline.sh` 是当前已启动的有界批次配置来源；不要为了查看进度再次执行。

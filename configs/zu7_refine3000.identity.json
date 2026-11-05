@@ -1,0 +1,61 @@
+{
+  "robot_id": "dual_jaka_zu7",
+  "state_semantics": "measured_qpos",
+  "action_semantics": "next_sample_drive_targets",
+  "dataset": "/data/jaka-vla/data/lerobot/zu7_collision_smoke",
+  "state_dim": 14,
+  "control_hz": 25,
+  "initial_checkpoint": "/data/jaka-vla/checkpoints/smolvla_zu7_overfit3000_seed42/checkpoints/last/pretrained_model",
+  "optimizer_resume": false,
+  "rig": {
+    "robot_id": "dual_jaka_zu7",
+    "arms": [
+      "JAKA Zu7",
+      "JAKA Zu7"
+    ],
+    "source_repository": "https://github.com/JakaCobot/jaka_ros2",
+    "source_revision": "7e985b78fe3c7807507fb81e8119b76f794e3bae",
+    "mounting": {
+      "base_separation_m": 0.85,
+      "base_y_m": -0.42,
+      "base_z_m": 0.86,
+      "base_yaw_rad": 1.5707963267948966,
+      "base_height_above_table_m": 0.12
+    },
+    "home_joint_rad": [
+      0,
+      1.4,
+      -1.7,
+      1.87,
+      1.5707963267948966,
+      0
+    ],
+    "gripper": {
+      "name": "simulation_parallel_proxy",
+      "physical_model_confirmed": false,
+      "max_opening_m": 0.1,
+      "tcp_offset_m": 0.15,
+      "finger_length_m": 0.07,
+      "finger_thickness_m": 0.012,
+      "finger_height_m": 0.025
+    },
+    "expert_handover_grasp_heights_m": [
+      0.07,
+      -0.07
+    ],
+    "receiving_platform_height_m": 0.08,
+    "interarm_collision_planning": true,
+    "sequential_return": true,
+    "physics_hz": 250,
+    "control_hz": 25,
+    "joint_velocity_limit_rad_s": 3.0,
+    "joint_acceleration_limit_rad_s2": 8.0,
+    "expert_velocity_scale": 1.0,
+    "gripper_rate_per_s": 2.0,
+    "tracking_frequency_rad_s": 28.0,
+    "drive_stiffness": 10000,
+    "drive_damping": 500,
+    "notes": "User confirmed two Zu7 arms and authorized a provisional mounting/gripper. Geometry and kinematics from pinned JAKA source; dynamics, gripper and calibration remain simulation assumptions."
+  },
+  "urdf_sha256": "78eb491aeef361b39108eadae5936c37d0b5e60791833e837f40a3a6ba3a5621"
+}

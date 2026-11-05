@@ -1,0 +1,67 @@
+"""Generate the user report from recorded results, preserving failures and provenance."""
+import json
+from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo
+ROOT=Path('/data/jaka-vla')
+
+
+def load(path):return json.loads((ROOT/path).read_text())
+
+
+def main():
+    experiments=[('zu7_expert_replay_v2','专家回放：不匹配的1.5rad/s限速'),
+                 ('zu7_expert_replay_v3','专家回放：3rad/s，但未考虑另一臂'),
+                 ('zu7_expert_collision_replay','专家回放：加入另一臂碰撞几何'),
+                 ('zu7_learned_seen3000','SmolVLA前3000步：已见场景'),
+                 ('zu7_learned_seen6000','SmolVLA累计6000步：已见场景'),
+                 ('zu7_learned_seen6000_zero','累计6000步、零噪声采样：已见场景'),
+                 ('zu7_learned_unseen6000','累计6000步：未见场景')]
+    lines=['# 两台 Zu7 接入与动作修正报告','',f'生成时间：{datetime.now(ZoneInfo("Asia/Shanghai")).isoformat(timespec="seconds")}。', '',
+        '已将当前仿真平台替换为两台 JAKA Zu7，并修正工具坐标、桌面碰撞、动作控制、训练元数据及双臂规划。下面分别列出专家与学习策略验收，不能相互替代。','',
+        '## 实际验收','', '| 实验 | 成功 / 回合 | 原始证据 |','| --- | --- | --- |']
+    for folder,label in experiments:
+        path=f'results/{folder}/results.json'
+        if not (ROOT/path).exists():continue
+        rows=load(path);success=sum(bool(x['success']) for x in rows)
+        lines.append(f'| {label} | {success}/{len(rows)} | `{path}` |')
+    lines+=['','已见场景仅检验小样本拟合，不是泛化评测。当前没有事件自适应重规划、真实推理延迟或真机结果。','',
+        '## 机型与场景','',
+        '- 两臂均使用官方 JAKA Zu7 的6关节运动学与网格，固定源码提交 `7e985b78fe3c7807507fb81e8119b76f794e3bae`，不是给 ALOHA 改名称。',
+        '- 暂定并排安装，基座间距0.85m，y=-0.42m、z=0.86m，yaw=90°；夹爪为10cm开口的简化平行夹爪，TCP偏置15cm。配置集中在 `configs/robots/dual_zu7.json`。',
+        '- 任务为左臂抓红块、双臂交接、右臂放置；蓝色接收台8cm高，给Zu7较大腕部留净空。安装、夹爪、驱动和质量/惯量均待真机校核。',
+        '- 旧ALOHA训练集/权重/录像保留作历史基线。新数据和检查点记录机器人ID、URDF哈希与物理配置；不混用不同机型。','',
+        '## 修正了什么，为什么','',
+        '1. **工具坐标**：固定关节global_pose与工具子link有180°姿态差，原来会把位移方向算错；Zu7现在用工具子link计算TCP。',
+        '2. **场景碰撞**：桌面顶面0.74m、厚5cm，碰撞盒中心应为0.715m；分别转换到两臂基座。掌部原单球过大，改为小体素外接球。',
+        '3. **控制时序**：原专家速度峰值2.67rad/s，先设1.5rad/s会扭曲动作路径和夹爪时序。现使用3rad/s、8rad/s²的仿真指令上限，并同步输出位置/速度目标；物理速度仍独立记录。',
+        '4. **跨块衔接**：只融合对应同一未来时刻的前4步关节动作；夹爪使用新预测。推理噪声模式记录在结果中，不能把降低随机性当作学会任务。',
+        '5. **空抓与异常**：关闭请求<15%、实测开度<8%持续0.16s判为空抓；跟踪误差>0.12rad持续0.04s终止异常回合。两者只读指令和本体感知。目前是失败检测/终止，尚无自动重抓。',
+        '6. **双臂避碰**：接触日志定位右工具撞左前臂。专家规划现在纳入对方网格和工具几何，最后左臂先退回、右臂再放置，保持规划时另一臂静止。学习策略直接预测动作，并不自动继承规划器的保证。',
+        '7. **训练接口**：由数据明确生成STATE14、ACTION14、三路RGB `[3,240,320]`；修正旧配置中STATE6/256×256的声明，保留实际测量状态和25Hz均匀时间戳。',
+        '8. **可诊断性**：每250Hz物理步保存指令/实测位置速度，每25Hz保存动作、TCP和物体轨迹，另存接触对/冲量。物体和接触真值只用于评价/诊断。','',
+        '## 训练资源与数据','']
+    for name in ('zu7_smoke','zu7_collision_smoke'):
+        data=load(f'results/{name}_validation.json')
+        lines.append(f'- `{name}`：{len(data)}条、{sum(x["frames"] for x in data)}帧，25Hz；数据完整性检查通过。')
+    for name in ('smolvla_zu7_overfit3000_seed42','smolvla_zu7_refine3000_seed42'):
+        path=f'checkpoints/{name}/resource_profile.json'
+        if (ROOT/path).exists():
+            data=load(path)
+            lines.append(f'- `{name}`：完成={data["completed"]}，含加载/保存{data["wall_seconds_including_load_and_save"]:.1f}秒，峰值分配{data["peak_allocated_gib"]:.3f}GiB。')
+    lines+=['- 两阶段均batch8、seed42、AMP，每阶段3000步。第二阶段从第一阶段Zu7权重继续、重置优化器，换为新避碰示教；总计6000步。','',
+        '## 仍需解决','',
+        '- 新避碰专家回放3/3完成任务，但seed1/2仍有右手指与左掌短暂接触，峰值冲量约3.9Ns；实测速度峰值分别约2.665/3.924/2.499rad/s。不能声称零碰撞、物理速度被指令限幅严格保证或抖动已完全消除。',
+        '- 专家3/3不等于VLA成功。学习能力以表中的闭环结果为准；少量成功也不能支持论文级泛化结论。',
+        '- 下一步优先提高抓取对准精度，补充接近/失败恢复数据，并完善双臂运动裕量。基础策略稳定后再开展固定K与事件触发的正式对照。',
+        '- 真机接入还需夹爪型号、安装外参、相机标定、控制接口和动力学参数；当前未发送任何真机控制指令。','',
+        '## 查看与复现','',
+        '- 当前录像包：`/data/jaka-vla/results/jaka-zu7-review.zip`；解压后打开`jaka-zu7-review/index.html`。',
+        '- 服务器页面：`/data/jaka-vla/results/zu7_review/index.html`。查看步骤在`docs/VIEW_RESULTS.md`。',
+        '- 主配置、脚本、测试、AGENT.md、MEMORY.md、skill.md与技术/实验文档均在`/data/jaka-vla`；版本和上游patch在manifests。',
+        '- 5项控制/监测/身份单元测试通过，代码编译检查通过。几何和控制还做了实际SAPIEN闭环验证；失败日志与录像全部保留。',
+        '- 代码/查看包不含完整数据集和大权重，也不含下载的第三方机器人网格；不能替代释放服务器前的完整备份。','']
+    (ROOT/'docs/ZU7_CORRECTION_20261105.md').write_text('\n'.join(lines))
+
+
+if __name__=='__main__':main()

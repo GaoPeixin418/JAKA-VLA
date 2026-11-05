@@ -1,0 +1,101 @@
+diff --git a/utils/robot/_robot_info.json b/utils/robot/_robot_info.json
+index 332f089..f91bc61 100644
+--- a/utils/robot/_robot_info.json
++++ b/utils/robot/_robot_info.json
+@@ -1,26 +1,72 @@
+ {
+-    "piper": {
+-        "arm_dim": [6, 6],
+-        "ee_dim": [1, 1]
+-    },
+-    "arx_x5": {
+-        "arm_dim": [6, 6],
+-        "ee_dim": [1, 1]
+-    },
+-    "piper_x": {
+-        "arm_dim": [6, 6],
+-        "ee_dim": [1, 1]
+-    },
+-    "tianji_marvin_wuji": {
+-        "arm_dim": [7, 7],
+-        "ee_dim": [20, 20]
+-    },
+-    "aloha_agilex": {
+-        "arm_dim": [6, 6],
+-        "ee_dim": [1, 1]
+-    },
+-    "franka": {
+-        "arm_dim": [7, 7],
+-        "ee_dim": [1, 1]
+-    }
++  "piper": {
++    "arm_dim": [
++      6,
++      6
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
++  },
++  "arx_x5": {
++    "arm_dim": [
++      6,
++      6
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
++  },
++  "piper_x": {
++    "arm_dim": [
++      6,
++      6
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
++  },
++  "tianji_marvin_wuji": {
++    "arm_dim": [
++      7,
++      7
++    ],
++    "ee_dim": [
++      20,
++      20
++    ]
++  },
++  "aloha_agilex": {
++    "arm_dim": [
++      6,
++      6
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
++  },
++  "franka": {
++    "arm_dim": [
++      7,
++      7
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
++  },
++  "dual_jaka_zu7": {
++    "arm_dim": [
++      6,
++      6
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
++  }
+ }

@@ -1,0 +1,2 @@
+# Unified diffs contain space-prefixed context lines, including blank lines.
+manifests/*.patch -whitespace

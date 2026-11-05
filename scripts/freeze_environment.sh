@@ -5,6 +5,7 @@ mkdir -p /data/jaka-vla/manifests
 /data/jaka-vla/envs/vla/bin/uv pip freeze --python /data/jaka-vla/envs/robotwin/bin/python > /data/jaka-vla/manifests/robotwin-packages.txt
 /data/jaka-vla/envs/vla/bin/python -m pip freeze > /data/jaka-vla/manifests/vla-packages.txt
 git -C /data/jaka-vla/repos/RoboTwin diff > /data/jaka-vla/manifests/robotwin-timing-proprioception.patch
+git -C /data/jaka-vla/repos/RoboTwin/XPolicyLab diff > /data/jaka-vla/manifests/xpolicylab-zu7.patch
 python3 - <<'PY'
 import json, subprocess
 from pathlib import Path

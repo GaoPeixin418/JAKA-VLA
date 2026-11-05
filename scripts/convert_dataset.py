@@ -21,19 +21,22 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--repo-id', default='jaka-local/handover-smoke')
     p.add_argument('--fps', type=int, default=25)
+    p.add_argument('--robot-id', default='aloha_agilex')
     args = p.parse_args()
     paths = sorted(args.source.glob('episode_*.hdf5'))
     if not paths:
         raise FileNotFoundError(args.source)
     if args.output.exists():
         raise FileExistsError(f'Refusing to replace dataset: {args.output}')
-    dims = get_robot_action_dim_info('aloha_agilex')
+    dims = get_robot_action_dim_info(args.robot_id)
     camera_map = {'cam_head': 'camera1', 'cam_left_wrist': 'camera2', 'cam_right_wrist': 'camera3'}
     dataset = None
     reports = []
     for ep, path in enumerate(paths):
         with h5py.File(path, 'r') as hf:
             state_semantics = hf.attrs.get('state_semantics', 'command_targets_legacy')
+            if args.robot_id != 'aloha_agilex' and hf.attrs.get('robot_id') != args.robot_id:
+                raise ValueError(f'Robot identity missing or mismatched in {path}')
         if state_semantics != 'measured_qpos':
             raise ValueError(f'Recollect legacy command-target state data before training: {path}')
         raw = load_xspark_v1(str(path), decode_images=True)
@@ -57,7 +60,7 @@ def main():
             for name, values in images.items():
                 features[f'observation.images.{name}'] = {'dtype': 'video', 'shape': tuple(values.shape[1:]), 'names': ['height', 'width', 'channels']}
             dataset = LeRobotDataset.create(repo_id=args.repo_id, fps=args.fps, root=args.output,
-                robot_type='aloha_agilex', features=features, video_backend='pyav', vcodec='h264',
+                robot_type=args.robot_id, features=features, video_backend='pyav', vcodec='h264',
                 streaming_encoding=True, encoder_threads=2)
             preview = np.concatenate([images[name][0] for name in camera_map.values()], axis=1)
             Image.fromarray(preview).save(PROJECT / 'results/dataset_camera_preview.png')

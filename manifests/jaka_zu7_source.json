@@ -1,0 +1,69 @@
+{
+  "repository": "https://github.com/JakaCobot/jaka_ros2",
+  "revision": "7e985b78fe3c7807507fb81e8119b76f794e3bae",
+  "license_note": "Upstream package.xml currently declares TODO; retained as local fetched dependency, no assets bundled for redistribution.",
+  "files": {
+    "src/jaka_description/urdf/jaka_zu7.urdf": "7f4d8ef6a2a352fb5738683527ce19532449af3c4674cf5f4943955bbf51560d",
+    "README.md": "b5671a88b20aabbb9066851b4863e0717d608f914d0ea937f98e0feb1afa5f36",
+    "src/jaka_description/package.xml": "ad264194dae00223de8bda6ed1ba58364f72f801c74b7998a25dd6a1f269e87f",
+    "src/jaka_zu7_moveit_config/config/jaka_zu7.srdf": "c5095c35cf8fab5b051a6861af5e5e9415ee8100b216906954626ec94dd9ed6b",
+    "src/jaka_description/meshes/jaka_zu7_meshes/Link_0.STL": "c220f0475911070f47959d9d35b260e275d42860aaa4b1109425eb680f0a26d2",
+    "src/jaka_description/meshes/jaka_zu7_meshes/Link_1.STL": "5582c62ead1eda15ffd40484a029b9eb9ba30193044239a9c215069f5cc292f1",
+    "src/jaka_description/meshes/jaka_zu7_meshes/Link_2.STL": "1b31c4c4399d844cdb80e2a697440d6f6297dc0c08e0c223e16c4ba993f0ead7",
+    "src/jaka_description/meshes/jaka_zu7_meshes/Link_3.STL": "763e255d3d8e885f0735a8b757e767898b3abc9cc3c64f835b60e9b2a7d167da",
+    "src/jaka_description/meshes/jaka_zu7_meshes/Link_4.STL": "7d8619c6cc27ffd9d658f3dd6a1460ea12196deee6a49c1a86a802fc30c06ebc",
+    "src/jaka_description/meshes/jaka_zu7_meshes/Link_5.STL": "84ebb346a141a1681d0195fe17108f4a43dbbb906b8abe8a26b4dfcd663882c3",
+    "src/jaka_description/meshes/jaka_zu7_meshes/Link_6.STL": "7c53f608db764cd399bdb713a28580179985abe7df27bc1190947ebd8229c661"
+  },
+  "assumptions": {
+    "robot_id": "dual_jaka_zu7",
+    "arms": [
+      "JAKA Zu7",
+      "JAKA Zu7"
+    ],
+    "source_repository": "https://github.com/JakaCobot/jaka_ros2",
+    "source_revision": "7e985b78fe3c7807507fb81e8119b76f794e3bae",
+    "mounting": {
+      "base_separation_m": 0.85,
+      "base_y_m": -0.42,
+      "base_z_m": 0.86,
+      "base_yaw_rad": 1.5707963267948966,
+      "base_height_above_table_m": 0.12
+    },
+    "home_joint_rad": [
+      0,
+      1.4,
+      -1.7,
+      1.87,
+      1.5707963267948966,
+      0
+    ],
+    "gripper": {
+      "name": "simulation_parallel_proxy",
+      "physical_model_confirmed": false,
+      "max_opening_m": 0.1,
+      "tcp_offset_m": 0.15,
+      "finger_length_m": 0.07,
+      "finger_thickness_m": 0.012,
+      "finger_height_m": 0.025
+    },
+    "expert_handover_grasp_heights_m": [
+      0.07,
+      -0.07
+    ],
+    "receiving_platform_height_m": 0.08,
+    "interarm_collision_planning": true,
+    "sequential_return": true,
+    "physics_hz": 250,
+    "control_hz": 25,
+    "joint_velocity_limit_rad_s": 3.0,
+    "joint_acceleration_limit_rad_s2": 8.0,
+    "expert_velocity_scale": 1.0,
+    "gripper_rate_per_s": 2.0,
+    "tracking_frequency_rad_s": 28.0,
+    "drive_stiffness": 10000,
+    "drive_damping": 500,
+    "notes": "User confirmed two Zu7 arms and authorized a provisional mounting/gripper. Geometry and kinematics from pinned JAKA source; dynamics, gripper and calibration remain simulation assumptions."
+  },
+  "generated_urdf": "/data/jaka-vla/repos/RoboTwin/assets/embodiments/jaka-zu7-proxy/robot.urdf"
+}

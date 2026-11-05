@@ -1,0 +1,8 @@
+{
+  "robot_id": "aloha_agilex",
+  "state_semantics": "measured_qpos",
+  "action_semantics": "next_sample_drive_targets",
+  "dataset": "data/lerobot/handover_pilot",
+  "state_dim": 14,
+  "control_hz": 25
+}
