@@ -1,6 +1,6 @@
 # JAKA-VLA 备份与恢复
 
-本次范围仅为 `/data/jaka-vla` 项目。已创建用户账户 `GaoPeixin418` 下的[私有仓库 JAKA-VLA](https://github.com/GaoPeixin418/JAKA-VLA)，代码与完整实验附件已上传。没有自动同步，也不为其他项目设置Git。
+范围仅为 `/data/jaka-vla` 项目。已创建用户账户 `GaoPeixin418` 下的[私有仓库 JAKA-VLA](https://github.com/GaoPeixin418/JAKA-VLA)，代码与完整实验附件已上传。JAKA-VLA仓库启用提交后自动推送main，不为其他项目设置Git。
 
 ## 内容和边界
 
@@ -60,3 +60,11 @@ python3 scripts/create_backup.py --output /data/jaka-vla/backups/backup-NEW
 - 服务器重启曾中断传输，已重连并补传；数据盘完整备份未丢失。
 - 独立本地全量副本还在下载，不计入上述已完成的GitHub备份；仅在本地出现LOCAL_BACKUP_COMPLETE.json后才算本地全部校验通过。
 - 逐附件大小、SHA256和下载地址见manifests/github-backup-20261105.json。
+
+## 自动Git同步
+
+本项目仓库在服务器启用了`.git/hooks/post-commit`。每次在`/data/jaka-vla`完成Git提交，钩子都会把该提交安全推送到本私有仓库的`main`分支。需先运行项目规定的测试、更新实验/技术记录并检查差异，然后创建commit；Git不会在文件保存时自动决定和创建commit。
+
+认证使用GitHub Deploy Key `jaka-vla project-only autosync 2026-11-05`，在GitHub设置中仅挂载本仓库且具读写权限；私钥仅在该服务器项目Git目录下、权限0600，不进入Git、备份和Release，也未改变全局Git配置。钩子推送失败会保留本地commit，需查网络/Deploy Key/远程main分支后显式重试。
+
+其他仓库没有此钩子。其他项目或对话必须在用户明确提出时才可使用Git同步。

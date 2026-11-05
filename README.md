@@ -27,6 +27,8 @@
 - [备份与恢复](docs/BACKUP_RESTORE.md)：GitHub代码、Release实验附件和换电脑后的操作。
 - [在家查看项目](docs/HOME_ACCESS.md)：浏览器、代码ZIP、GitHub Desktop及离线录像的逐步说明。
 
+JAKA-VLA 在服务器项目仓库提交后自动推送到私有 GitHub `main`。同步钩子和安装入口见 `scripts/github_post_commit.sh`、`scripts/install_github_autosync.sh`；其他项目不会同步。
+
 ## 环境与配置
 
 服务器RTX4090 24GB，约60GB系统内存，150GB数据盘。运行前`source env.sh`。

@@ -22,6 +22,8 @@
 
 以后点 `Fetch origin` / `Pull origin` 获取本项目的新提交。没有设置自动同步，也不会把你的其他文件上传。
 
+项目工作产生的新Git提交会由JAKA-VLA仓库自己的钩子推送到`main`；每次改动仍会先经过检查和项目记录。其他项目不会因此自动同步。
+
 ## 退租前保留完整训练成果
 
 代码ZIP或Clone不含大文件。需要在Release中下载同一批次的全部附件，包括 `backup-index.json`、`SHA256SUMS`、所有 `*.manifest.json` 和 `*.tar.gz.partNNN`。将它们放在同一个文件夹，不要改分片名。

@@ -7,7 +7,7 @@
 - 用双臂 VLA 写一篇小论文：研究事件感知的自适应重规划，先仿真再 Sim2Real。
 - 用户已明确是 **两台 JAKA Zu7**，夹爪型号和安装方式未知，授权按项目需要先做可调整的配置。
 - 已按要求修正并迁移Zu7；最新要求是解释微调过程，并只将JAKA-VLA同步到GaoPeixin418的GitHub私有仓库，以便在家查看和退租后恢复。
-- Git使用边界：本次仅JAKA-VLA；其他项目、其他对话及日常修改默认只在本地/副本工作，用户明确要求才使用Git同步。不设置自动同步或全局Git配置。
+- Git使用边界：用户已授权JAKA-VLA自动同步。每个完整项目提交自动推送到GitHub main；其他项目、其他对话仍必须等用户明确要求。不修改全局Git配置。
 - 维护 AGENT.md、MEMORY.md、skill.md、技术方案和完整实验记录；无需对已授权的日常调试重复确认。
 
 ## 环境与边界
@@ -98,3 +98,10 @@
 - 传输途中服务器重启，已重连并补全GitHub上传；没有新训练或评测，原模型0/3结论不变。
 - 本地额外全量副本仍在下载；出现LOCAL_BACKUP_COMPLETE.json才代表本地校验完成。GitHub备份已完成，不依赖该下载进度。
 - 同步范围只限JAKA-VLA；无自动Git同步，无全局Git配置变更。
+
+## JAKA-VLA自动Git同步（2026-11-05）
+
+- 用户明确要求此后仅本项目启用自动Git同步。
+- 使用GitHub repository Deploy Key，权限仅限GaoPeixin418/JAKA-VLA写入；服务器只保存该单仓库SSH密钥，不保存账户令牌。
+- `/data/jaka-vla/.git/hooks/post-commit`将每个项目commit推送至GitHub main；它不自动生成commit，也不会扫描或同步其他目录。
+- 验收通过后更新`docs/BACKUP_RESTORE.md`和`docs/EXPERIMENT_LOG.md`，随后提交验证变更，由同一钩子执行第一次自动推送。

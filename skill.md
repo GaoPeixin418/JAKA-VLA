@@ -81,6 +81,6 @@ nvidia-smi
 
 ## 项目限定的GitHub备份
 
-用户只授权本JAKA-VLA同步至GaoPeixin418/JAKA-VLA私有仓库，不据此同步其他项目或修改全局Git配置。现有2026-11-05快照已上传并校验；不要因查看进度而重复打包或重复上传。训练依旧关闭push_to_hub/WandB。
+用户只授权本JAKA-VLA自动同步至GaoPeixin418/JAKA-VLA私有仓库，不据此同步其他项目或修改全局Git配置。该仓库的每个项目commit会由post-commit钩子推送到main；提交前先完成检查与记录。现有2026-11-05快照已上传并校验；不要因查看进度而重复打包或重复上传。训练依旧关闭push_to_hub/WandB。
 
 恢复/更新备份先读docs/BACKUP_RESTORE.md、docs/HOME_ACCESS.md和manifests/github-backup-20261105.json。Git clone只得到代码；完整实验附件在Release。仅有文件存在不代表传输完成，使用restore_backup.py完整校验；独立本地副本须检查LOCAL_BACKUP_COMPLETE.json而非仅查看目录大小。
