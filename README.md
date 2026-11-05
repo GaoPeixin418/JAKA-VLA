@@ -2,6 +2,15 @@
 
 项目目录：`/data/jaka-vla`。当前使用 ALOHA-AgileX 仿真机器人，尚未适配节卡真机。
 
+## 项目记录入口
+
+- [AGENT.md](AGENT.md)：协作约定、正确性约束与文档更新责任；[AGENTS.md](AGENTS.md) 提供标准代理入口。
+- [MEMORY.md](MEMORY.md)：长期事实、已完成验证、当前批次与接续顺序。
+- [skill.md](skill.md)：项目操作手册，覆盖环境、数据、训练、评测及恢复。
+- [技术方案](docs/TECHNICAL_DESIGN.md)：方法设计、数据/控制接口、技术决策与未完成部分。
+- [实验记录](docs/EXPERIMENT_LOG.md)：每次验证的配置、证据与结论边界。
+- [状态快照](docs/STATUS.md)：带采样时间的运行进度；用 `python3 scripts/status.py --write-doc` 刷新，不是实时监控。
+
 ## 环境
 
 - 服务器：RTX 4090 24GB，约60GB系统内存；150GB独立数据盘。
@@ -49,7 +58,7 @@
 ## 当前批次
 
 `bash scripts/pilot_pipeline.sh` 顺序运行50条示教采集、数据校验转换、batch=8的2000步训练、K=4/8/16各3个未见种子评测。
-每阶段有超时，出错立即停止；不无限重试，不自动重训，不自动关机。
+采集、训练和评测有超时，转换当前未设独立超时；出错立即停止，不无限重试，不自动重训，不自动关机。
 所有K复用同一训练检查点，测试种子为1000–1002。
 
 当前评测是同步调用、零模拟推理延迟的初始基线：推理墙钟耗时会记录，但推理期间仿真暂停。
@@ -59,7 +68,7 @@
 查看状态：
 
 ```bash
-python3 /data/jaka-vla/scripts/status.py
+python3 /data/jaka-vla/scripts/status.py --write-doc
 tail -f /data/jaka-vla/logs/train-pilot.log
 ```
 
