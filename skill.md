@@ -78,3 +78,9 @@ nvidia-smi
 用户查看结果时先核实 `results/pilot_baselines.json` 和各回合MP4。操作步骤见 `docs/VIEW_RESULTS.md`。
 `python3 scripts/build_review_bundle.py` 可从当前pilot产物生成离线查看页面与ZIP，输出在 `results/review_bundle/`、`results/jaka-vla-review.zip`。
 生成页面不运行模型；页面是快照。服务端浏览默认使用只绑定127.0.0.1的HTTP服务与SSH转发，或直接下载ZIP离线打开。
+
+## 项目限定的GitHub备份
+
+用户只授权本JAKA-VLA同步至GaoPeixin418/JAKA-VLA私有仓库，不据此同步其他项目或修改全局Git配置。现有2026-11-05快照已上传并校验；不要因查看进度而重复打包或重复上传。训练依旧关闭push_to_hub/WandB。
+
+恢复/更新备份先读docs/BACKUP_RESTORE.md、docs/HOME_ACCESS.md和manifests/github-backup-20261105.json。Git clone只得到代码；完整实验附件在Release。仅有文件存在不代表传输完成，使用restore_backup.py完整校验；独立本地副本须检查LOCAL_BACKUP_COMPLETE.json而非仅查看目录大小。

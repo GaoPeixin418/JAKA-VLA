@@ -89,3 +89,12 @@
 - 新增docs/FINETUNING_GUIDE.md，逐项说明冻结VLM、训练约99.88M参数的监督模仿微调、两轮3000步及检查点文件；非LoRA/RL，模型尚未成功完成任务。
 - 新增按1500MiB分片的备份和完整SHA256恢复脚本及实际往返/损坏测试。数据、所有历史权重、日志、录像分别归档；环境、缓存、第三方下载资产及凭据不归档。
 - GitHub尚待浏览器授权；不得将准备完成等同于已上传。用户可在自己的电脑完成网页授权，或采用手动上传。操作见docs/BACKUP_RESTORE.md。
+
+## GitHub备份完成（2026-11-05）
+
+- 已验证账号GaoPeixin418，并创建私有仓库https://github.com/GaoPeixin418/JAKA-VLA；main分支保存项目代码、文档和历史。
+- Release backup-2026-11-05已发布，21/21附件、8,357,873,370字节；GitHub返回的每个附件SHA256均与原备份一致。服务器端665个文件/链接完整校验、6项测试通过。
+- 包含data/checkpoints/results/logs及代码/额外配置；不含环境、缓存、凭据或第三方下载资产。详见docs/BACKUP_RESTORE.md和manifests/github-backup-20261105.json。
+- 传输途中服务器重启，已重连并补全GitHub上传；没有新训练或评测，原模型0/3结论不变。
+- 本地额外全量副本仍在下载；出现LOCAL_BACKUP_COMPLETE.json才代表本地校验完成。GitHub备份已完成，不依赖该下载进度。
+- 同步范围只限JAKA-VLA；无自动Git同步，无全局Git配置变更。

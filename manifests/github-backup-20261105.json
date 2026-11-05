@@ -1,0 +1,141 @@
+{
+  "repo": "https://github.com/GaoPeixin418/JAKA-VLA",
+  "release": "https://github.com/GaoPeixin418/JAKA-VLA/releases/tag/backup-2026-11-05",
+  "draft": false,
+  "expected_assets": 21,
+  "verified_assets": 21,
+  "verified_bytes": 8357873370,
+  "pending": [],
+  "assets": [
+    {
+      "name": "backup-index.json",
+      "bytes": 3759,
+      "sha256": "272e28653d2c7407ff1e41d956c2ee33c84c9f591eeaee4a67389788bd4a0eb6",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/backup-index.json"
+    },
+    {
+      "name": "datasets.manifest.json",
+      "bytes": 61323,
+      "sha256": "a40811097c62de16859764adc3aa42da013c9dbcd8f14dfbceab6bde849d4ad6",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/datasets.manifest.json"
+    },
+    {
+      "name": "datasets.tar.gz.part001",
+      "bytes": 913615823,
+      "sha256": "8d66e763d278a8c94c7dc5d3dd7fa0b6342af40c5c3464f2d04909bb8926b9a0",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/datasets.tar.gz.part001"
+    },
+    {
+      "name": "evidence.manifest.json",
+      "bytes": 48776,
+      "sha256": "c4f68bddc4cdf4d36c0a2d941273dd16e46e3f3ff1285155669dd132570375c2",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/evidence.manifest.json"
+    },
+    {
+      "name": "evidence.tar.gz.part001",
+      "bytes": 44427620,
+      "sha256": "b68a9e6cc8db5d655f068d9ee2870a24e96f31b68233fa411c746df64fc3ac12",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/evidence.tar.gz.part001"
+    },
+    {
+      "name": "smolvla_pilot_seed42.manifest.json",
+      "bytes": 3373,
+      "sha256": "d35741e72a3346e9414632b7432b23d426fd0c76e4a7c929be5b8806e8714e87",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_pilot_seed42.manifest.json"
+    },
+    {
+      "name": "smolvla_pilot_seed42.tar.gz.part001",
+      "bytes": 1053667850,
+      "sha256": "adec65ca24b8aa4d7f32a21df09c6c2c2cb703ac57f5e72325107a839259dec0",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_pilot_seed42.tar.gz.part001"
+    },
+    {
+      "name": "smolvla_smoke.manifest.json",
+      "bytes": 3261,
+      "sha256": "4097eabd16b8ededdad6e654d97a9e1b268ab893a9b0bc9f431f6a7b1da0a025",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_smoke.manifest.json"
+    },
+    {
+      "name": "smolvla_smoke.tar.gz.part001",
+      "bytes": 1059585974,
+      "sha256": "8556396555dcc0783b096d006bf2b8c21ad5df07b0e4be7a184341ab9002fe82",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_smoke.tar.gz.part001"
+    },
+    {
+      "name": "smolvla_smoke_command_state_v0.manifest.json",
+      "bytes": 3335,
+      "sha256": "5f7c8bf6283b1bd60f1dd80d99e172dca12c98efa7c3efa3a2b8be46dd688acd",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_smoke_command_state_v0.manifest.json"
+    },
+    {
+      "name": "smolvla_smoke_command_state_v0.tar.gz.part001",
+      "bytes": 1059936373,
+      "sha256": "1632229ea517afbd93d08a5624d18cdca70e2ebe119bccb346b7271db9278d83",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_smoke_command_state_v0.tar.gz.part001"
+    },
+    {
+      "name": "smolvla_zu7_overfit3000_seed42.manifest.json",
+      "bytes": 7081,
+      "sha256": "baa5bd64ebc1b286e2b3c4e5b2c089b8276637aac6a03a7c41c57ddd3527ba05",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_zu7_overfit3000_seed42.manifest.json"
+    },
+    {
+      "name": "smolvla_zu7_overfit3000_seed42.tar.gz.part001",
+      "bytes": 1572864000,
+      "sha256": "a7b1461a449ba97a6daa01eee7dd386f6d81449873f176008130200fa070998a",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_zu7_overfit3000_seed42.tar.gz.part001"
+    },
+    {
+      "name": "smolvla_zu7_overfit3000_seed42.tar.gz.part002",
+      "bytes": 538914883,
+      "sha256": "9f8a1434946046b75a78da3ee37fe30232abfd4bd39cface1886c5762a250fe5",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_zu7_overfit3000_seed42.tar.gz.part002"
+    },
+    {
+      "name": "smolvla_zu7_refine3000_seed42.manifest.json",
+      "bytes": 7050,
+      "sha256": "9dee2cce56eb81cbd1138c32de3515617ca4206fc9a83e16f643d37b84934209",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_zu7_refine3000_seed42.manifest.json"
+    },
+    {
+      "name": "smolvla_zu7_refine3000_seed42.tar.gz.part001",
+      "bytes": 1572864000,
+      "sha256": "065c334f991707f62b81f9beb074a6eb543ccd0ef13c7382b4975a0734cbadc2",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_zu7_refine3000_seed42.tar.gz.part001"
+    },
+    {
+      "name": "smolvla_zu7_refine3000_seed42.tar.gz.part002",
+      "bytes": 538326456,
+      "sha256": "55afca3bcd5a8a5d3927e3a4b66ec39e59f1e3099e8a324340b9217d37f4c7ec",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/smolvla_zu7_refine3000_seed42.tar.gz.part002"
+    },
+    {
+      "name": "source-history.manifest.json",
+      "bytes": 960,
+      "sha256": "dace788d735d700053e516324bd4f3b4b21dedb432471a975c77da8b8e650c08",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/source-history.manifest.json"
+    },
+    {
+      "name": "source-history.tar.gz.part001",
+      "bytes": 259614,
+      "sha256": "3cdb2db92a71b066dfe32fbcb69af59926b58eed6c7a7653ff0eaf33ff4172e4",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/source-history.tar.gz.part001"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 1915,
+      "sha256": "2aa8c6bbab209f848f3b98c6c462269683a7636804cdc2eba4c7a282c2249560",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/SHA256SUMS"
+    },
+    {
+      "name": "jaka-zu7-review.zip",
+      "bytes": 3269944,
+      "sha256": "2d73bfeeb90f7224a853cb6c9bb364fc8222f6d65494839960cca8e13d203f47",
+      "download_url": "https://github.com/GaoPeixin418/JAKA-VLA/releases/download/backup-2026-11-05/jaka-zu7-review.zip"
+    }
+  ],
+  "verified_at_utc": "2026-11-05T08:51:58.945807+00:00",
+  "server_archive_check": "All 665 source files/symlinks verified by restore_backup.py; six unit tests passed.",
+  "source_commit": "561d47489d86eb30174e292fa5992acf5ba8fa00",
+  "original_source_bytes": 10619080561
+}

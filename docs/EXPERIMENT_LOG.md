@@ -139,3 +139,12 @@
 - 完成微调说明文档，备份脚本覆盖原始/LeRobot数据、所有检查点、优化器/归一化器、录像、成功/失败记录及Git历史。
 - 分片不超过1500MiB；保存分片与原文件SHA256，恢复只写新目录；测试覆盖多分片/符号链接往返和损坏拒绝。
 - GitHub登录和上传尚未完成。最终备份结果另行记录，不把计划写成已完成。
+
+## GitHub备份完成（2026-11-05）
+
+- 已验证账号GaoPeixin418，并创建私有仓库https://github.com/GaoPeixin418/JAKA-VLA；main分支保存项目代码、文档和历史。
+- Release backup-2026-11-05已发布，21/21附件、8,357,873,370字节；GitHub返回的每个附件SHA256均与原备份一致。服务器端665个文件/链接完整校验、6项测试通过。
+- 包含data/checkpoints/results/logs及代码/额外配置；不含环境、缓存、凭据或第三方下载资产。详见docs/BACKUP_RESTORE.md和manifests/github-backup-20261105.json。
+- 传输途中服务器重启，已重连并补全GitHub上传；没有新训练或评测，原模型0/3结论不变。
+- 本地额外全量副本仍在下载；出现LOCAL_BACKUP_COMPLETE.json才代表本地校验完成。GitHub备份已完成，不依赖该下载进度。
+- 同步范围只限JAKA-VLA；无自动Git同步，无全局Git配置变更。

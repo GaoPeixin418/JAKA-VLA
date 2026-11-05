@@ -1,6 +1,6 @@
 # JAKA-VLA 备份与恢复
 
-本次范围仅为 `/data/jaka-vla` 项目。目标为用户账户 `GaoPeixin418` 下的私有仓库 `JAKA-VLA`；仓库创建与上传须以实际完成记录为准。没有自动同步，也不为其他项目设置Git。
+本次范围仅为 `/data/jaka-vla` 项目。已创建用户账户 `GaoPeixin418` 下的[私有仓库 JAKA-VLA](https://github.com/GaoPeixin418/JAKA-VLA)，代码与完整实验附件已上传。没有自动同步，也不为其他项目设置Git。
 
 ## 内容和边界
 
@@ -54,5 +54,9 @@ python3 scripts/create_backup.py --output /data/jaka-vla/backups/backup-NEW
 ## 2026-11-05 同步记录
 
 - 用户授权仅本项目同步至GaoPeixin418，按私有仓库准备。
-- GitHub尚未完成登录授权，尚未创建或上传仓库/Release。
-- 本地和服务器备份正在准备；最终完成情况以交付说明和校验报告为准。
+- 已完成账户验证，私有仓库main分支已上传完整项目历史。
+- [Release backup-2026-11-05](https://github.com/GaoPeixin418/JAKA-VLA/releases/tag/backup-2026-11-05)已发布：21个附件，共8,357,873,370字节，全部与服务器SHA256一致。
+- 8组归档、10个分片，原始内容10,619,080,561字节；服务器完整流式校验665个文件/链接通过，恢复往返/损坏测试通过。
+- 服务器重启曾中断传输，已重连并补传；数据盘完整备份未丢失。
+- 独立本地全量副本还在下载，不计入上述已完成的GitHub备份；仅在本地出现LOCAL_BACKUP_COMPLETE.json后才算本地全部校验通过。
+- 逐附件大小、SHA256和下载地址见manifests/github-backup-20261105.json。

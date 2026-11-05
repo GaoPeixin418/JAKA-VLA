@@ -25,6 +25,7 @@
 - [查看录像](docs/VIEW_RESULTS.md)：服务器原始产物和离线播放包。
 - [微调说明](docs/FINETUNING_GUIDE.md)：训练方法、数据设计、已做实验和检查点内容。
 - [备份与恢复](docs/BACKUP_RESTORE.md)：GitHub代码、Release实验附件和换电脑后的操作。
+- [在家查看项目](docs/HOME_ACCESS.md)：浏览器、代码ZIP、GitHub Desktop及离线录像的逐步说明。
 
 ## 环境与配置
 
