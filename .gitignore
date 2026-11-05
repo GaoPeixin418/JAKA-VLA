@@ -6,5 +6,7 @@ data/
 checkpoints/
 results/
 run/
+backups/
+backup-source/
 __pycache__/
 *.pyc

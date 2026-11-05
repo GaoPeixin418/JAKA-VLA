@@ -23,6 +23,8 @@
 - [技术方案](docs/TECHNICAL_DESIGN.md)、[实验日志](docs/EXPERIMENT_LOG.md)：方法与完整成功/失败记录。
 - [状态快照](docs/STATUS.md)：用`python3 scripts/status.py --write-doc`刷新。
 - [查看录像](docs/VIEW_RESULTS.md)：服务器原始产物和离线播放包。
+- [微调说明](docs/FINETUNING_GUIDE.md)：训练方法、数据设计、已做实验和检查点内容。
+- [备份与恢复](docs/BACKUP_RESTORE.md)：GitHub代码、Release实验附件和换电脑后的操作。
 
 ## 环境与配置
 
@@ -35,4 +37,4 @@
 
 采集/训练/评测均有独立预算与超时，输出拒绝覆盖。旧ALOHA pilot（50条、2000步、0/9）保留为历史失败记录，不能混入Zu7数据或当成其训练结果。
 训练集与已见场景评测用于检查拟合，未见场景和更多种子才能评价泛化。当前无论文级结论。
-不上传实验数据、模型或日志；WandB关闭。代码备份不包含完整训练集/权重，释放实例前需另外备份这些大文件。
+用户已授权本项目的私有GitHub备份：代码/文档进仓库，数据/检查点/录像/日志进带SHA256校验的Release附件。训练不自动上传，WandB关闭。只有Git clone不能得到大文件，释放实例前须核对附件完整性与本地副本；具体状态见备份文档。
