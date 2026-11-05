@@ -68,3 +68,7 @@ python3 scripts/create_backup.py --output /data/jaka-vla/backups/backup-NEW
 认证使用GitHub Deploy Key `jaka-vla project-only autosync 2026-11-05`，在GitHub设置中仅挂载本仓库且具读写权限；私钥仅在该服务器项目Git目录下、权限0600，不进入Git、备份和Release，也未改变全局Git配置。钩子推送失败会保留本地commit，需查网络/Deploy Key/远程main分支后显式重试。
 
 其他仓库没有此钩子。其他项目或对话必须在用户明确提出时才可使用Git同步。
+
+## 退租当前服务器
+
+在 `/data/jaka-vla/backups` 与本地副本都确认完整、Release可校验恢复后，再结束服务器租约。最后一次项目提交应确认已出现在GitHub `main`。随后在仓库 `Settings → Deploy keys` 删除 `jaka-vla project-only autosync 2026-11-05`，撤销租用服务器的仓库写权限；Deploy Key不包含在备份中。
