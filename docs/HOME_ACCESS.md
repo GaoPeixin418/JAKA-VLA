@@ -20,7 +20,7 @@
 
 可以安装GitHub Desktop，用浏览器登录同一账号；选择 `File → Clone repository`，在URL栏填写 `https://github.com/GaoPeixin418/JAKA-VLA.git`，选择本地目录后点Clone。只克隆这个仓库即可，不必将其他文件夹加入Git。
 
-以后点 `Fetch origin` / `Pull origin` 获取本项目的新提交。没有设置自动同步，也不会把你的其他文件上传。
+以后点 `Fetch origin` / `Pull origin` 获取本项目的新提交。本项目提交后由服务器上的仓库钩子推送到GitHub `main`；你本地的其他文件不会上传。
 
 项目工作产生的新Git提交会由JAKA-VLA仓库自己的钩子推送到`main`；每次改动仍会先经过检查和项目记录。其他项目不会因此自动同步。
 

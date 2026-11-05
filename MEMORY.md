@@ -14,7 +14,7 @@
 
 - 服务器项目 `/data/jaka-vla`，Ubuntu22.04、RTX4090 24GB，实际系统内存约60GB。150GB是数据盘，不是RAM。
 - `source env.sh`；`envs/robotwin`运行仿真，`envs/vla`运行转换、训练和模型服务；不要混装依赖。
-- 源码/依赖哈希在manifests。本次仅授权JAKA-VLA私有GitHub备份，训练仍关闭push_to_hub和WandB；缓存/环境/凭据不上传。
+- 源码/依赖哈希在manifests。本次授权JAKA-VLA私有GitHub备份和项目仓库提交后自动同步，训练仍关闭push_to_hub和WandB；缓存/环境/凭据不上传。
 - 当前是同步推理，推理期间仿真暂停，不能作为延迟鲁棒性或实时真机证据。
 - 研究的事件自适应K方法尚未实现，先建立可用基础策略。
 
@@ -88,7 +88,7 @@
 
 - 新增docs/FINETUNING_GUIDE.md，逐项说明冻结VLM、训练约99.88M参数的监督模仿微调、两轮3000步及检查点文件；非LoRA/RL，模型尚未成功完成任务。
 - 新增按1500MiB分片的备份和完整SHA256恢复脚本及实际往返/损坏测试。数据、所有历史权重、日志、录像分别归档；环境、缓存、第三方下载资产及凭据不归档。
-- GitHub尚待浏览器授权；不得将准备完成等同于已上传。用户可在自己的电脑完成网页授权，或采用手动上传。操作见docs/BACKUP_RESTORE.md。
+- 当时尚待浏览器授权；后续已完成授权及上传，状态见下方“GitHub备份完成”。
 
 ## GitHub备份完成（2026-11-05）
 
@@ -96,14 +96,13 @@
 - Release backup-2026-11-05已发布，21/21附件、8,357,873,370字节；GitHub返回的每个附件SHA256均与原备份一致。服务器端665个文件/链接完整校验、6项测试通过。
 - 包含data/checkpoints/results/logs及代码/额外配置；不含环境、缓存、凭据或第三方下载资产。详见docs/BACKUP_RESTORE.md和manifests/github-backup-20261105.json。
 - 传输途中服务器重启，已重连并补全GitHub上传；没有新训练或评测，原模型0/3结论不变。
-- 本地额外全量副本仍在下载；出现LOCAL_BACKUP_COMPLETE.json才代表本地校验完成。GitHub备份已完成，不依赖该下载进度。
-- 同步范围只限JAKA-VLA；无自动Git同步，无全局Git配置变更。
+- 本地额外全量副本后来完成下载及校验，恢复演练见下方记录。GitHub备份不依赖本地下载进度。
+- 同步范围只限JAKA-VLA；备份上传当时尚未设置自动Git同步，且未改变全局Git配置。后续授权和配置见下方记录。
 
 ## JAKA-VLA自动Git同步（2026-11-05）
 
 - 用户明确要求此后仅本项目启用自动Git同步。
 - 使用GitHub repository Deploy Key，权限仅限GaoPeixin418/JAKA-VLA写入；服务器只保存该单仓库SSH密钥，不保存账户令牌。
 - `/data/jaka-vla/.git/hooks/post-commit`将每个项目commit推送至GitHub main；每轮检查收尾后应创建项目commit。它不会扫描或同步其他目录。仓库本地core.sshCommand供fetch/pull使用。
-- 验收通过后更新`docs/BACKUP_RESTORE.md`和`docs/EXPERIMENT_LOG.md`，随后提交验证变更，由同一钩子执行第一次自动推送。
-- 已通过真实提交验证：`a3923fe`、`f943967`和后续文档提交均由post-commit自动推送；GitHub `main`与服务器HEAD最终均为`31cf2c6374b4cc8b482b1ca61e0daff0bdc68607`，工作树干净。
-- 完整服务器备份及本地副本均校验665项通过，并在新目录执行恢复演练。GitHub Release 21/21附件哈希已验证；本地project-history.bundle可克隆至最新`31cf2c6`。
+- 配置后已通过真实提交验证：`a3923fe`、`f943967`、`31cf2c6`及后续记录提交均由post-commit自动推送。GitHub `main`与服务器HEAD最后核对一致，工作树干净。
+- 完整服务器备份及本地副本均校验665项通过，并在新目录执行恢复演练。GitHub Release 21/21附件哈希已验证。
