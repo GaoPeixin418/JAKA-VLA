@@ -105,3 +105,5 @@
 - 使用GitHub repository Deploy Key，权限仅限GaoPeixin418/JAKA-VLA写入；服务器只保存该单仓库SSH密钥，不保存账户令牌。
 - `/data/jaka-vla/.git/hooks/post-commit`将每个项目commit推送至GitHub main；每轮检查收尾后应创建项目commit。它不会扫描或同步其他目录。仓库本地core.sshCommand供fetch/pull使用。
 - 验收通过后更新`docs/BACKUP_RESTORE.md`和`docs/EXPERIMENT_LOG.md`，随后提交验证变更，由同一钩子执行第一次自动推送。
+- 已通过真实提交验证：`a3923fe`、`f943967`和后续文档提交均由post-commit自动推送；GitHub `main`与服务器HEAD最终均为`31cf2c6374b4cc8b482b1ca61e0daff0bdc68607`，工作树干净。
+- 完整服务器备份及本地副本均校验665项通过，并在新目录执行恢复演练。GitHub Release 21/21附件哈希已验证；本地project-history.bundle可克隆至最新`31cf2c6`。

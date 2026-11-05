@@ -156,3 +156,7 @@
 - 添加仓库级post-commit钩子：每个完成的项目提交推送至私有仓库`main`。文件编辑本身不会自动产生Git提交；项目工作须先完成测试和文档记录，再提交。
 - 钩子对`/data/jaka-vla`路径做硬校验，使用本仓库固定known_hosts和Deploy Key，未修改全局Git设置。
 - 验收：配置完成后作一次仅含同步说明/入口脚本的项目提交，检查GitHub `main`到达该提交；若没有成功，保留本地提交并记录故障，不宣称已同步。
+- 实际验收通过：同步说明/入口脚本提交`a3923fe`和安装说明提交`f943967`均由post-commit自动推送。验证过程发现并修正仓库本地core.sshCommand，使该仓库后续fetch/pull也可使用Deploy Key；未写入全局配置。
+- 后续操作说明提交`31cf2c6`同样自动推送。收尾时服务器HEAD与GitHub main都指向`31cf2c6374b4cc8b482b1ca61e0daff0bdc68607`，服务器工作树干净。远端commit可由API和Git fetch各自核实。
+- 备份方面，GitHub Release 21个附件与服务器SHA256逐项一致；本地665文件/链接通过验证并恢复至空测试目录，project-history bundle可离线克隆至最新代码。
+- 临时GitHub CLI账户凭据已注销且不会保留为项目同步依赖；服务器只保留本仓库Deploy Key，权限600。钩子/安装脚本语法与项目6项单元测试通过。
