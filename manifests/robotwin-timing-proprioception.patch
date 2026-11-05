@@ -1,0 +1,182 @@
+diff --git a/envs/_base_task.py b/envs/_base_task.py
+index ace13e6..766d1e2 100644
+--- a/envs/_base_task.py
++++ b/envs/_base_task.py
+@@ -61,6 +61,9 @@ class Base_Task(gym.Env):
+         # random.seed(kwags.get('seed', 0))
+ 
+         self.FRAME_IDX = 0
++        self._jaka_sim_steps = 0
++        self._jaka_capture_active = False
++        self._jaka_uniform_sampling = kwags.get("jaka_uniform_sampling", False)
+         self.task_name = kwags.get("task_name")
+         self.save_dir = kwags.get("save_path", "data")
+         self.ep_num = kwags.get("now_ep_num", 0)
+@@ -158,6 +161,11 @@ class Base_Task(gym.Env):
+         self.info["info"] = {}
+ 
+         self.stage_success_tag = False
++        if self._jaka_uniform_sampling:
++            self._jaka_sim_steps = 0
++            self._jaka_capture_active = bool(self.save_data)
++            if self._jaka_capture_active:
++                self._take_picture(_jaka_force=True)
+ 
+     def check_stable(self):
+         actors_list, actors_pose_list = [], []
+@@ -172,7 +180,7 @@ class Base_Task(gym.Env):
+         def check(times):
+             nonlocal self, is_stable, actors_list, actors_pose_list
+             for _ in range(times):
+-                self.scene.step()
++                self._jaka_step()
+                 for idx, actor in enumerate(actors_list):
+                     actors_pose_list[idx].append(actor.get_pose())
+ 
+@@ -186,7 +194,7 @@ class Base_Task(gym.Env):
+ 
+         is_stable = True
+         for _ in range(2000):
+-            self.scene.step()
++            self._jaka_step()
+         for idx, actor in enumerate(actors_list):
+             actors_pose_list.append([actor.get_pose()])
+         check(500)
+@@ -412,7 +420,7 @@ class Base_Task(gym.Env):
+             **kwags,
+         )
+         self.cameras.load_camera(self.scene)
+-        self.scene.step()  # run a physical step
++        self._jaka_step()  # run a physical step
+         self.scene.update_render()  # sync pose from SAPIEN to renderer
+ 
+     # =========================================================== Sapien ===========================================================
+@@ -435,6 +443,24 @@ class Base_Task(gym.Env):
+ 
+     # =========================================================== Basic APIs ===========================================================
+ 
++    def _jaka_step(self):
++        self.scene.step()
++        self._jaka_sim_steps += 1
++        if self._jaka_capture_active and self._jaka_sim_steps % self.save_freq == 0:
++            self._take_picture(_jaka_force=True)
++
++    def _jaka_measured_state(self, arm):
++        entity = getattr(self.robot, f"{arm}_entity")
++        joints = getattr(self.robot, f"{arm}_arm_joints")
++        active = entity.get_active_joints()
++        qpos = entity.get_qpos()
++        measured = [float(qpos[active.index(joint)]) for joint in joints]
++        grip_joint, multiplier, offset = getattr(self.robot, f"{arm}_gripper")[0]
++        grip_position = (float(qpos[active.index(grip_joint)]) - offset) / multiplier
++        lo, hi = getattr(self.robot, f"{arm}_gripper_scale")
++        measured.append(float(np.clip((grip_position - lo) / (hi - lo), 0.0, 1.0)))
++        return measured
++
+     def get_obs(self):
+         self._update_render()
+         self.cameras.update_picture()
+@@ -497,6 +523,14 @@ class Base_Task(gym.Env):
+         if self.data_type.get("pointcloud", False):
+             pkl_dic["pointcloud"] = self.cameras.get_pcd(self.data_type.get("conbine", False))
+ 
++        pkl_dic["sim_time"] = float(self._jaka_sim_steps * self.scene.get_timestep())
++        measured_left = self._jaka_measured_state("left")
++        measured_right = self._jaka_measured_state("right")
++        pkl_dic["joint_measured"] = {
++            "left_arm": measured_left[:-1], "left_gripper": measured_left[-1],
++            "right_arm": measured_right[:-1], "right_gripper": measured_right[-1],
++            "vector": np.array(measured_left + measured_right),
++        }
+         self.now_obs = deepcopy(pkl_dic)
+         return pkl_dic
+ 
+@@ -506,7 +540,9 @@ class Base_Task(gym.Env):
+         rgb = self.cameras.get_rgb()
+         save_img(save_path, rgb[camera_name]['rgb'])
+ 
+-    def _take_picture(self):  # save data
++    def _take_picture(self, _jaka_force=False):  # save data
++        if self._jaka_uniform_sampling and not _jaka_force:
++            return
+         if not self.save_data:
+             return
+ 
+@@ -620,7 +656,7 @@ class Base_Task(gym.Env):
+             target_file_path,
+             target_video_path,
+             instructions=instructions,
+-            frequency=int(self.save_freq or 15),
++            frequency=int(round(1.0 / (self.scene.get_timestep() * (self.save_freq or 15)))),
+         )
+ 
+     def remove_data_cache(self):
+@@ -941,7 +977,7 @@ class Base_Task(gym.Env):
+                 )
+                 now_right_id += 1
+ 
+-            self.scene.step()
++            self._jaka_step()
+             if self.render_freq and i % self.render_freq == 0:
+                 self._update_render()
+                 self.viewer.render()
+@@ -1534,7 +1570,7 @@ class Base_Task(gym.Env):
+                     right_gripper["per_step"],
+                 )  # TODO
+ 
+-            self.scene.step()
++            self._jaka_step()
+ 
+             if self.render_freq and control_idx % self.render_freq == 0:
+                 self._update_render()
+@@ -1724,7 +1760,7 @@ class Base_Task(gym.Env):
+ 
+                 now_right_id += 1
+ 
+-            self.scene.step()
++            self._jaka_step()
+             self._update_render()
+                 
+             if self.check_success():
+diff --git a/envs/utils/pkl2hdf5.py b/envs/utils/pkl2hdf5.py
+index d422608..4e77973 100644
+--- a/envs/utils/pkl2hdf5.py
++++ b/envs/utils/pkl2hdf5.py
+@@ -100,8 +100,17 @@ def create_xpolicylab_hdf5(data, hdf5_path, instructions, frequency):
+             "frequency", data=np.asarray(frequency, dtype=np.int32)
+         )
+ 
++        if "sim_time" in data:
++            timestamps = np.asarray(data["sim_time"], dtype=np.float64)
++            f.create_dataset("observation_timestamps", data=timestamps[:-1])
++            f.create_dataset("action_timestamps", data=timestamps[1:])
++            f.attrs["sampling_note"] = "Measured simulation timestamps; validate spacing before training."
+         state = f.create_group("state")
+         action = f.create_group("action")
++        commanded_state = f.create_group("commanded_state")
++        measured = data.get("joint_measured", joints)
++        f.attrs["state_semantics"] = "measured_qpos" if "joint_measured" in data else "command_targets_legacy"
++        f.attrs["action_semantics"] = "next_sample_drive_targets"
+         joint_fields = [
+             ("left_arm", "left_arm_joint_states"),
+             ("left_gripper", "left_ee_joint_states"),
+@@ -112,7 +121,9 @@ def create_xpolicylab_hdf5(data, hdf5_path, instructions, frequency):
+             if source_name not in joints:
+                 continue
+             values = _ensure_2d(joints[source_name])
+-            state.create_dataset(target_name, data=values[:-1])
++            state_values = _ensure_2d(measured[source_name])
++            state.create_dataset(target_name, data=state_values[:-1])
++            commanded_state.create_dataset(target_name, data=values[:-1])
+             action.create_dataset(target_name, data=values[1:])
+ 
+         endpose = data.get("endpose", {})
+@@ -181,7 +192,7 @@ def pkl_files_to_hdf5_and_video(
+         pkl_file = load_pkl_file(pkl_file_path)
+         append_data_to_structure(data_list, pkl_file)
+ 
+-    images_to_video(np.array(data_list["observation"]["head_camera"]["rgb"]), out_path=video_path)
++    images_to_video(np.array(data_list["observation"]["head_camera"]["rgb"]), out_path=video_path, fps=frequency)
+     return create_xpolicylab_hdf5(data_list, hdf5_path, instructions, frequency)
+ 
+ 
