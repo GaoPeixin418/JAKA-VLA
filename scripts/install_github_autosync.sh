@@ -17,6 +17,7 @@ test -s "$known_hosts" || { printf 'Missing pinned GitHub host key file: %s\n' "
 chmod 600 "$private_key"
 
 git config --local remote.origin.url git@github.com:GaoPeixin418/JAKA-VLA.git
+git config --local core.sshCommand "ssh -i $private_key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$known_hosts"
 export GIT_SSH_COMMAND="ssh -i $private_key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$known_hosts"
 git ls-remote origin refs/heads/main >/dev/null
 git fetch origin main:refs/remotes/origin/main

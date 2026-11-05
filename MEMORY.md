@@ -103,5 +103,5 @@
 
 - 用户明确要求此后仅本项目启用自动Git同步。
 - 使用GitHub repository Deploy Key，权限仅限GaoPeixin418/JAKA-VLA写入；服务器只保存该单仓库SSH密钥，不保存账户令牌。
-- `/data/jaka-vla/.git/hooks/post-commit`将每个项目commit推送至GitHub main；它不自动生成commit，也不会扫描或同步其他目录。
+- `/data/jaka-vla/.git/hooks/post-commit`将每个项目commit推送至GitHub main；每轮检查收尾后应创建项目commit。它不会扫描或同步其他目录。仓库本地core.sshCommand供fetch/pull使用。
 - 验收通过后更新`docs/BACKUP_RESTORE.md`和`docs/EXPERIMENT_LOG.md`，随后提交验证变更，由同一钩子执行第一次自动推送。

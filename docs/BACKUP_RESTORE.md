@@ -63,7 +63,7 @@ python3 scripts/create_backup.py --output /data/jaka-vla/backups/backup-NEW
 
 ## 自动Git同步
 
-本项目仓库在服务器启用了`.git/hooks/post-commit`。每次在`/data/jaka-vla`完成Git提交，钩子都会把该提交安全推送到本私有仓库的`main`分支。需先运行项目规定的测试、更新实验/技术记录并检查差异，然后创建commit；Git不会在文件保存时自动决定和创建commit。
+本项目仓库在服务器启用了`.git/hooks/post-commit`。每次在`/data/jaka-vla`完成Git提交，钩子都会把该提交安全推送到本私有仓库的`main`分支。需先运行项目规定的测试、更新实验/技术记录并检查差异，然后创建commit；Git不会在文件保存时自动决定和创建commit。仓库本地`core.sshCommand`供`fetch`/`pull`更新远端，不影响其他仓库。
 
 认证使用GitHub Deploy Key `jaka-vla project-only autosync 2026-11-05`，在GitHub设置中仅挂载本仓库且具读写权限；私钥仅在该服务器项目Git目录下、权限0600，不进入Git、备份和Release，也未改变全局Git配置。钩子推送失败会保留本地commit，需查网络/Deploy Key/远程main分支后显式重试。
 
