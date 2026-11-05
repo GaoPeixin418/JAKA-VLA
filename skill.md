@@ -57,3 +57,9 @@ nvidia-smi
 更新 `MEMORY.md`；方法改变时更新 `docs/TECHNICAL_DESIGN.md`。
 执行 `python3 scripts/status.py --write-doc`，校对 Git 差异，保存代码/配置/文档版本。
 汇报时分别说明工程链路、学习策略效果和研究方法进展，不把计划写成结果。
+
+## 查看已有录像
+
+用户查看结果时先核实 `results/pilot_baselines.json` 和各回合MP4。操作步骤见 `docs/VIEW_RESULTS.md`。
+`python3 scripts/build_review_bundle.py` 可从当前pilot产物生成离线查看页面与ZIP，输出在 `results/review_bundle/`、`results/jaka-vla-review.zip`。
+生成页面不运行模型；页面是快照。服务端浏览默认使用只绑定127.0.0.1的HTTP服务与SSH转发，或直接下载ZIP离线打开。

@@ -34,17 +34,18 @@
 
 ## 当前批次
 
-- 2026-11-05T13:30:32+08:00 核查：50条、18,744帧数据校验完成；2000步训练完成，耗时449.33秒，峰值分配3.575GiB。K=4 已完成 3/3 回合、成功 0；K=8 已完成 3/3 回合、成功 0；K=16 已完成 0/3 回合、成功 0。评测进程仍在运行，后续请刷新状态。
-- 批次脚本 `scripts/pilot_pipeline.sh` 已在后台运行，不要重复启动。
+- 2026-11-05 13:35:40核查：首轮pilot全部结束，后台流水线进程已退出。50条、18,744帧数据校验完成；2000步训练完成，加载/保存总耗时449.33秒，峰值分配3.575GiB。
+- 固定K完整结果：K4=0/3、K8=0/3、K16=0/3，总计0/9。每回合最多750控制步，使用相同测试seeds1000–1002；这是本轮小样本观察，不是总体成功率估计。
+- 训练seed42、batch8、AMP、workers4；最终检查点 `checkpoints/smolvla_pilot_seed42/checkpoints/last/pretrained_model` 已由服务加载执行完整评测。
 - 数据：`data/raw/jaka_pilot/handover_block/aloha_agilex/data` → `data/lerobot/handover_pilot`。
-- 训练计划：seed=42，batch=8，2000 步，AMP，workers=4；输出 `checkpoints/smolvla_pilot_seed42`。
-- 评测计划：同一最终权重，K=4/8/16，各 seeds=1000–1002，每回合最多 750 控制步；结果 `results/pilot_k*/results.json`、汇总 `results/pilot_baselines.json`。
-- 采集和训练各 5400 秒、评测封装 6000 秒上限；转换当前未设置独立 timeout。异常即停止，不自动扩大批次。
-- 已出现完整闭环评测失败：目前完成的回合均未达到任务成功判据。尚不能定位原因；训练loss下降不能替代任务表现。先完成既定评测，再检查失败录像、状态/动作对齐及训练覆盖度，不自动扩大训练。
+- 证据：`results/pilot_baselines.json`、各 `results/pilot_k*/results.json` 和9段模型测试MP4；成功专家回放在 `results/expert_replay/seed_0.mp4`。
+- 查看页面：`results/review_bundle/index.html`；离线包：`results/jaka-vla-review.zip`，约3.6MB，含10段视频和结果JSON。查看步骤见 `docs/VIEW_RESULTS.md`，生成脚本 `scripts/build_review_bundle.py`。
+- 本轮失败原因尚未定位。训练loss下降不能替代任务表现。下一步先审查失败轨迹和数据/动作对齐、训练覆盖度，不自动扩大训练或参数搜索。
+- 不重复执行 `scripts/pilot_pipeline.sh`；已有产物需保留。采集/训练各5400秒、评测封装6000秒上限；转换未设独立timeout。
 
 ## 接下来按顺序做
 
-1. pilot转换和2000步训练已核实完成，检查点已被模型服务加载并运行完整回合；接着收齐三个K的9回合结果，对失败录像按接近/抓取/交接/放置阶段分类。
+1. 三个K的9回合结果已收齐；对失败录像按接近/抓取/交接/放置阶段分类，并核查闭环状态、控制与动作时间对齐。
 2. 若基础策略效果不足，先排查数据/控制/状态分布与动作对齐，再确定有限的数据或训练增量。
 3. 基础策略可用后，开发动作队列、仿真时间延迟注入和事件记录；当前同步结果不能直接充当延迟实验。
 4. 构建只读取部署可用观测的监测器；与固定 K、规则/阶段触发比较，计入监测器开销，并做消融和多种子。

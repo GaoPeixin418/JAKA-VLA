@@ -37,7 +37,7 @@
 - 证据：`results/expert_replay/results.json` 与对应视频；`results/closed_loop_smoke/results.json`。
 - 结论：控制与进程通信链路可运行；尚未验证学习策略完整任务表现。
 
-## E04 首轮完整任务 pilot（进行中）
+## E04 首轮完整任务 pilot（已完成，模型0/9）
 
 - 启动：2026-11-05，`scripts/pilot_pipeline.sh`，PID记录 `results/pilot.pid`；不重复启动。
 - 数据：50条成功专家示教，输出 `data/raw/jaka_pilot/handover_block/aloha_agilex/data`，转换目标 `data/lerobot/handover_pilot`。
@@ -58,6 +58,20 @@
 - 当前结论：训练和评测工程流程可运行，但基础策略尚未在已完成的测试中成功。原因未定位，不能据此判断事件重规划方法是否有效；该模块尚未实现。
 - 后续：收齐剩余回合，先看失败录像并核查数据/动作对齐、状态分布和训练覆盖，再决定下一轮有限实验。本次仅查验和记档，未增加训练或测试预算。
 - 证据：`checkpoints/smolvla_pilot_seed42/resource_profile.json`、`results/pilot_k*/results.json`、`results/pilot_progress_review.json`、各回合视频及训练日志。
+
+## E04 完成复核：2026-11-05 13:35:40
+
+- 流水线阶段为 `pilot_complete_review_results_before_scaling`，进程已退出；全部9回合结果与录像存在。K4=0/3、K8=0/3、K16=0/3。
+- 各K使用同一2000步权重、相同种子和控制器；同步零模拟推理延迟。所有模型回合未满足任务成功判据，不能据此宣称自适应重规划有效。
+- 已完成当前预算内的训练/评测；未启动额外训练。后续需要分析失败阶段与根因，基础策略仍待改善。
+- 证据：`results/pilot_baselines.json`、三个 `results/pilot_k*/results.json`、对应9段MP4与训练资源报告。
+
+## D02 录像与结果查看入口：2026-11-05
+
+- 新增 `scripts/build_review_bundle.py`，将已存在的1段专家回放与9段模型测试视频、JSON证据整理为离线HTML页面和约3.6MB ZIP；不运行模型。
+- 产物：`results/review_bundle/index.html`、`results/jaka-vla-review.zip`；操作说明：`docs/VIEW_RESULTS.md`。
+- 验证：27个本地链接存在；10段录像均为H.264/yuv420p、25FPS；专家录像14.60秒，模型录像各30.04秒；ZIP完整性通过。
+- 页面明确区分专家与模型结果，说明播放时间为仿真时间，未包含同步推理等待。没有启动常驻HTTP服务；用户可离线查看或自行通过SSH隧道查看。
 
 ## D01 项目文档建档
 

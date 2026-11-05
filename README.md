@@ -10,6 +10,7 @@
 - [技术方案](docs/TECHNICAL_DESIGN.md)：方法设计、数据/控制接口、技术决策与未完成部分。
 - [实验记录](docs/EXPERIMENT_LOG.md)：每次验证的配置、证据与结论边界。
 - [状态快照](docs/STATUS.md)：带采样时间的运行进度；用 `python3 scripts/status.py --write-doc` 刷新，不是实时监控。
+- [查看结果与录像](docs/VIEW_RESULTS.md)：下载离线播放包，或通过SSH隧道浏览录像及JSON结果。
 
 ## 环境
 
