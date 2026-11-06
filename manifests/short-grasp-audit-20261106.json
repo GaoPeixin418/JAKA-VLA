@@ -38,5 +38,12 @@
   "expert_grasp_successes": 3,
   "servo_replay_grasp_successes": 3,
   "data_frames": 398,
-  "backup_note": "Experts/data:83 files copied locally and verified. New model delta from independent3000 has exact reconstruction test; full optimizer archive incomplete at deadline."
+  "backup_note": "Complete local model reconstruction and optimizer/data backup verified at 16:35; 28 model/training files, 83 expert files, 63 review files. GitHub contains code/docs/review; new weights are local/server, not Release.",
+  "local_backup_verified": {
+    "model_sha256": "13c1d07004b835dd6807d42c23f64c4e3b34527c7c4805ff3a5040a322f05c1d",
+    "model_training_files": 28,
+    "expert_files": 83,
+    "review_files": 63,
+    "exact_reconstruction_server_and_local": true
+  }
 }
