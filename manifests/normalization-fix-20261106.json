@@ -1,0 +1,52 @@
+{
+  "old_model": "smolvla_zu7_shortgrasp1500_seed42",
+  "new_model": "smolvla_zu7_stable1500_seed42",
+  "same_dataset_frames": 398,
+  "same_steps": 1500,
+  "old_grasp_successes": 0,
+  "new_grasp_successes": 2,
+  "episodes": 3,
+  "old_normalized_rollout_abs_max": [
+    226.49765014648438,
+    6532.6689453125,
+    7057.18994140625,
+    6330.01318359375,
+    5948.54345703125,
+    5948.54345703125
+  ],
+  "new_results": [
+    {
+      "seed": 0,
+      "grasp_success": false,
+      "oracle_max_object_lift_m": 0.0010025501251220703,
+      "longest_verified_left_grasp_s": 0.0,
+      "grasp_success_time_s": null,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 233,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      }
+    },
+    {
+      "seed": 1,
+      "grasp_success": true,
+      "oracle_max_object_lift_m": 0.07944631576538086,
+      "longest_verified_left_grasp_s": 0.61600002925843,
+      "grasp_success_time_s": 3.984000189229846,
+      "failure_reason": null
+    },
+    {
+      "seed": 6,
+      "grasp_success": true,
+      "oracle_max_object_lift_m": 0.07356041669845581,
+      "longest_verified_left_grasp_s": 0.6320000300183892,
+      "grasp_success_time_s": 4.648000220768154,
+      "failure_reason": null
+    }
+  ],
+  "scope": "seen-scene grasp-only engineering validation; no handover or generalization claim",
+  "local_backup": "model, training state and data:27 files verified; exact model SHA256 0367cf0b83eccfd191aad8db45b3b04538b75da653051e29e2cec2af8a4c324c"
+}

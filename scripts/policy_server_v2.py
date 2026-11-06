@@ -56,11 +56,13 @@ def main():
                 with torch.inference_mode():
                     torch.cuda.synchronize();start=time.perf_counter()
                     batch=pre(frame)
+                    normalized_state_abs_max=float(batch['observation.state'].abs().max().item())
                     output=post(policy.predict_action_chunk(batch,noise=None if args.noise_mode=='random' else noise))
                     torch.cuda.synchronize();duration=time.perf_counter()-start
                 action=output[0].float().cpu().numpy()
                 if action.shape!=(policy.config.chunk_size,size) or not np.isfinite(action).all():raise ValueError('Invalid prediction')
-                conn.send({'actions':action,'inference_seconds':duration,'noise_mode':args.noise_mode})
+                conn.send({'actions':action,'inference_seconds':duration,'noise_mode':args.noise_mode,
+                           'normalized_state_abs_max':normalized_state_abs_max})
 
 
 if __name__=='__main__':main()

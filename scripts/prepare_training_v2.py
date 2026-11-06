@@ -51,6 +51,10 @@ def main():
         identity.update(rig=source_identity['rig'],urdf_sha256=source_identity['urdf_sha256'])
         if 'task_scope' in source_identity:
             identity['task_scope']=source_identity['task_scope']
+        if 'normalization' in source_identity:
+            identity['normalization']=source_identity['normalization']
+        if 'initial_conditions_by_seed' in source_identity:
+            identity['initial_conditions_by_seed']=source_identity['initial_conditions_by_seed']
     args.config.with_suffix('.identity.json').write_text(json.dumps(identity,indent=2)+'\n')
     print(args.config)
 

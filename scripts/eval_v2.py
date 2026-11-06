@@ -14,6 +14,7 @@ from jaka_vla.control import ActionLayout,BoundedJointServo,ChunkContinuity
 from jaka_vla.grasp_monitor import EmptyGraspMonitor
 from jaka_vla.identity import physical_rig_hash
 from jaka_vla.review_video import ReviewVideo
+from jaka_vla.initial_conditions import apply_left_offset, sample_left_offset
 
 
 def robot_vector(robot,velocity=False):
@@ -45,6 +46,7 @@ def main():
     p.add_argument('--review-video',action='store_true',help='Add an HD overview, overhead and close-up recording.')
     p.add_argument('--instruction', default='Use the left arm to grab the red block, hand it to the right arm, and place it on the blue pad.')
     p.add_argument('--task-scope', choices=['full_handover','left_grasp_lift_hold'], default='full_handover')
+    p.add_argument('--initial-offset',type=float,default=0.)
     args=p.parse_args()
     args.output=ROOT/args.output
     if args.expert_hdf5:args.expert_hdf5=ROOT/args.expert_hdf5
@@ -64,6 +66,13 @@ def main():
     try:
         for seed in range(args.seed_start,args.seed_start+args.episodes):
             task.setup_demo(now_ep_num=seed,seed=seed,**cfg)
+            offset=sample_left_offset(seed,args.initial_offset)
+            if args.expert_hdf5:
+                expert_root=args.expert_hdf5.parent if args.expert_hdf5.is_dir() else args.expert_hdf5.parent.parent
+                source_metadata=json.loads((expert_root/'robot_identity.json').read_text())
+                condition=source_metadata.get('initial_conditions_by_seed',{}).get(str(seed),source_metadata.get('initial_condition'))
+                if condition is not None:offset=np.asarray(condition['left_joint_offset_rad'])
+            initial_condition=apply_left_offset(task,offset)
             dt=task.scene.get_timestep();substeps=round(1/rig['control_hz']/dt)
             assert abs(substeps*dt-1/rig['control_hz'])<1e-7
             r=task.robot;measured=robot_vector(r)
@@ -88,7 +97,7 @@ def main():
                     if f.attrs.get('robot_id')!=args.robot_id or f.attrs.get('rig_urdf_sha256')!=urdf_sha:
                         raise ValueError('Expert replay robot/rig mismatch')
                     expert=np.concatenate([f['action'][key][:] for key in ['left_arm_joint_states','left_ee_joint_states','right_arm_joint_states','right_ee_joint_states']],axis=1)
-            frames=[];ticks=[];control=[];chunks=[];calls=[];success=False;failure_reason=None;stable_goal_steps=0;tracking_error_time=0.
+            frames=[];ticks=[];control=[];chunks=[];calls=[];normalization_checks=[];success=False;failure_reason=None;stable_goal_steps=0;tracking_error_time=0.
             initial_height=float(task.box.get_pose().p[2]);max_height=initial_height
             object_body=task.box.actor.find_component_by_type(sapien.physx.PhysxRigidDynamicComponent)
             initial_ticks=task._jaka_sim_steps;start=time.perf_counter()
@@ -113,6 +122,7 @@ def main():
                             'images':[obs['observation'][c]['rgb'] for c in ['head_camera','left_camera','right_camera']],
                             'instruction':args.instruction}})
                         reply=conn.recv();calls.append(reply['inference_seconds'])
+                        if 'normalized_state_abs_max' in reply:normalization_checks.append({'step':step,'normalized_state_abs_max':reply['normalized_state_abs_max']})
                         raw,blended,n=continuity.replace(reply['actions']);chunks.append((step,raw,blended))
                     target=continuity.pop()
                 raw,clipped=servo.set_target(target)
@@ -188,9 +198,11 @@ def main():
             report={'seed':seed,'success':bool(success),'steps':step+1,'sim_seconds':duration,'wall_seconds':time.perf_counter()-start,
                 'instruction':args.instruction,'success_scope':'full_handover','grasp_success_scope':'left_grasp_lift_hold',
                 'task_scope':args.task_scope,'complete_handover_tested':args.task_scope=='full_handover',
+                'initial_condition':initial_condition,
                 'k':args.k,'robot_id':args.robot_id,'rig_urdf_sha256':urdf_sha,'controller':'bounded_position_velocity_v2','sampling':mode,
                 'controller_limits':{key:rig[key] for key in ['joint_velocity_limit_rad_s','joint_acceleration_limit_rad_s2','gripper_rate_per_s','tracking_frequency_rad_s']},
                 'planning_calls':len(calls),'inference_seconds':calls,'tracking_joint_mae_rad':float(tracking.mean()),
+                'normalization_checks':normalization_checks,
                 'tracking_joint_p95_rad':float(np.quantile(tracking,.95)),'hard_limit_events':servo.hard_limit_events,
                 'failure_reason':failure_reason,'empty_grasp_monitor':'proprioception_only_v1',
                 'grasp_success':grasp_success_time is not None,'grasp_success_time_s':grasp_success_time,

@@ -12,6 +12,7 @@ def main():
     p.add_argument('--review-video',action='store_true')
     p.add_argument('--instruction', default='Use the left arm to grab the red block, hand it to the right arm, and place it on the blue pad.')
     p.add_argument('--task-scope', choices=['full_handover','left_grasp_lift_hold'], default='full_handover')
+    p.add_argument('--initial-offset',type=float,default=0.)
     args=p.parse_args()
     if not args.name.startswith('zu7_') or not all(c.isalnum() or c in '_-' for c in args.name):raise ValueError('Invalid experiment name')
     output=ROOT/'results'/args.name;socket=ROOT/'run'/f'{args.name}.sock'
@@ -30,7 +31,7 @@ def main():
                 time.sleep(.25)
             eval_command=[str(ROOT/'envs/robotwin/bin/python'),'-u',str(ROOT/'scripts/eval_v2.py'),
                 '--socket',str(socket),'--output',str(output),'--seed-start',str(args.seed_start),'--episodes',str(args.episodes),
-                '--k',str(args.k),'--max-steps',str(args.max_steps),'--instruction',args.instruction,'--task-scope',args.task_scope]
+                '--k',str(args.k),'--max-steps',str(args.max_steps),'--instruction',args.instruction,'--task-scope',args.task_scope,'--initial-offset',str(args.initial_offset)]
             if args.review_video:eval_command+=['--review-video']
             subprocess.run(eval_command,stdout=evaluation_log,stderr=subprocess.STDOUT,cwd=ROOT,check=True,timeout=900)
             (output/'run_config.json').write_text(json.dumps(vars(args),default=str,indent=2)+'\n')

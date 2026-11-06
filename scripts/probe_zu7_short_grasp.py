@@ -18,6 +18,7 @@ from envs.utils import ArmTag
 from eval_v2 import robot_vector
 from jaka_vla.review_video import ReviewVideo
 from jaka_vla.short_grasp import install_short_grasp
+from jaka_vla.initial_conditions import apply_left_offset, sample_left_offset
 
 
 def main():
@@ -26,13 +27,19 @@ def main():
     p.add_argument('--seed', type=int, default=6)
     p.add_argument('--original-selector', action='store_true')
     p.add_argument('--collect', action='store_true', help='Save identified, uniformly sampled grasp-only supervision')
+    p.add_argument('--initial-offset', type=float, default=0., help='Uniform initial left joint perturbation amplitude in rad')
     args = p.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     cfg, _ = load_task_args({'task_name': 'handover_block', 'task_config': 'zu7_smoke', 'policy_name': 'SmolVLA'})
-    cfg.update(save_data=args.collect, need_plan=True, eval_mode=False, render_freq=0,
+    cfg.update(save_data=False, need_plan=True, eval_mode=False, render_freq=0,
                save_freq=10 if args.collect else None, save_path=str(args.output/'raw'))
     task = class_decorator('handover_block')
     task.setup_demo(now_ep_num=0, seed=args.seed, **cfg)
+    initial_condition = apply_left_offset(task, sample_left_offset(args.seed, args.initial_offset))
+    if args.collect:
+        task.save_data = True
+        task._jaka_capture_active = True
+        task._take_picture(_jaka_force=True)
     audit = {} if args.original_selector else install_short_grasp(task)
     video = ReviewVideo(task, args.output/f'seed_{args.seed}_multiview.mp4', 25, 'EXPERT GRASP PATH PROBE', args.seed)
     r = task.robot
@@ -116,6 +123,7 @@ def main():
         video.close()
         report = {'seed': args.seed, 'mode': 'expert_grasp_subtask_only', 'selector': 'original' if args.original_selector else 'short_grasp_v1',
                   'grasp_success': longest*.004 >= .6, 'complete_handover_tested': False,
+                  'initial_condition': initial_condition,
                   'longest_verified_hold_s': longest*.004, 'failure': failure,
                   'sim_seconds': duration, 'wall_seconds': time.perf_counter()-start_wall, 'video': video.metadata(),
                   'grasp_definition': 'lift >5cm, measured aperture 15-85%, bilateral finger impulses >1e-5Ns, no right-arm contact, continuous 0.6s'}
@@ -146,6 +154,7 @@ def main():
                         'rig': json.loads((ROOT/'configs/robots/dual_zu7.json').read_text()),
                         'urdf_sha256': hashlib.sha256((REPO/'assets/embodiments/jaka-zu7-proxy/robot.urdf').read_bytes()).hexdigest(),
                         'task_scope': 'left_grasp_lift_hold', 'seed': args.seed,
+                        'initial_condition': initial_condition,
                         'expert_probe_passed': bool(report['grasp_success'] and failure is None),
                         'requires_bounded_servo_replay_acceptance': True}
             (raw/'robot_identity.json').write_text(json.dumps(identity, indent=2)+'\n')

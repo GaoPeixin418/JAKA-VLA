@@ -11,3 +11,5 @@
 文件大小和SHA256记录在SHA256SUMS；这是小体积查看包，不含训练数据集或模型权重。完整实验备份按 docs/BACKUP_RESTORE.md 操作。
 
 最新短路径抓取查看包：[jaka-zu7-short-grasp-20261106.zip](jaka-zu7-short-grasp-20261106.zip)，下载解压打开index.html。专家与学习结果分别标注，包含失败。学习1500步抓取结果0/3，不能把专家3/3当成学习成果。
+
+归一化修正后学习抓取2/3查看包：[jaka-zu7-normalization-fix-20261106.zip](jaka-zu7-normalization-fix-20261106.zip)。下载解压打开index.html；包含新成功和失败，均为已见场景抓取子任务。

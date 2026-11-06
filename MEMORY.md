@@ -1,5 +1,13 @@
 # 项目长期记忆
 
+## 2026-11-06 16:37后：归一化修正，学习抓取2/3
+
+- 用户将关机延至17:30。实际保存的处理器把近静止右臂输入放大至7057；见docs/NORMALIZATION_FIX_20261106.md及results/zu7_shortgrasp_stall_audit。
+- stabilize_zu7_statistics.py用float64重算并将关节/夹爪std floor设为.05，新stable1500同398帧/base/1500步完成，seeds0/1/6抓取2/3（1与6成功），旧为0/3。归一化最大值降至3.74以下。仍未做完整交接或泛化。
+- 新权重、优化器、处理器、数据本地27文件完整校验；查看包reviews/2026-11-06/jaka-zu7-normalization-fix-20261106.zip。
+- 追加带初态±.04rad的5条seeds13–17，专家及同初态servo回放均通过；17:05后停止启动采集。与原3条合并成8条，从base最多3000步训练coverage3000，当前运行中；不得重复启动。最终状态以本条后续更新及resource_profile为准。
+
+
 ## 2026-11-06 16时后：短路径专家已修正，学习策略仍未通过
 
 - 详见docs/SHORT_GRASP_20261106.md和manifests/short-grasp-audit-20261106.json。原seed6抓取前2.777m，新v2约0.531m（减少81%）；v1因提前碰目标失败，保留。v2加入目标接近避碰、实际两段关节路径评分、缓存同一规划执行。

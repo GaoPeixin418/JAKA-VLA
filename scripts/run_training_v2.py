@@ -1,5 +1,6 @@
 """Use an explicit dataset-derived config and validate it before loading weights."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import sys,time
@@ -21,6 +22,14 @@ def main():
     assert cfg.policy.input_features['observation.state'].shape==(size,)
     assert cfg.policy.output_features['action'].shape==(size,)
     assert raw['dataset']['root']==identity['dataset']
+    stats_path=Path(raw['dataset']['root'])/'meta/stats.json'
+    stats=json.loads(stats_path.read_text())
+    state_std=stats['observation.state']['std']
+    if min(state_std)<.001:
+        raise ValueError('Near-constant state dimensions amplify tracking noise; run stabilize_zu7_statistics.py on a new dataset copy before training')
+    if 'normalization' in identity:
+        if hashlib.sha256(stats_path.read_bytes()).hexdigest()!=identity['normalization']['effective_stats_sha256']:
+            raise ValueError('Normalization statistics changed after training config creation')
     torch.cuda.reset_peak_memory_stats();start=time.perf_counter();ok=False
     try:
         train(cfg);torch.cuda.synchronize();ok=True

@@ -5,6 +5,12 @@ description: 在 /data/jaka-vla 接续双臂 VLA 仿真项目，核查环境、�
 
 # 双臂 VLA 项目操作手册
 
+## 归一化修正与初态覆盖
+
+先读docs/NORMALIZATION_FIX_20261106.md。旧shortgrasp1500为0/3，新stable1500已完成且2/3，二者分别从base训练1500步。不能再次运行当成新结果。新数据先由stabilize_zu7_statistics.py复制并重算float64统计（关节std floor .05rad、夹爪.05），再prepare_training_v2.py，训练入口核查哈希并拒绝近零状态尺度。policy_server_v2会回传normalized_state_abs_max，eval报告normalization_checks；这些只作诊断，不改变动作。
+
+probe_zu7_short_grasp.py --initial-offset .04给左臂设置可复现的初始偏移并稳定后才开始采样；eval专家回放自动读取源identity中的initial_condition；学习评测须显式使用同样幅度。仅初态重置，不是在线专家纠偏。run_grasp_coverage_batch.py有明确数量/种子/17:05停止采集约束，不重复启动已有批次。
+
 ## 短路径抓取课程（2026-11-06 16时后）
 
 先读docs/SHORT_GRASP_20261106.md的本轮结果，避免重跑已结束预算。probe_zu7_short_grasp.py --seed N --output <新目录> [--collect]仅执行专家左抓取、抬升10cm、保持1秒。4个抓取面×2种等价夹爪roll，规划前段添加目标物体7×7×21cm避碰盒；末段允许目标接触，桌面/另一臂避碰保留。候选按完整两段的关节空间弧长选择并缓存执行，不重新随机规划。原选择器可加--original-selector进行同种子对照。
