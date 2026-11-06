@@ -1,0 +1,107 @@
+{
+  "coverage": {
+    "seen": {
+      "successes": 1,
+      "episodes": 3,
+      "rows": [
+        {
+          "seed": 0,
+          "grasp_success": false,
+          "oracle_max_object_lift_m": 0.002290487289428711,
+          "grasp_success_time_s": null,
+          "longest_verified_left_grasp_s": 0.0,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 82,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          }
+        },
+        {
+          "seed": 1,
+          "grasp_success": true,
+          "oracle_max_object_lift_m": 0.0791240930557251,
+          "grasp_success_time_s": 4.176000198349357,
+          "longest_verified_left_grasp_s": 0.6240000296384096,
+          "failure_reason": null
+        },
+        {
+          "seed": 6,
+          "grasp_success": false,
+          "oracle_max_object_lift_m": 0.008587956428527832,
+          "grasp_success_time_s": null,
+          "longest_verified_left_grasp_s": 0.0,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 90,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          }
+        }
+      ]
+    },
+    "new": {
+      "successes": 2,
+      "episodes": 3,
+      "rows": [
+        {
+          "seed": 100,
+          "grasp_success": true,
+          "oracle_max_object_lift_m": 0.07636314630508423,
+          "grasp_success_time_s": 4.688000222668052,
+          "longest_verified_left_grasp_s": 0.6320000300183892,
+          "failure_reason": null
+        },
+        {
+          "seed": 101,
+          "grasp_success": false,
+          "oracle_max_object_lift_m": 0.0,
+          "grasp_success_time_s": null,
+          "longest_verified_left_grasp_s": 0.0,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 80,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          }
+        },
+        {
+          "seed": 102,
+          "grasp_success": true,
+          "oracle_max_object_lift_m": 0.0936652421951294,
+          "grasp_success_time_s": 4.51600021449849,
+          "longest_verified_left_grasp_s": 0.6040000286884606,
+          "failure_reason": null
+        }
+      ]
+    }
+  },
+  "training": {
+    "completed": true,
+    "wall_seconds_including_load_and_save": 583.8448613520013,
+    "peak_allocated_gib": 3.5749893188476562,
+    "peak_reserved_gib": 3.75390625,
+    "robot_id": "dual_jaka_zu7"
+  },
+  "data_episodes": 8,
+  "data_frames": 1076,
+  "training_seeds": [
+    0,
+    1,
+    6,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "scope": "left grasp, lift, 0.6s hold only; no full handover, real robot, language or object-shape generalization",
+  "model_selection": "Preserve stable1500 (seen2/3) and coverage3000 (seen1/3,new2/3); no universal best-model claim",
+  "backup": "stable1500 final model/training state verified locally27files; coverage3000 final step3000 model/training state backed up by exact delta plus verified earlier base, intermediate2000 stays server."
+}

@@ -13,3 +13,5 @@
 最新短路径抓取查看包：[jaka-zu7-short-grasp-20261106.zip](jaka-zu7-short-grasp-20261106.zip)，下载解压打开index.html。专家与学习结果分别标注，包含失败。学习1500步抓取结果0/3，不能把专家3/3当成学习成果。
 
 归一化修正后学习抓取2/3查看包：[jaka-zu7-normalization-fix-20261106.zip](jaka-zu7-normalization-fix-20261106.zip)。下载解压打开index.html；包含新成功和失败，均为已见场景抓取子任务。
+
+17:30最新抓取进展包：[jaka-zu7-grasp-progress-20261106-1730.zip](jaka-zu7-grasp-progress-20261106-1730.zip)，9段全景录像，含stable1500三个旧场景、coverage3000三个旧场景及三个新场景。下载ZIP解压打开index.html。只验证抓取抬升保持；失败也保留。

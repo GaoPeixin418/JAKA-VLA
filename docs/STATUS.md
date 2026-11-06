@@ -1,11 +1,14 @@
 # 当前 Zu7 修正批次
 
-采样时间：2026-11-06T17:08:15+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+采样时间：2026-11-06T17:28:48+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
 
-活跃项目脚本：[{"pid": 1741770, "scripts": ["scripts/run_training_v2.py"]}, {"pid": 1780555, "scripts": ["scripts/run_training_v2.py"]}, {"pid": 1780556, "scripts": ["scripts/run_training_v2.py"]}, {"pid": 1780557, "scripts": ["scripts/run_training_v2.py"]}, {"pid": 1780558, "scripts": ["scripts/run_training_v2.py"]}]
+活跃项目脚本：[]
 
 | Zu7 实验产物 | 验收结果 |
 | --- | --- |
+| results/zu7_coverage3000_new_seed100_102/results.json | 抓取子任务 2/3；未测试完整交接 |
+| results/zu7_coverage3000_seen_seed0_1/results.json | 抓取子任务 1/2；未测试完整交接 |
+| results/zu7_coverage3000_seen_seed6/results.json | 抓取子任务 0/1；未测试完整交接 |
 | results/zu7_expert_collision_replay/results.json | 完整任务 3/3 成功 |
 | results/zu7_expert_contact_diagnostic/results.json | 完整任务 1/1 成功 |
 | results/zu7_expert_replay_v2/results.json | 完整任务 0/3 成功 |
@@ -63,12 +66,13 @@
 | data/raw/zu7_shortgrasp_accepted/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 3 条原始示教 |
 | data/raw/zu7_slow_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 0 条原始示教 |
 | data/raw/zu7_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 3 条原始示教 |
+| checkpoints/smolvla_zu7_coverage3000_seed42/resource_profile.json | completed=True |
 | checkpoints/smolvla_zu7_independent3000_seed42/resource_profile.json | completed=True |
 | checkpoints/smolvla_zu7_overfit3000_seed42/resource_profile.json | completed=True |
 | checkpoints/smolvla_zu7_refine3000_seed42/resource_profile.json | completed=True |
 | checkpoints/smolvla_zu7_shortgrasp1500_seed42/resource_profile.json | completed=True |
 | checkpoints/smolvla_zu7_stable1500_seed42/resource_profile.json | completed=True |
-| train-zu7-coverage3000.log | 已观察到 189/3000 步 |
+| train-zu7-coverage3000.log | 已观察到 3000/3000 步 |
 | train-zu7-independent3000.log | 已观察到 3000/3000 步 |
 | train-zu7-overfit3000.log | 已观察到 3000/3000 步 |
 | train-zu7-refine3000.log | 已观察到 3000/3000 步 |
@@ -79,7 +83,7 @@
 
 # 当前运行状态（自动生成快照）
 
-采样时间：2026-11-06T17:08:15+08:00（北京时间）。
+采样时间：2026-11-06T17:28:48+08:00（北京时间）。
 
 此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
 阶段标记可能滞后，须结合进程和已落盘结果判断。
@@ -92,8 +96,8 @@
 | 原始示教已保存 / 规划种子 | 50 / 50 |
 | 训练进度（日志最近值） | 2000 / 2000 |
 | 最终检查点权重文件存在 | True |
-| 数据盘可用 | 90.07 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4090, 4346 MiB, 24564 MiB, 65 % |
+| 数据盘可用 | 87.40 GiB |
+| GPU 快照 | NVIDIA GeForce RTX 4090, 16 MiB, 24564 MiB, 0 % |
 
 转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
 
