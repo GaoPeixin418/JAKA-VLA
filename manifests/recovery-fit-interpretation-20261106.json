@@ -1,0 +1,11 @@
+{
+  "report_sha256": "bf4d8405c5c8eeeb4f124335214455f83b869da0bd1761e76241ba0156af65d4",
+  "calls": 28,
+  "distinct_episode_frames": 26,
+  "episodes_with_duplicate_sample_frame": [
+    8,
+    10
+  ],
+  "sampling_rule": "frame 0 and max(0, first action aperture < .95 minus 8). Recovery initial apertures may already be below .95, so the heuristic second point can equal frame 0; before_expert_close is not a verified semantic phase.",
+  "interpretation": "Report 28 calls, not 28 independent observations; initial-point errors remain valid. Do not interpret the second-point means as verified pre-grasp accuracy."
+}

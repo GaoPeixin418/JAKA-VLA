@@ -65,9 +65,11 @@ def main():
                                'measured_horizontal_error_mm': float(1000*measured_error[index]),
                                'raw_to_measured_left_joint_max_rad': float(abs(row[29:35]-row[1:7]).max()),
                                'raw_target_tcp': raw_fk[index].tolist(), 'measured_tcp': measured_fk[index].tolist()})
-            report = {'trace': str(path), 'fk_measured_max_error_m': float(errors.max()), 'close_events': events}
+            report = {'trace': str(path), 'fk_measured_max_error_m': float(errors.max()),
+                      'close_threshold_requested': bool(len(requested)), 'close_events': events}
             reports.append(report)
-            print(json.dumps({'trace': str(path), 'fk_max_error_m': float(errors.max()), 'first_close': events[0]}), flush=True)
+            print(json.dumps({'trace': str(path), 'fk_max_error_m': float(errors.max()),
+                              'first_close': events[0] if len(requested) else None}), flush=True)
             np.savez_compressed(a.output/(path.parent.name+'_'+path.stem+'_geometry.npz'),
                                 raw_target_tcp=raw_fk, measured_tcp=measured_fk,
                                 raw_horizontal_error_m=target_error, measured_horizontal_error_m=measured_error)

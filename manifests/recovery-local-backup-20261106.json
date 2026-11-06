@@ -1,0 +1,29 @@
+{
+  "local_relative_root": "outputs/jaka-vla/20261106/recovery-1830",
+  "github_new_weights_release": false,
+  "verified": {
+    "LOCAL_BACKUP_COMPLETE.json": {
+      "complete": true,
+      "model_and_data_files_verified": 33,
+      "checkpoint_model_sha256": "e9e2b2dbb4d0ae5d1a6440b697b183825411eb65d8bf8aa33c7de0ee37461ade",
+      "archive_sha256": "a4784b340a593f1bbe0bf607a527fd91d86d1cec9021bbd7fed5ad0add3f588a",
+      "method": "Exact reconstruction from verified immutable base and changed tensors; full model, optimizer, processors and data checked against remote SHA256"
+    },
+    "EXPERT_BACKUP_COMPLETE.json": {
+      "complete": true,
+      "files_verified": 134
+    },
+    "RESULTS_BACKUP_COMPLETE.json": {
+      "complete": true,
+      "files_sha256_verified": 153,
+      "archive_sha256": "5408fea02198b663291d742788275126656c142e7e7cf65abd6c1a5d63ba49d6"
+    },
+    "REVIEW_BACKUP_COMPLETE.json": {
+      "complete": true,
+      "zip_sha256": "0f376273b24ff9ac36286e49dcc1fc5513655cfccc924af41a50a9bc25f17527",
+      "local_files_sha256_verified": 59,
+      "videos_decoded_on_server": 10,
+      "relative_links_valid": true
+    }
+  }
+}

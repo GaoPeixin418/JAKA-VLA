@@ -1,0 +1,167 @@
+[
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/config.json",
+    "size": 2556,
+    "sha256": "ef2f33675aa6f7287f6c0004a4d2301bf463dfc3a04b2cb3844620d3b86831a8"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/model.safetensors",
+    "size": 906712520,
+    "sha256": "e9e2b2dbb4d0ae5d1a6440b697b183825411eb65d8bf8aa33c7de0ee37461ade"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/policy_postprocessor.json",
+    "size": 661,
+    "sha256": "c2ec9f9760e19b11648f361a04e1bd7661f2cc015d2a7b9769d43209cfe90b61"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/policy_postprocessor_step_0_unnormalizer_processor.safetensors",
+    "size": 9256,
+    "sha256": "9dc9626ce8475a59f9db720d85fc61822f5cf6ee5feb5886421d55776ddcb9d8"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/policy_preprocessor.json",
+    "size": 1899,
+    "sha256": "53184015e32544e70782f4d64d1457b85e1b15de407d97fa809cab1aadae88e2"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/policy_preprocessor_step_5_normalizer_processor.safetensors",
+    "size": 9256,
+    "sha256": "9dc9626ce8475a59f9db720d85fc61822f5cf6ee5feb5886421d55776ddcb9d8"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/project_identity.json",
+    "size": 9980,
+    "sha256": "3543e9deb474deac6df48806989a05de5f52ede1d1901e543650eb4fb996e774"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/pretrained_model/train_config.json",
+    "size": 6781,
+    "sha256": "c636190349ca9844efda0cc204ca9d7239243ee7ce31e6e581ab4e3889f99fc3"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/training_state/optimizer_param_groups.json",
+    "size": 8807,
+    "sha256": "8cf0ce8e4ff2fbc4c8c64da4707fb9a8028d47ff001d8eca5cb4ef8f16f9b7fd"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/training_state/optimizer_state.safetensors",
+    "size": 412659164,
+    "sha256": "83fc785add710f65c99652772d4c318ac9132bc195977c197a24618c9bcf138a"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/training_state/rng_state.safetensors",
+    "size": 15708,
+    "sha256": "b7b3c45568b8bbaa0c92361f2409dcea625550a4a5448697fea6bf88b3730ca8"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/training_state/scheduler_state.json",
+    "size": 239,
+    "sha256": "15b5ecf77d78bc9534dac9e0aff40ec5017eb01d5912af6d8bf4fee8bbbef5b4"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/checkpoints/004000/training_state/training_step.json",
+    "size": 20,
+    "sha256": "d08efa9ac6c965b5c8540a7823ee8e7342b2f91a7bce9c6afaf4049a02ce1111"
+  },
+  {
+    "path": "checkpoints/smolvla_zu7_recovery4000_seed42/resource_profile.json",
+    "size": 195,
+    "sha256": "dddf652b1b4acc1a162f2c00fdb91cc293ca57455d6a6a6470feb8216ae7d069"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/data/chunk-000/file-000.parquet",
+    "size": 177500,
+    "sha256": "27f83ce3f648b89fd92c2e56098465b1a312eac8c3b1a1aba542cf72b1db95e3"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/meta/episodes/chunk-000/file-000.parquet",
+    "size": 121012,
+    "sha256": "9d0ce0760b32feab294d3842d2aa39fc3a7e1bb4b616def74c6456e912268917"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/meta/info.json",
+    "size": 3441,
+    "sha256": "af9953ed58bc138aa0b30db15ea717eaa126704485af34b0248da3ef87529710"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/meta/project_identity.json",
+    "size": 9535,
+    "sha256": "056a31c6e15c517b55ba59b828bde58a84084cca079ae29093bf3dd429c63a49"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/meta/stats.json",
+    "size": 20593,
+    "sha256": "61c582ab8cd8c43c6a4b0476510e6290c9bda17892eced528dee34f584225579"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/meta/tasks.parquet",
+    "size": 2388,
+    "sha256": "94f0b231de0397da18b2f8644f6bd521105d3803d650520546bdb29f1a415d34"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/videos/observation.images.camera1/chunk-000/file-000.mp4",
+    "size": 1734962,
+    "sha256": "45b73336e4c539bdca930472cf2046c1602bd4a6a5cacae58dbc988894c2da79"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/videos/observation.images.camera2/chunk-000/file-000.mp4",
+    "size": 772380,
+    "sha256": "eb117bb06f4ccbead188644516edf9088933ddb1d2932a8d9193395d51eb3346"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_rawstats/videos/observation.images.camera3/chunk-000/file-000.mp4",
+    "size": 674501,
+    "sha256": "2b79ba98f80c5ffbe4a1eae0b0f96c9f3aa377082870de36c1638daafb582334"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/data/chunk-000/file-000.parquet",
+    "size": 177500,
+    "sha256": "27f83ce3f648b89fd92c2e56098465b1a312eac8c3b1a1aba542cf72b1db95e3"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/meta/episodes/chunk-000/file-000.parquet",
+    "size": 121012,
+    "sha256": "9d0ce0760b32feab294d3842d2aa39fc3a7e1bb4b616def74c6456e912268917"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/meta/info.json",
+    "size": 3441,
+    "sha256": "af9953ed58bc138aa0b30db15ea717eaa126704485af34b0248da3ef87529710"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/meta/normalization_audit.json",
+    "size": 4668,
+    "sha256": "5f58708e1f0abec8a2b9c0dc2ab5f5b932ebd34ea72150d5a6ae56f9eee3655b"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/meta/project_identity.json",
+    "size": 9805,
+    "sha256": "1f36843d87eb06323300424dae3bfd0e60a7257892e8ee50550952f7dc7e9464"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/meta/stats.json",
+    "size": 14665,
+    "sha256": "f891fd3873234daf45f6554931cfda85f7a06700ff198ab4e264930ee3c402c0"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/meta/tasks.parquet",
+    "size": 2388,
+    "sha256": "94f0b231de0397da18b2f8644f6bd521105d3803d650520546bdb29f1a415d34"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/videos/observation.images.camera1/chunk-000/file-000.mp4",
+    "size": 1734962,
+    "sha256": "45b73336e4c539bdca930472cf2046c1602bd4a6a5cacae58dbc988894c2da79"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/videos/observation.images.camera2/chunk-000/file-000.mp4",
+    "size": 772380,
+    "sha256": "eb117bb06f4ccbead188644516edf9088933ddb1d2932a8d9193395d51eb3346"
+  },
+  {
+    "path": "data/lerobot/zu7_grasp_recovery_stable/videos/observation.images.camera3/chunk-000/file-000.mp4",
+    "size": 674501,
+    "sha256": "2b79ba98f80c5ffbe4a1eae0b0f96c9f3aa377082870de36c1638daafb582334"
+  }
+]

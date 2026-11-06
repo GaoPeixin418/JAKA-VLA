@@ -1,11 +1,11 @@
 # JAKA-VLA 备份与恢复
 
-范围仅为 `/data/jaka-vla` 项目。已创建用户账户 `GaoPeixin418` 下的[私有仓库 JAKA-VLA](https://github.com/GaoPeixin418/JAKA-VLA)，代码与完整实验附件已上传。JAKA-VLA仓库启用提交后自动推送main，不为其他项目设置Git。
+范围仅为 `/data/jaka-vla` 项目。用户账户 `GaoPeixin418` 下的[私有仓库 JAKA-VLA](https://github.com/GaoPeixin418/JAKA-VLA)保存代码、文档和小体积录像查看包；2026-11-05完整实验快照已上传Release。11-06新增数据/最终权重/优化器在服务器和经过SHA256核验的本地副本，尚未发布新Release。JAKA-VLA仓库启用提交后自动推送main，不为其他项目设置Git。
 
 ## 内容和边界
 
 代码仓库保存完整项目Git历史、脚本、机器人配置、技术文档、训练配置、依赖版本与上游补丁。
-Release附件保存 `data/`、所有历史和Zu7 `checkpoints/`（含优化器/归一化器）、`results/`（含录像/诊断/失败记录）、`logs/`，以及代码Git bundle和上游新增配置的备份。每个分片最多1500MiB，附每个原文件及分片的SHA256。
+2026-11-05 Release附件保存截至该快照的 `data/`、历史和Zu7 `checkpoints/`（含优化器/归一化器）、`results/`（含录像/诊断/失败记录）、`logs/`，以及代码Git bundle和上游新增配置的备份。每个分片最多1500MiB，附每个原文件及分片的SHA256。该Release不包含11-06新增实验。
 
 不包含Python环境、下载/编译缓存、访问凭据、其他项目，以及可从固定来源重新获取的第三方仓库和模型网格。它是实验产物备份，不是可直接启动的服务器磁盘镜像。第三方下载服务未来不可用时仍需另行取得相应依赖。
 
@@ -13,7 +13,7 @@ Release附件保存 `data/`、所有历史和Zu7 `checkpoints/`（含优化器/�
 
 1. 登录自己的GitHub账号，进入私有JAKA-VLA仓库。直接阅读README、docs/FINETUNING_GUIDE.md、MEMORY.md和修正报告。
 2. 下载代码可用页面 `Code → Download ZIP`；保留Git历史则运行 `git clone https://github.com/GaoPeixin418/JAKA-VLA.git`。私有仓库需要GitHub登录，网页已登录不等于终端已登录；可用GitHub Desktop克隆。
-3. 录像无需GPU。若Release提供 `jaka-zu7-review.zip`，下载解压，打开 `index.html` 即可观看。学习策略最新已见场景结果是0/3，专家回放3/3，页面分开列出。
+3. 录像无需GPU。进入 `reviews/2026-11-06/` 下载查看ZIP、完整解压并打开 `index.html`；最新包为 `jaka-zu7-recovery-progress-20261106-1830.zip`。recovery4000 原场景1/3、新场景1/3、重设中途初态恢复0/3。此前stable1500 原场景2/3另保留在17:30包。旧Release中的0/3为历史结果。见 `RECOVERY_CURRICULUM_20261106.md`。
 4. `Code → Download ZIP` 和 `git clone` 均不含Release大文件。完整恢复还要下载Release全部附件。
 
 ## 校验并恢复实验文件
@@ -58,8 +58,23 @@ python3 scripts/create_backup.py --output /data/jaka-vla/backups/backup-NEW
 - [Release backup-2026-11-05](https://github.com/GaoPeixin418/JAKA-VLA/releases/tag/backup-2026-11-05)已发布：21个附件，共8,357,873,370字节，全部与服务器SHA256一致。
 - 8组归档、10个分片，原始内容10,619,080,561字节；服务器完整流式校验665个文件/链接通过，恢复往返/损坏测试通过。
 - 服务器重启曾中断传输，已重连并补传；数据盘完整备份未丢失。
-- 独立本地全量副本还在下载，不计入上述已完成的GitHub备份；仅在本地出现LOCAL_BACKUP_COMPLETE.json后才算本地全部校验通过。
+- 独立本地全量副本后续已完成665项核验并通过恢复演练，完成标记在本地 `outputs/jaka-vla/github-backup/LOCAL_BACKUP_COMPLETE.json`；不把旧的下载中状态当作当前状态。
 - 逐附件大小、SHA256和下载地址见manifests/github-backup-20261105.json。
+
+## 2026-11-06新增实验的本地备份
+
+以下路径均在当前工作电脑 `/home/lightwheel/Documents/Codex/2026-11-05/wo/outputs/jaka-vla/` 下，尚未发布新的GitHub Release。复制到自己的另一台电脑时应复制整个对应目录和清单；Git clone只包含代码和小录像包。
+
+| 相对目录 | 内容与完成标记 |
+| --- | --- |
+| `github-backup/backup-20261106/` | 当日上午新增数据/9000步最终检查点/训练状态和结果；LOCAL_BACKUP_COMPLETE.json |
+| `20261106/short-grasp/` | 短路径课程原始数据、专家验收、1500步完整最终检查点和处理器；LOCAL_BACKUP_COMPLETE.json |
+| `20261106/normalization-fix/` | stable1500 和 coverage3000 最终完整模型/训练状态/数据；LOCAL_BACKUP_COMPLETE.json、COVERAGE_BACKUP_COMPLETE.json。coverage中间2000步仅留服务器，最终3000步已完整保留 |
+| `20261106/recovery-1830/` | 新14条课程、恢复专家、4000步最终完整模型/优化器/数据、9学习回合及审计。专家134、模型/转换数据33、结果153文件SHA256核验通过；有LOCAL/EXPERT/RESULTS/REVIEW各完成标记 |
+
+恢复批次的 `backup/` 已含可直接恢复的完整检查点（包括 `model.safetensors`、training_state、处理器和last链接），不需要另下载冻结主干。`model-training.tar`使用差分节省传输，若仅从归档重建，须配套已备份的 `smolvla_zu7_independent3000_seed42.tar.gz.part001`，提取003000模型后运行 `restore_checkpoint_delta.py`，并核对 `recovery-model-files-20261106.json` 全部33项。该旧模型base SHA256为 `4af14506cb023158935ebd2f17a539add85a62b594b8ed06813cf4432a023471`，新完整模型SHA256为 `e9e2b2dbb4d0ae5d1a6440b697b183825411eb65d8bf8aa33c7de0ee37461ade`。
+
+本地新增实验备份与11-05 Release是不同快照，不能用旧Release清单验证新模型。新模型的源文件SHA256清单也保存在仓库 `manifests/recovery-model-files-20261106.json`、`recovery-results-files-20261106.json`。
 
 ## 自动Git同步
 

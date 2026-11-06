@@ -1,6 +1,8 @@
 # 在自己的电脑查看 JAKA-VLA
 
-最新全景包：`reviews/2026-11-06/jaka-zu7-multiview-20261106.zip`（约9.24MB）。在GitHub文件页面点Download raw file下载，完整解压后打开`jaka-zu7-multiview/index.html`。默认半速，可逐帧和全屏。首段为6000步SmolVLA的seed2抓取成功、后续交接失败；6000步seeds0/1/2抓取1/3、完整任务0/3。9000步失败和专家参考均分别标注。下文旧包作为历史保留。
+最新全景包：`reviews/2026-11-06/jaka-zu7-recovery-progress-20261106-1830.zip`（9,879,558字节）。在GitHub文件页面点 Download raw file，完整解压后打开 `jaka-zu7-recovery-progress-20261106-1830/index.html`。含全部9段学习录像和1段专家恢复参考，默认半速，可逐帧和全屏。新 recovery4000 原场景1/3、新场景1/3、明确重设初态的恢复子任务0/3，未达到预期改善。详情见 `RECOVERY_CURRICULUM_20261106.md`。
+
+此前 stable1500 的成功参考仍在 `jaka-zu7-grasp-progress-20261106-1730.zip`：stable 原场景2/3；coverage 原场景1/3、新 seeds100–102 为2/3。查看时注意检查点和任务初态。
 
 你已完成GitHub授权。后续查看不需要再输入这次的一次性代码，也不需要把密码或令牌发给任何人。
 
@@ -14,9 +16,9 @@
 ## 看最新录像（2026-11-06）
 
 1. 登录 GaoPeixin418，打开 https://github.com/GaoPeixin418/JAKA-VLA/tree/main/reviews/2026-11-06 。
-2. 点击 jaka-zu7-review-20261106.zip，在文件页点击 Download raw file（下载原始文件）。
-3. 完整解压，打开 jaka-zu7-review/index.html，或者直接用播放器打开子目录里的MP4。
-4. 最新学习策略目录是 zu7_learned_independent9000_seed3_5，包含seed3/4/5；均空抓、0/3。新增专家回放5/6完成任务，不能把专家成功当作模型成功。
+2. 点击 jaka-zu7-recovery-progress-20261106-1830.zip，在文件页点击 Download raw file（下载原始文件）。
+3. 完整解压，打开 jaka-zu7-recovery-progress-20261106-1830/index.html，或者直接用播放器打开子目录里的MP4。
+4. 本新模型 seed1 和 seed200 为学习策略抓取成功；全部失败也保留，专家参考另标。只测试左臂抓取、抬升和保持，尚未测试完整交接。片头2秒和片尾3秒是有标注的静帧，不计入持物时间。
 5. 本小体积录像查看包已经随代码提交同步到仓库；Code → Download ZIP也会包含它。数据集和权重大文件仍单独备份，不包含在该查看包中。
 
 ## 看2026-11-05历史录像
@@ -24,7 +26,7 @@
 1. 打开 https://github.com/GaoPeixin418/JAKA-VLA/releases/tag/backup-2026-11-05 。全部21个附件已上传并校验通过。
 2. 在 `Assets` 展开附件列表，下载 `jaka-zu7-review.zip`。
 3. 先解压整个ZIP，再用浏览器打开其中的 `index.html`；也可直接用播放器打开MP4。
-4. 页面区分专家回放和学习模型。最新专家回放3/3成功，学习模型仍为0/3，不能把专家视频当作模型成果。
+4. 这是2026-11-05历史快照，当时专家回放3/3、学习模型0/3；不能作为11-06新模型的结果。
 
 ## 想保留完整历史、以后更新代码
 
@@ -36,7 +38,9 @@
 
 ## 退租前保留完整训练成果
 
-代码ZIP或Clone不含大文件。需要在Release中下载同一批次的全部附件，包括 `backup-index.json`、`SHA256SUMS`、所有 `*.manifest.json` 和 `*.tar.gz.partNNN`。将它们放在同一个文件夹，不要改分片名。
+代码ZIP或Clone不含权重。2026-11-05快照需要在Release中下载同一批次的全部附件，包括 `backup-index.json`、`SHA256SUMS`、所有 `*.manifest.json` 和 `*.tar.gz.partNNN`。将它们放在同一个文件夹，不要改分片名。
+
+11-06新增权重和数据尚未发布新Release，已在当前工作电脑的 `outputs/jaka-vla/` 下另存并核验；各批次以 `LOCAL_BACKUP_COMPLETE.json` 或对应完成清单为准。只从GitHub下载旧Release不能得到新模型。最新恢复训练批次在结束后补充校验与路径记录，见 `BACKUP_RESTORE.md`。
 
 完整备份约8.35GB（约7.78GiB），恢复约10.62GB；另预留代码和运行环境空间。在Linux/WSL使用仓库中的 `scripts/restore_backup.py` 验证所有文件，并可恢复到新的空目录。详见仓库 `docs/BACKUP_RESTORE.md`。
 

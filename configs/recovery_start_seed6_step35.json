@@ -1,0 +1,25 @@
+{
+  "left_joint_position_rad": [
+    -1.0482293367385864,
+    1.079109787940979,
+    -1.5944855213165283,
+    1.0483496189117432,
+    2.692234516143799,
+    1.1677371263504028
+  ],
+  "left_aperture": 1.0,
+  "measured_initial_left_joint_rad": [
+    -1.0482293367385864,
+    1.079109787940979,
+    -1.5944855213165283,
+    1.0483496189117432,
+    2.692234516143799,
+    1.1677371263504028
+  ],
+  "settle_s": 0.5,
+  "initial_state_reset_only": true,
+  "scope": "intervened_recovery_start_not_executed_prefix",
+  "source_trace": "/data/jaka-vla/results/zu7_coverage3000_seen_seed6/seed_6_trace.npz",
+  "source_step": 35,
+  "source_trace_sha256": "899acd18a4335a463a5dc97e681184e91046830a2816e6f9b8c9efcb6a6d0e1f"
+}

@@ -5,6 +5,12 @@ description: 在 /data/jaka-vla 接续双臂 VLA 仿真项目，核查环境、�
 
 # 双臂 VLA 项目操作手册
 
+## 18:30批次已结束
+
+先读MEMORY最上方及docs/RECOVERY_CURRICULUM_20261106.md最终结果。recovery4000训练/9回合和离线审计均已完成，原/新/干预恢复分别1/3、1/3、0/3；不得重复运行流水线或将新模型当成更好基线。模型和结果已本地完整校验，新权重未发布Release。
+
+audit_grasp_evaluations.py从保存证据重算持物判据并汇总运动/归一化，不执行策略；audit_grasp_training_fit.py仅适用于当前14条、每条2次调用、26不同观测的28次离线诊断，输出拒绝覆盖，旧名义初态null视为空配置。它们均不能替代闭环评测。最新全景ZIP在reviews/2026-11-06/jaka-zu7-recovery-progress-20261106-1830.zip。
+
 ## 从失败中途状态采恢复示教
 
 docs/RECOVERY_CURRICULUM_20261106.md记录18:30续进批次。probe_zu7_short_grasp.py --start-trace <已有失败trace> --start-step N --seed S [--collect]会确认物体未移动>5mm、夹爪仍开>85%，只在记录前重设机器人初态，再运行专家。source_trace/step/hash写入identity；回放自动恢复相同初态。run_zu7_eval.py --initial-condition-file <condition.json>可单独验证学习恢复，必须与普通初态分开报告。不得把初态干预说成完整策略前缀或自主在线恢复。
