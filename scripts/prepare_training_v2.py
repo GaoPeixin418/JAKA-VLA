@@ -55,6 +55,8 @@ def main():
             identity['normalization']=source_identity['normalization']
         if 'initial_conditions_by_seed' in source_identity:
             identity['initial_conditions_by_seed']=source_identity['initial_conditions_by_seed']
+        if 'initial_conditions_by_episode' in source_identity:
+            identity['initial_conditions_by_episode']=source_identity['initial_conditions_by_episode']
     args.config.with_suffix('.identity.json').write_text(json.dumps(identity,indent=2)+'\n')
     print(args.config)
 

@@ -45,7 +45,9 @@ def main():
         manifest.append({'episode': index, 'seed': seed, 'source': str(source), 'replay': str(replay),
                          'initial_condition':initial,
                          'sha256': hashlib.sha256(dest.read_bytes()).hexdigest()})
-    identity['initial_conditions_by_seed']={str(r['seed']):r['initial_condition'] for r in manifest}
+    identity['initial_conditions_by_episode']={str(r['episode']):r['initial_condition'] for r in manifest}
+    if len(set(r['seed'] for r in manifest))==len(manifest):
+        identity['initial_conditions_by_seed']={str(r['seed']):r['initial_condition'] for r in manifest}
     (args.output/'seed.txt').write_text(' '.join(str(s) for _, _, s in accepted)+'\n')
     (args.output/'robot_identity.json').write_text(json.dumps(identity, indent=2)+'\n')
     (args.output/'acceptance.json').write_text(json.dumps(manifest, indent=2)+'\n')

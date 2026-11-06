@@ -37,6 +37,8 @@ def main():
                 raise FileNotFoundError(video)
             expert = 'mode' in row and ('expert' in row['mode'])
             label = '专家参考' if expert else '学习策略 SmolVLA'
+            if row.get('initial_condition',{}).get('scope')=='intervened_recovery_start_not_executed_prefix':
+                label+=' · 重设中途初态后的恢复子任务'
             grasp = '抓取判据通过' if row.get('grasp_success') else '未通过抓取判据'
             failure = row.get('failure') or row.get('failure_reason')
             path_length = row.get('preclose_tcp_path_m')
@@ -54,7 +56,8 @@ def main():
 <style>body{font:17px/1.7 sans-serif;background:#edf2f7;color:#172638;max-width:1280px;margin:auto;padding:28px}section{background:white;border-radius:12px;padding:24px;margin:24px 0}video{width:100%;background:#172638}button{padding:8px 16px;margin:8px}h1{margin-bottom:8px}p{overflow-wrap:anywhere}</style>
 <h1>Zu7 短路径抓取实验 · 2026-11-06</h1>
 <p>任务：左臂抓红色长方块、抬升、保持。蓝色块是接收台。专家、专家控制器回放、学习策略分别标注；子任务成功不等于完整交接或泛化。</p>
-<p>录像包含全景、俯视、头部与左腕；默认半速。片头2秒与片尾3秒标注为冻结画面，不计入夹持时长。保留失败尝试。</p>''' + '\n'.join(cards) + '''<script>document.querySelectorAll('video').forEach(v=>v.playbackRate=.5);function step(b,d){let v=b.closest('section').querySelector('video');v.pause();v.currentTime=Math.max(0,v.currentTime+d/25)}function speed(b,s){b.closest('section').querySelector('video').playbackRate=s}</script></html>'''
+<p>录像包含全景、俯视、头部与左腕；默认半速。片头2秒与片尾3秒标注为冻结画面，不计入夹持时长。保留失败尝试。</p>
+<p>若标注“重设中途初态”，该回合在采样前将机器人置于已有轨迹的中途姿态；它只验证此初态的恢复子任务，未执行原策略前缀。</p>''' + '\n'.join(cards) + '''<script>document.querySelectorAll('video').forEach(v=>v.playbackRate=.5);function step(b,d){let v=b.closest('section').querySelector('video');v.pause();v.currentTime=Math.max(0,v.currentTime+d/25)}function speed(b,s){b.closest('section').querySelector('video').playbackRate=s}</script></html>'''
     (args.output/'index.html').write_text(page)
     sums = {str(f.relative_to(args.output)): hashlib.sha256(f.read_bytes()).hexdigest()
             for f in sorted(args.output.rglob('*')) if f.is_file()}

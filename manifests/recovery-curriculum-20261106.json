@@ -1,0 +1,116 @@
+{
+  "stage": "training_recovery4000",
+  "data_episodes": 14,
+  "data_frames": 1808,
+  "unique_scene_seeds": [
+    0,
+    1,
+    6,
+    13,
+    14,
+    15,
+    16,
+    17,
+    101
+  ],
+  "accepted_recovery_starts": 6,
+  "data_contract": {
+    "episodes": 14,
+    "frames": 1808,
+    "checks": [
+      {
+        "episode": 0,
+        "frames": 130,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": null
+      },
+      {
+        "episode": 1,
+        "frames": 134,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": null
+      },
+      {
+        "episode": 2,
+        "frames": 134,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": null
+      },
+      {
+        "episode": 3,
+        "frames": 129,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 4,
+        "frames": 138,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 5,
+        "frames": 137,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 6,
+        "frames": 140,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 7,
+        "frames": 134,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 8,
+        "frames": 117,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 9,
+        "frames": 125,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 10,
+        "frames": 121,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 11,
+        "frames": 122,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 12,
+        "frames": 126,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      },
+      {
+        "episode": 13,
+        "frames": 121,
+        "max_sample_state_action_difference": 0.0,
+        "initial_condition_error_rad": 0.0
+      }
+    ],
+    "scope": "raw-to-converted sampling, labels, initial conditions, RGB shape/range; no policy success claim"
+  },
+  "expert_local_backup_files_verified": 134,
+  "training_config": "configs/zu7_recovery4000.json",
+  "evaluation_budget": {
+    "ordinary_seen": 3,
+    "new_scene_200_202": 3,
+    "intervened_recovery": 3
+  },
+  "scope": "grasp-only engineering curriculum; intervened recovery starts do not execute learner prefix"
+}

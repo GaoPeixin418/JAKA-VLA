@@ -18,7 +18,7 @@ from envs.utils import ArmTag
 from eval_v2 import robot_vector
 from jaka_vla.review_video import ReviewVideo
 from jaka_vla.short_grasp import install_short_grasp
-from jaka_vla.initial_conditions import apply_left_offset, sample_left_offset
+from jaka_vla.initial_conditions import apply_left_offset, apply_left_configuration, sample_left_offset
 
 
 def main():
@@ -28,6 +28,8 @@ def main():
     p.add_argument('--original-selector', action='store_true')
     p.add_argument('--collect', action='store_true', help='Save identified, uniformly sampled grasp-only supervision')
     p.add_argument('--initial-offset', type=float, default=0., help='Uniform initial left joint perturbation amplitude in rad')
+    p.add_argument('--start-trace',type=Path)
+    p.add_argument('--start-step',type=int)
     args = p.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     cfg, _ = load_task_args({'task_name': 'handover_block', 'task_config': 'zu7_smoke', 'policy_name': 'SmolVLA'})
@@ -35,7 +37,21 @@ def main():
                save_freq=10 if args.collect else None, save_path=str(args.output/'raw'))
     task = class_decorator('handover_block')
     task.setup_demo(now_ep_num=0, seed=args.seed, **cfg)
-    initial_condition = apply_left_offset(task, sample_left_offset(args.seed, args.initial_offset))
+    if args.start_trace:
+        if args.start_step is None or args.initial_offset:
+            raise ValueError('Recovery requires a trace/step and no offset')
+        rows=np.load(args.start_trace)['control_trace']
+        if not 0<=args.start_step<len(rows):raise ValueError('Invalid recovery start step')
+        row=rows[args.start_step]
+        seed_reports=json.loads((args.start_trace.parent/'results.json').read_text())
+        if args.seed not in [r['seed'] for r in seed_reports]:raise ValueError('Trace seed mismatch')
+        if np.linalg.norm(row[57:60]-rows[0,57:60])>.005:
+            raise ValueError('Target already displaced; cannot recreate only robot state')
+        initial_condition=apply_left_configuration(task,row[1:7],float(row[7]))
+        initial_condition.update(source_trace=str(args.start_trace),source_step=args.start_step,
+                                 source_trace_sha256=hashlib.sha256(args.start_trace.read_bytes()).hexdigest())
+    else:
+        initial_condition = apply_left_offset(task, sample_left_offset(args.seed, args.initial_offset))
     if args.collect:
         task.save_data = True
         task._jaka_capture_active = True

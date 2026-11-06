@@ -1,0 +1,323 @@
+{
+  "robot_id": "dual_jaka_zu7",
+  "state_semantics": "measured_qpos",
+  "action_semantics": "next_sample_drive_targets",
+  "dataset": "/data/jaka-vla/data/lerobot/zu7_grasp_recovery_stable",
+  "state_dim": 14,
+  "control_hz": 25,
+  "initial_checkpoint": "/data/jaka-vla/cache/huggingface/hub/models--lerobot--smolvla_base/snapshots/5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6",
+  "optimizer_resume": false,
+  "rig": {
+    "robot_id": "dual_jaka_zu7",
+    "arms": [
+      "JAKA Zu7",
+      "JAKA Zu7"
+    ],
+    "source_repository": "https://github.com/JakaCobot/jaka_ros2",
+    "source_revision": "7e985b78fe3c7807507fb81e8119b76f794e3bae",
+    "mounting": {
+      "base_separation_m": 0.85,
+      "base_y_m": -0.42,
+      "base_z_m": 0.86,
+      "base_yaw_rad": 1.5707963267948966,
+      "base_height_above_table_m": 0.12
+    },
+    "home_joint_rad": [
+      0,
+      1.4,
+      -1.7,
+      1.87,
+      1.5707963267948966,
+      0
+    ],
+    "gripper": {
+      "name": "simulation_parallel_proxy",
+      "physical_model_confirmed": false,
+      "max_opening_m": 0.1,
+      "tcp_offset_m": 0.15,
+      "finger_length_m": 0.07,
+      "finger_thickness_m": 0.012,
+      "finger_height_m": 0.025
+    },
+    "expert_handover_grasp_heights_m": [
+      0.07,
+      -0.07
+    ],
+    "receiving_platform_height_m": 0.08,
+    "interarm_collision_planning": true,
+    "sequential_return": true,
+    "physics_hz": 250,
+    "control_hz": 25,
+    "joint_velocity_limit_rad_s": 3.0,
+    "joint_acceleration_limit_rad_s2": 8.0,
+    "expert_velocity_scale": 1.0,
+    "gripper_rate_per_s": 2.0,
+    "tracking_frequency_rad_s": 28.0,
+    "drive_stiffness": 10000,
+    "drive_damping": 500,
+    "notes": "User confirmed two Zu7 arms and authorized a provisional mounting/gripper. Geometry and kinematics from pinned JAKA source; dynamics, gripper and calibration remain simulation assumptions."
+  },
+  "urdf_sha256": "78eb491aeef361b39108eadae5936c37d0b5e60791833e837f40a3a6ba3a5621",
+  "task_scope": "left_grasp_lift_hold",
+  "normalization": {
+    "method": "float64_two_pass_standard_deviation_with_physical_scale_floor_v1",
+    "joint_floor_rad": 0.05,
+    "gripper_floor_fraction": 0.05,
+    "effective_stats_sha256": "f891fd3873234daf45f6554931cfda85f7a06700ff198ab4e264930ee3c402c0"
+  },
+  "initial_conditions_by_episode": {
+    "0": null,
+    "1": null,
+    "2": null,
+    "3": {
+      "left_joint_offset_rad": [
+        -0.005847846468004653,
+        -0.034403838277878414,
+        0.012656158174100172,
+        -0.039230255175977585,
+        0.03200192355774684,
+        0.016555947910460292
+      ],
+      "measured_initial_left_joint_rad": [
+        -0.005847841501235962,
+        1.3655961751937866,
+        -1.6873438358306885,
+        1.8307689428329468,
+        1.602798342704773,
+        0.016556378453969955
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true
+    },
+    "4": {
+      "left_joint_offset_rad": [
+        -0.037271611325182696,
+        0.03844062206112029,
+        -0.010110593298929871,
+        0.022104891415412914,
+        0.00693750690528986,
+        -0.011077272480653617
+      ],
+      "measured_initial_left_joint_rad": [
+        -0.037271611392498016,
+        1.4384405612945557,
+        -1.7101106643676758,
+        1.8921042680740356,
+        1.5777338743209839,
+        -0.011076866649091244
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true
+    },
+    "5": {
+      "left_joint_offset_rad": [
+        0.0042964485147541365,
+        0.03814694775739661,
+        -0.026229674024679,
+        -0.028466418282524962,
+        -0.020010115680016066,
+        0.0008802632159390714
+      ],
+      "measured_initial_left_joint_rad": [
+        0.004296476021409035,
+        1.438146948814392,
+        -1.7262296676635742,
+        1.841532826423645,
+        1.5507862567901611,
+        0.0008806969271972775
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true
+    },
+    "6": {
+      "left_joint_offset_rad": [
+        0.01552096254541531,
+        -0.02529629277018966,
+        -0.013493176340715004,
+        -0.021508214335552694,
+        0.009563194136993206,
+        -0.0276207739953112
+      ],
+      "measured_initial_left_joint_rad": [
+        0.015520959161221981,
+        1.3747036457061768,
+        -1.7134932279586792,
+        1.8484909534454346,
+        1.5803595781326294,
+        -0.027620336040854454
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true
+    },
+    "7": {
+      "left_joint_offset_rad": [
+        0.02062393863211933,
+        -0.016543874608961655,
+        0.033985720586268316,
+        -0.03887801403946825,
+        -0.034311247611524945,
+        0.03481654501049177
+      ],
+      "measured_initial_left_joint_rad": [
+        0.020623939111828804,
+        1.3834561109542847,
+        -1.666014313697815,
+        1.8311212062835693,
+        1.5364850759506226,
+        0.03481702879071236
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true
+    },
+    "8": {
+      "left_joint_position_rad": [
+        -1.145404577255249,
+        0.7879248261451721,
+        -1.577161192893982,
+        0.7701616883277893,
+        3.1282246112823486,
+        1.5537512302398682
+      ],
+      "left_aperture": 0.8995947986841202,
+      "measured_initial_left_joint_rad": [
+        -1.145404577255249,
+        0.7879248261451721,
+        -1.577161192893982,
+        0.7701616883277893,
+        3.1282246112823486,
+        1.5537512302398682
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true,
+      "scope": "intervened_recovery_start_not_executed_prefix",
+      "source_trace": "/data/jaka-vla/results/zu7_stable1500_seed0_1/seed_0_trace.npz",
+      "source_step": 50,
+      "source_trace_sha256": "92b7c953f3cdf829b15cf8912284818c5f09b4a1b95c62819f5618997a658249"
+    },
+    "9": {
+      "left_joint_position_rad": [
+        -1.0482293367385864,
+        1.079109787940979,
+        -1.5944855213165283,
+        1.0483496189117432,
+        2.692234516143799,
+        1.1677371263504028
+      ],
+      "left_aperture": 1.0,
+      "measured_initial_left_joint_rad": [
+        -1.0482293367385864,
+        1.079109787940979,
+        -1.5944855213165283,
+        1.0483496189117432,
+        2.692234516143799,
+        1.1677371263504028
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true,
+      "scope": "intervened_recovery_start_not_executed_prefix",
+      "source_trace": "/data/jaka-vla/results/zu7_coverage3000_seen_seed6/seed_6_trace.npz",
+      "source_step": 35,
+      "source_trace_sha256": "899acd18a4335a463a5dc97e681184e91046830a2816e6f9b8c9efcb6a6d0e1f"
+    },
+    "10": {
+      "left_joint_position_rad": [
+        -1.15524423122406,
+        0.8226290345191956,
+        -1.5306949615478516,
+        0.7780920267105103,
+        2.9844489097595215,
+        1.5269496440887451
+      ],
+      "left_aperture": 0.9306633472442627,
+      "measured_initial_left_joint_rad": [
+        -1.15524423122406,
+        0.8226290345191956,
+        -1.5306949615478516,
+        0.7780920267105103,
+        2.9844489097595215,
+        1.5269496440887451
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true,
+      "scope": "intervened_recovery_start_not_executed_prefix",
+      "source_trace": "/data/jaka-vla/results/zu7_coverage3000_new_seed100_102/seed_101_trace.npz",
+      "source_step": 45,
+      "source_trace_sha256": "1ceacc522bd915b5a600f21bfad8ac56dc06a8111d87571863db34e1455abcf3"
+    },
+    "11": {
+      "left_joint_position_rad": [
+        -1.164730429649353,
+        0.8397143483161926,
+        -1.5621695518493652,
+        0.8167864680290222,
+        3.0280964374542236,
+        1.4744104146957397
+      ],
+      "left_aperture": 0.9830450266599655,
+      "measured_initial_left_joint_rad": [
+        -1.164730429649353,
+        0.8397143483161926,
+        -1.5621695518493652,
+        0.8167864680290222,
+        3.0280964374542236,
+        1.4744104146957397
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true,
+      "scope": "intervened_recovery_start_not_executed_prefix",
+      "source_trace": "/data/jaka-vla/results/zu7_stable1500_seed0_1/seed_0_trace.npz",
+      "source_step": 40,
+      "source_trace_sha256": "92b7c953f3cdf829b15cf8912284818c5f09b4a1b95c62819f5618997a658249"
+    },
+    "12": {
+      "left_joint_position_rad": [
+        -0.7069504857063293,
+        1.2325767278671265,
+        -1.5921226739883423,
+        1.3025389909744263,
+        2.3199410438537598,
+        0.7582553029060364
+      ],
+      "left_aperture": 0.999704971909523,
+      "measured_initial_left_joint_rad": [
+        -0.7069504857063293,
+        1.2325767278671265,
+        -1.5921226739883423,
+        1.3025389909744263,
+        2.3199410438537598,
+        0.7582553029060364
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true,
+      "scope": "intervened_recovery_start_not_executed_prefix",
+      "source_trace": "/data/jaka-vla/results/zu7_coverage3000_seen_seed6/seed_6_trace.npz",
+      "source_step": 25,
+      "source_trace_sha256": "899acd18a4335a463a5dc97e681184e91046830a2816e6f9b8c9efcb6a6d0e1f"
+    },
+    "13": {
+      "left_joint_position_rad": [
+        -1.066203236579895,
+        0.9591352939605713,
+        -1.4983983039855957,
+        0.9040662050247192,
+        2.787555694580078,
+        1.3043993711471558
+      ],
+      "left_aperture": 0.9902879595756531,
+      "measured_initial_left_joint_rad": [
+        -1.066203236579895,
+        0.9591352939605713,
+        -1.4983983039855957,
+        0.9040662050247192,
+        2.787555694580078,
+        1.3043993711471558
+      ],
+      "settle_s": 0.5,
+      "initial_state_reset_only": true,
+      "scope": "intervened_recovery_start_not_executed_prefix",
+      "source_trace": "/data/jaka-vla/results/zu7_coverage3000_new_seed100_102/seed_101_trace.npz",
+      "source_step": 35,
+      "source_trace_sha256": "1ceacc522bd915b5a600f21bfad8ac56dc06a8111d87571863db34e1455abcf3"
+    }
+  }
+}

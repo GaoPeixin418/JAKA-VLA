@@ -5,6 +5,12 @@ description: 在 /data/jaka-vla 接续双臂 VLA 仿真项目，核查环境、�
 
 # 双臂 VLA 项目操作手册
 
+## 从失败中途状态采恢复示教
+
+docs/RECOVERY_CURRICULUM_20261106.md记录18:30续进批次。probe_zu7_short_grasp.py --start-trace <已有失败trace> --start-step N --seed S [--collect]会确认物体未移动>5mm、夹爪仍开>85%，只在记录前重设机器人初态，再运行专家。source_trace/step/hash写入identity；回放自动恢复相同初态。run_zu7_eval.py --initial-condition-file <condition.json>可单独验证学习恢复，必须与普通初态分开报告。不得把初态干预说成完整策略前缀或自主在线恢复。
+
+run_recovery_batch.py最多5条追加候选，加已完成seed0-step50共最多6条；train_grasp_recovery.py合并旧8条与通过恢复轨迹，从base最多4000步；evaluate_recovery4000.py最多9回合（已见3、新200–202三条、明确恢复初态3条），18:20后不启动新回合。接续先查状态，不重复启动。test_statistics.py覆盖近常量关节噪声放大回归。
+
 ## 归一化修正与初态覆盖
 
 先读docs/NORMALIZATION_FIX_20261106.md。旧shortgrasp1500为0/3，新stable1500已完成且2/3，二者分别从base训练1500步。不能再次运行当成新结果。新数据先由stabilize_zu7_statistics.py复制并重算float64统计（关节std floor .05rad、夹爪.05），再prepare_training_v2.py，训练入口核查哈希并拒绝近零状态尺度。policy_server_v2会回传normalized_state_abs_max，eval报告normalization_checks；这些只作诊断，不改变动作。
@@ -117,5 +123,3 @@ nvidia-smi
 
 audit_zu7_paths.py读取已有轨迹，报告首次闭爪请求前的TCP长度/端点距离/构型变化。直线不是可执行避碰路径，失败端点也不可当成功路径对照。
 audit_zu7_conditioning.py固定两检查点各6观测和seed42噪声，总84次离线调用，拒绝覆盖。只测输入敏感性，不执行动作/训练；不能把输出变化说成指令执行或泛化成功。本轮已完成，接续先读结果。
-
-本轮coverage3000已结束：8条1076帧，base上3000步，已见seeds0/1/6为1/3，新seed100/101/102（±.04rad）为2/3。stable1500旧三场景2/3；都保留，不假定最新更好。完整结果/限制见docs/NORMALIZATION_FIX_20261106.md，勿重跑。

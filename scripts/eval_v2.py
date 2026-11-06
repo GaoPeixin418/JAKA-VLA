@@ -14,7 +14,7 @@ from jaka_vla.control import ActionLayout,BoundedJointServo,ChunkContinuity
 from jaka_vla.grasp_monitor import EmptyGraspMonitor
 from jaka_vla.identity import physical_rig_hash
 from jaka_vla.review_video import ReviewVideo
-from jaka_vla.initial_conditions import apply_left_offset, sample_left_offset
+from jaka_vla.initial_conditions import apply_left_offset, apply_recorded_condition, sample_left_offset
 
 
 def robot_vector(robot,velocity=False):
@@ -47,6 +47,7 @@ def main():
     p.add_argument('--instruction', default='Use the left arm to grab the red block, hand it to the right arm, and place it on the blue pad.')
     p.add_argument('--task-scope', choices=['full_handover','left_grasp_lift_hold'], default='full_handover')
     p.add_argument('--initial-offset',type=float,default=0.)
+    p.add_argument('--initial-condition-file',type=Path)
     args=p.parse_args()
     args.output=ROOT/args.output
     if args.expert_hdf5:args.expert_hdf5=ROOT/args.expert_hdf5
@@ -67,12 +68,22 @@ def main():
         for seed in range(args.seed_start,args.seed_start+args.episodes):
             task.setup_demo(now_ep_num=seed,seed=seed,**cfg)
             offset=sample_left_offset(seed,args.initial_offset)
+            condition=None
+            if args.initial_condition_file:
+                condition=json.loads(args.initial_condition_file.read_text())
             if args.expert_hdf5:
                 expert_root=args.expert_hdf5.parent if args.expert_hdf5.is_dir() else args.expert_hdf5.parent.parent
                 source_metadata=json.loads((expert_root/'robot_identity.json').read_text())
-                condition=source_metadata.get('initial_conditions_by_seed',{}).get(str(seed),source_metadata.get('initial_condition'))
-                if condition is not None:offset=np.asarray(condition['left_joint_offset_rad'])
-            initial_condition=apply_left_offset(task,offset)
+                if args.expert_hdf5.is_dir():
+                    seed_list=[int(x) for x in (expert_root/'seed.txt').read_text().split()]
+                    matches=[i for i,v in enumerate(seed_list) if v==seed]
+                    if len(matches)!=1:raise ValueError('Missing or ambiguous expert seed; select the exact HDF5 file')
+                    expert_index=matches[0]
+                else:
+                    expert_index=int(args.expert_hdf5.stem.split('_')[-1])
+                condition=source_metadata.get('initial_conditions_by_episode',{}).get(str(expert_index),
+                    source_metadata.get('initial_conditions_by_seed',{}).get(str(seed),source_metadata.get('initial_condition')))
+            initial_condition=apply_recorded_condition(task,condition) if condition is not None else apply_left_offset(task,offset)
             dt=task.scene.get_timestep();substeps=round(1/rig['control_hz']/dt)
             assert abs(substeps*dt-1/rig['control_hz'])<1e-7
             r=task.robot;measured=robot_vector(r)
