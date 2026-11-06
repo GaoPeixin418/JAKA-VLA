@@ -88,7 +88,9 @@ def collect_status():
     for path in sorted((ROOT/'data/raw').glob('zu7*/handover_block/*/robot_identity.json')):
         zu7['raw_datasets'][str(path.parent.relative_to(ROOT))]={'episodes':len(list((path.parent/'data').glob('*.hdf5'))),
                 'identity':json.loads(path.read_text())}
-    for path in sorted((ROOT/'results').glob('zu7*/result*.json')):
+    paths=set((ROOT/'results').glob('zu7*/result*.json'))
+    paths.update((ROOT/'results').glob('zu7*/seed_*/results.json'))
+    for path in sorted(paths):
         zu7['experiments'][str(path.relative_to(ROOT))]=json.loads(path.read_text())
     for path in sorted((ROOT/'checkpoints').glob('smolvla_zu7*/resource_profile.json')):
         zu7['training'][str(path.relative_to(ROOT))]=json.loads(path.read_text())

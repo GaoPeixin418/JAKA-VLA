@@ -160,3 +160,26 @@
 - 后续操作说明提交`31cf2c6`同样自动推送。收尾时服务器HEAD与GitHub main都指向`31cf2c6374b4cc8b482b1ca61e0daff0bdc68607`，服务器工作树干净。远端commit可由API和Git fetch各自核实。
 - 备份方面，GitHub Release 21个附件与服务器SHA256逐项一致；本地665文件/链接通过验证并恢复至空测试目录，project-history bundle可离线克隆至最新代码。
 - 临时GitHub CLI账户凭据已注销且不会保留为项目同步依赖；服务器只保留本仓库Deploy Key，权限600。钩子/安装脚本语法与项目6项单元测试通过。
+
+
+## E06 Zu7基础策略离线误差与未见种子重规划对照：2026-11-06
+
+- 用户开机后核实RTX4090在线，数据盘剩余96GiB；无残留GPU训练/评测进程。
+- 在`data/lerobot/zu7_collision_smoke`运行`audit_zu7_predictions.py`；检查点`smolvla_zu7_refine3000_seed42/checkpoints/last/pretrained_model`。144次teacher-forced离线推理，4个噪声种子、3条训练示教，按夹爪目标阈值启发式分阶段；没有训练或仿真。输出`results/zu7_offline_audit_20261106/{report.json,report.md,predictions.npz}`。抓取接近H1关节MAE约0.64–1.40°、夹爪阈值准确率100%；交接阶段夹爪阈值准确率约83–86%。
+- 分析已有K8已见闭环同种子专家轨迹，输出`closed_loop_comparison.{json,md}`和`closed_loop_state_drift.png`。seed0/1/2左臂超过2°偏差分别在控制步10/4/8出现。闭环状态偏离后与示教轨迹不再同状态，该误差仅作早期偏离诊断。
+- 固定同一6000步模型、fixed噪声、控制器和未见种子3/4/5，比较K=8/4/1。结果目录`results/zu7_learned_unseen6000_seed3_5{,_k4,_k1}`；三组均0/3，全部左空抓，方块最大抬升0m；K1每次约0.22–0.24秒推理，且同步评测暂停仿真。说明此次模型/种子上缩短K没有挽救抓取，不代表自适应K研究结论。
+- 无训练。停止继续搜K，转为扩充不同初始场景的专家数据。新增`configs/zu7_independent_smoke.yml`计划episode_num=6、seed_start=6、最多24次尝试，并扩展采集wrapper接受安全校验过的`zu7_*`配置。
+- `patch_collection_budget.py`加入RoboTwin显式seed_start并保留max_seed_attempts上限。该补丁和脚本语法已检查；新批次尚未启动、数据尚未生成。
+
+## E07 独立示教采集、回放筛选与3000步微调：2026-11-06
+
+- 用户要求开机后继续推进。本轮预算：6条成功示教/最多24个候选种子；6条逐条回放；新增3000步微调及seeds3–5的3回合K8开发验证，不继续参数搜索。详见docs/ZU7_PROGRESS_20261106.md。
+- 实际采集seeds6/7/8/9/11/12，seed10失败，共7次候选，6条2680帧；原日志“13 tries”误用绝对seed计数，补丁已修正后续报告，原日志不改写。
+- 身份/URDF/25Hz实测状态/动作下一采样目标/三路RGB转换通过；专家回放5/6成功。seed12第223控制步持续跟踪误差0.1262rad触发终止，保留失败，不进入训练集。
+- 新增curate_zu7_replays.py，以任务成功、无failure_reason、零hard-limit事件筛出seeds6/7/8/9/11，保留源/回放SHA256和seed映射；重转数据data/lerobot/zu7_independent_accepted为5条2215帧。归一化统计仅使用接受轨迹。
+- 通过回放不等于安全：seed8实测速度4.279rad/s，成功轨迹最大单步双臂接触冲量6.982N·s。现有控制/数据仍不适合真机放行。
+- configs/zu7_independent3000.json从此前6000步Zu7权重初始化，重置优化器，冻结VLM/训练动作专家及状态投影，batch8、seed42、AMP、H50；3000步全部完成，用时598.75秒、峰值分配3.575GiB/预留3.764GiB、末次loss约0.009。新检查点checkpoints/smolvla_zu7_independent3000_seed42，累计链9000步。
+- 相同控制器、fixed回合噪声、K8/H50，在训练之外的开发seeds3/4/5仍0/3；分别80/73/107步空抓终止，最大物体抬升均0。没有任务成功改善，不再追加训练/K搜索。测试种子已用于开发，不能视为最终盲测。
+- 纯CPU修正离线报告右关节标签切片错误并拒绝覆盖；新结果results/zu7_offline_audit_20261106_labels_v2，原报告保留。左右臂聚合误差与成功率不变。
+- 新增dated录像包、机器可读汇总manifests/zu7-experiment-20261106.json；更新技术方案/长期记忆/操作手册。大文件按backup-20261106归档并复制本地校验；本轮不覆盖旧Release，代码/文档收尾commit自动推送本项目GitHub。
+- 下一步：先验证单臂对准/抓取与视觉输入作用，记录误差和提前闭爪现象；不以低训练损失、专家成功或短K推断方法有效。未进行真机、恢复策略或事件自适应实验。

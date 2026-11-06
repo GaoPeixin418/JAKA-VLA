@@ -36,7 +36,10 @@ nvidia-smi
 - 训练：`prepare_training_v2.py`生成显式特征配置，再由`run_training_v2.py --config <配置JSON>`训练。已完成的输出拒绝覆盖。检查resource_profile.completed及每个检查点的project_identity.json。
 - 学习闭环：`run_zu7_eval.py --name zu7_<新实验名> --checkpoint <绝对checkpoint路径> --seed-start 0 --episodes 3 --k 8`。包装器在两环境启动自己的服务/仿真并限制运行时间，结束时只清理自己启动的进程。
 - 分析：`analyze_control_traces.py --results <实验目录>`。必须同时看指令和实测速度；低平均误差、指令限速、最终任务成功不能掩盖瞬时碰撞/速度尖峰。
+- 新批次必须逐条按seed.txt回放，再用`curate_zu7_replays.py --source <原始根目录> --replays <各seed回放的父目录> --output <新筛选根目录>`筛选任务有效轨迹。失败示教不得进入训练集或其归一化统计；接受任务回放不等于安全验收。筛选输出保留SHA256及源文件链接，复制/备份时须保留原始源数据。
+- 离线预测审计：`audit_zu7_predictions.py`；闭环偏离分析：`analyze_zu7_failed_rollouts.py`。这两类结果均不能替代学习策略任务成功率。
 - 查看：`build_zu7_review.py`生成`results/zu7_review/index.html`和`results/jaka-zu7-review.zip`，与旧pilot页面分开。
+- 查看本轮快照可显式使用`build_zu7_review.py --output /data/jaka-vla/results/zu7_review_20261106 --archive /data/jaka-vla/results/jaka-zu7-review-20261106.zip`；不会覆盖此前查看包，支持分seed保存的专家回放。
 - 参数消融可改控制器并记录实际配置；物理rig、任务几何、URDF和25Hz采样兼容性仍需通过校验。固定噪声与random要作为明确实验条件报告。
 
 ## 旧 ALOHA 数据流程（历史）

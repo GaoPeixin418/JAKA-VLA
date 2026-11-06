@@ -1,0 +1,173 @@
+{
+  "date": "2026-11-06",
+  "robot_id": "dual_jaka_zu7",
+  "scope": "Simulation development validation; no hardware or event-adaptive policy.",
+  "raw_dataset": {
+    "seeds": [
+      6,
+      7,
+      8,
+      9,
+      11,
+      12
+    ],
+    "episodes": 6,
+    "frames": 2680
+  },
+  "training_dataset": {
+    "seeds": [
+      6,
+      7,
+      8,
+      9,
+      11
+    ],
+    "episodes": 5,
+    "frames": 2215,
+    "path": "data/lerobot/zu7_independent_accepted",
+    "rejected_seed": 12
+  },
+  "expert_replays": [
+    {
+      "seed": 6,
+      "success": true,
+      "failure_reason": null,
+      "max_measured_speed_rad_s": 2.5286548137664795,
+      "interarm_contact_pairs": 0,
+      "peak_interarm_impulse_ns": 0
+    },
+    {
+      "seed": 7,
+      "success": true,
+      "failure_reason": null,
+      "max_measured_speed_rad_s": 2.590848684310913,
+      "interarm_contact_pairs": 2,
+      "peak_interarm_impulse_ns": 6.138962745666504
+    },
+    {
+      "seed": 8,
+      "success": true,
+      "failure_reason": null,
+      "max_measured_speed_rad_s": 4.278906345367432,
+      "interarm_contact_pairs": 1,
+      "peak_interarm_impulse_ns": 4.179169178009033
+    },
+    {
+      "seed": 9,
+      "success": true,
+      "failure_reason": null,
+      "max_measured_speed_rad_s": 2.5769028663635254,
+      "interarm_contact_pairs": 2,
+      "peak_interarm_impulse_ns": 6.98176908493042
+    },
+    {
+      "seed": 11,
+      "success": true,
+      "failure_reason": null,
+      "max_measured_speed_rad_s": 2.5555055141448975,
+      "interarm_contact_pairs": 2,
+      "peak_interarm_impulse_ns": 4.956638813018799
+    },
+    {
+      "seed": 12,
+      "success": false,
+      "failure_reason": {
+        "type": "persistent_tracking_error",
+        "step": 223,
+        "max_error_rad": 0.12620705810711752,
+        "threshold_rad": 0.12,
+        "confirmation_s": 0.04
+      },
+      "max_measured_speed_rad_s": 2.1935935020446777,
+      "interarm_contact_pairs": 1,
+      "peak_interarm_impulse_ns": 4.345895767211914
+    }
+  ],
+  "training": {
+    "completed": true,
+    "wall_seconds_including_load_and_save": 598.7524693289997,
+    "peak_allocated_gib": 3.5749893188476562,
+    "peak_reserved_gib": 3.763671875,
+    "robot_id": "dual_jaka_zu7",
+    "steps_this_round": 3000,
+    "cumulative_zu7_steps": 9000,
+    "config": "configs/zu7_independent3000.json",
+    "model_sha256": "4af14506cb023158935ebd2f17a539add85a62b594b8ed06813cf4432a023471"
+  },
+  "closed_loop": [
+    {
+      "experiment": "zu7_learned_unseen6000_seed3_5",
+      "k": 8,
+      "successes": 0,
+      "episodes": 3,
+      "seeds": [
+        3,
+        4,
+        5
+      ],
+      "failures": [
+        "empty_grasp",
+        "empty_grasp",
+        "empty_grasp"
+      ],
+      "maximum_object_lift_m": 0.0
+    },
+    {
+      "experiment": "zu7_learned_unseen6000_seed3_5_k4",
+      "k": 4,
+      "successes": 0,
+      "episodes": 3,
+      "seeds": [
+        3,
+        4,
+        5
+      ],
+      "failures": [
+        "empty_grasp",
+        "empty_grasp",
+        "empty_grasp"
+      ],
+      "maximum_object_lift_m": 0.0
+    },
+    {
+      "experiment": "zu7_learned_unseen6000_seed3_5_k1",
+      "k": 1,
+      "successes": 0,
+      "episodes": 3,
+      "seeds": [
+        3,
+        4,
+        5
+      ],
+      "failures": [
+        "empty_grasp",
+        "empty_grasp",
+        "empty_grasp"
+      ],
+      "maximum_object_lift_m": 0.0
+    },
+    {
+      "experiment": "zu7_learned_independent9000_seed3_5",
+      "k": 8,
+      "successes": 0,
+      "episodes": 3,
+      "seeds": [
+        3,
+        4,
+        5
+      ],
+      "failures": [
+        "empty_grasp",
+        "empty_grasp",
+        "empty_grasp"
+      ],
+      "maximum_object_lift_m": 0.0
+    }
+  ],
+  "limitations": [
+    "Seeds3-5 are outside demonstration training but repeatedly used in development; not a final blind test.",
+    "Inference pauses simulation; not a real-time or latency-robustness result.",
+    "Expert replay success does not establish collision-free or hardware-safe motion.",
+    "No task success improvement in this round; no extra training or K sweep started."
+  ]
+}

@@ -8,8 +8,15 @@ from scripts.collect_data import main as collect
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--task-config',choices=['zu7_smoke','zu7_slow_smoke','zu7_collision_smoke','zu7_pilot'],default='zu7_collision_smoke');args=p.parse_args()
-    cfg=yaml.safe_load((ROOT/f'configs/{args.task_config}.yml').read_text())
+    p=argparse.ArgumentParser();p.add_argument('--task-config',default='zu7_collision_smoke');args=p.parse_args()
+    if not args.task_config.startswith('zu7_') or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789_-' for c in args.task_config):
+        raise ValueError('Task config must be a safe zu7_* name')
+    project_config=ROOT/f'configs/{args.task_config}.yml'
+    task_config=REPO/'env_cfg/task_config'/f'{args.task_config}.yml'
+    if not project_config.is_file():raise FileNotFoundError(project_config)
+    if not task_config.is_file() or task_config.read_text()!=project_config.read_text():
+        task_config.write_text(project_config.read_text())
+    cfg=yaml.safe_load(project_config.read_text())
     assert cfg['embodiment'][:2]==['jaka-zu7-proxy','jaka-zu7-proxy']
     raw=ROOT/f'data/raw/{args.task_config}/handover_block/jaka_zu7_proxy_jaka_zu7_proxy'
     raw.mkdir(parents=True,exist_ok=True)
