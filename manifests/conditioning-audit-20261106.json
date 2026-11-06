@@ -1,0 +1,1498 @@
+{
+  "scope": "Offline teacher-forced sensitivity; no training, simulator or success-rate evaluation",
+  "limitations": [
+    "Six training observations per checkpoint, one fixed noise seed.",
+    "Image/state mismatches and unseen instructions may be out of distribution.",
+    "Differences do not establish correct understanding; small differences do not prove no use.",
+    "Do not compare absolute deltas across input modalities as attribution weights."
+  ],
+  "checkpoints": [
+    {
+      "name": "smolvla_zu7_refine3000_seed42",
+      "dataset": "zu7_collision_smoke",
+      "weight_sha256": "85554712095c403bbad1d9b88cc878371719deff2e87712bdae012b0f0ae3c52",
+      "noise_seed": 42,
+      "observations": [
+        {
+          "episode": 0,
+          "frame": 0,
+          "training_instruction": "Grasp the block in your left arm, pass it into the right, and place it onto the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 9.990636825561523,
+                "gripper_delta_mae": 0.03432053327560425
+              },
+              "8": {
+                "joint_delta_mae_deg": 11.057754516601562,
+                "gripper_delta_mae": 0.033303119242191315
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.81550407409668,
+                "gripper_delta_mae": 0.03293721377849579
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.6925549507141113,
+                "gripper_delta_mae": 0.005432993173599243
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.9744545817375183,
+                "gripper_delta_mae": 0.006178911775350571
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.4231884479522705,
+                "gripper_delta_mae": 0.010453795082867146
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 8.433259010314941,
+                "gripper_delta_mae": 0.014723479747772217
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.1680326461792,
+                "gripper_delta_mae": 0.017389759421348572
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.006011962890625,
+                "gripper_delta_mae": 0.03868208825588226
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.7589918375015259,
+                "gripper_delta_mae": 0.014936357736587524
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.7633517980575562,
+                "gripper_delta_mae": 0.015157222747802734
+              },
+              "50": {
+                "joint_delta_mae_deg": 3.1550633907318115,
+                "gripper_delta_mae": 0.015808770433068275
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.50723797082901,
+                "gripper_delta_mae": 0.004048705101013184
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.5314188599586487,
+                "gripper_delta_mae": 0.0028532780706882477
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.0879530906677246,
+                "gripper_delta_mae": 0.004665686283260584
+              }
+            }
+          }
+        },
+        {
+          "episode": 0,
+          "frame": 60,
+          "training_instruction": "Grasp the block in your left arm, pass it into the right, and place it onto the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 3.77111554145813,
+                "gripper_delta_mae": 0.05424407124519348
+              },
+              "8": {
+                "joint_delta_mae_deg": 3.677098512649536,
+                "gripper_delta_mae": 0.06967060267925262
+              },
+              "50": {
+                "joint_delta_mae_deg": 4.401423931121826,
+                "gripper_delta_mae": 0.09191878139972687
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.5375736355781555,
+                "gripper_delta_mae": 0.0047474205493927
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.5485848784446716,
+                "gripper_delta_mae": 0.01126079261302948
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.622715950012207,
+                "gripper_delta_mae": 0.03610843047499657
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 2.9068567752838135,
+                "gripper_delta_mae": 0.1462586224079132
+              },
+              "8": {
+                "joint_delta_mae_deg": 2.55383563041687,
+                "gripper_delta_mae": 0.15683725476264954
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.9576804637908936,
+                "gripper_delta_mae": 0.10288901627063751
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.7343467473983765,
+                "gripper_delta_mae": 0.03328630328178406
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.7798992395401,
+                "gripper_delta_mae": 0.032507091760635376
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.29951810836792,
+                "gripper_delta_mae": 0.02213769219815731
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 3.446390151977539,
+                "gripper_delta_mae": 0.03951874375343323
+              },
+              "8": {
+                "joint_delta_mae_deg": 3.430408477783203,
+                "gripper_delta_mae": 0.047549936920404434
+              },
+              "50": {
+                "joint_delta_mae_deg": 3.806960344314575,
+                "gripper_delta_mae": 0.050457585602998734
+              }
+            }
+          }
+        },
+        {
+          "episode": 1,
+          "frame": 0,
+          "training_instruction": "Lift the block with the left arm, pass it over to the right arm, and place it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 10.135541915893555,
+                "gripper_delta_mae": 0.03285059332847595
+              },
+              "8": {
+                "joint_delta_mae_deg": 11.577736854553223,
+                "gripper_delta_mae": 0.03231429308652878
+              },
+              "50": {
+                "joint_delta_mae_deg": 10.133556365966797,
+                "gripper_delta_mae": 0.033485352993011475
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.5224036574363708,
+                "gripper_delta_mae": 0.0027415454387664795
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.7400103211402893,
+                "gripper_delta_mae": 0.001540452241897583
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.8433897495269775,
+                "gripper_delta_mae": 0.0035988115705549717
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 5.571983337402344,
+                "gripper_delta_mae": 0.019239753484725952
+              },
+              "8": {
+                "joint_delta_mae_deg": 7.066955089569092,
+                "gripper_delta_mae": 0.019841749221086502
+              },
+              "50": {
+                "joint_delta_mae_deg": 6.207448959350586,
+                "gripper_delta_mae": 0.04314428195357323
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.1133267879486084,
+                "gripper_delta_mae": 0.010583251714706421
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.1437402963638306,
+                "gripper_delta_mae": 0.010407701134681702
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.8661967515945435,
+                "gripper_delta_mae": 0.012193642556667328
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.7055240273475647,
+                "gripper_delta_mae": 0.0022420287132263184
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.8425767421722412,
+                "gripper_delta_mae": 0.002797268331050873
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.3076525926589966,
+                "gripper_delta_mae": 0.003231625072658062
+              }
+            }
+          }
+        },
+        {
+          "episode": 1,
+          "frame": 60,
+          "training_instruction": "Lift the block with the left arm, pass it over to the right arm, and place it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 4.131550312042236,
+                "gripper_delta_mae": 0.044181227684020996
+              },
+              "8": {
+                "joint_delta_mae_deg": 3.6989738941192627,
+                "gripper_delta_mae": 0.05965372920036316
+              },
+              "50": {
+                "joint_delta_mae_deg": 4.250886917114258,
+                "gripper_delta_mae": 0.09947960078716278
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.26669183373451233,
+                "gripper_delta_mae": 0.0037350058555603027
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.3513808250427246,
+                "gripper_delta_mae": 0.0065490081906318665
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.4183712601661682,
+                "gripper_delta_mae": 0.014126899652183056
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.1410526037216187,
+                "gripper_delta_mae": 0.10327404737472534
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.0032376050949097,
+                "gripper_delta_mae": 0.11222110688686371
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.5594562292099,
+                "gripper_delta_mae": 0.10527175664901733
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 2.003629446029663,
+                "gripper_delta_mae": 0.0039042234420776367
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.9566326141357422,
+                "gripper_delta_mae": 0.007005590945482254
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.4168596267700195,
+                "gripper_delta_mae": 0.012188567779958248
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.109331727027893,
+                "gripper_delta_mae": 0.004051476716995239
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.2597512006759644,
+                "gripper_delta_mae": 0.004666071385145187
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.1939523220062256,
+                "gripper_delta_mae": 0.02022927813231945
+              }
+            }
+          }
+        },
+        {
+          "episode": 2,
+          "frame": 0,
+          "training_instruction": "Use the left arm to grab the red block, hand it to the right arm, and place it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 9.88442325592041,
+                "gripper_delta_mae": 0.034972310066223145
+              },
+              "8": {
+                "joint_delta_mae_deg": 11.047083854675293,
+                "gripper_delta_mae": 0.03400460258126259
+              },
+              "50": {
+                "joint_delta_mae_deg": 9.46524429321289,
+                "gripper_delta_mae": 0.03036758489906788
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.4882321357727051,
+                "gripper_delta_mae": 0.001780778169631958
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.6382620930671692,
+                "gripper_delta_mae": 0.004878554493188858
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.0371863842010498,
+                "gripper_delta_mae": 0.00840091984719038
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 8.564899444580078,
+                "gripper_delta_mae": 0.016386955976486206
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.731215476989746,
+                "gripper_delta_mae": 0.017723582684993744
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.523006439208984,
+                "gripper_delta_mae": 0.04433900862932205
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.490193486213684,
+                "gripper_delta_mae": 0.01397731900215149
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.5993919372558594,
+                "gripper_delta_mae": 0.013075314462184906
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.066429376602173,
+                "gripper_delta_mae": 0.011259820312261581
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            }
+          }
+        },
+        {
+          "episode": 2,
+          "frame": 60,
+          "training_instruction": "Use the left arm to grab the red block, hand it to the right arm, and place it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 3.906196355819702,
+                "gripper_delta_mae": 0.046042799949645996
+              },
+              "8": {
+                "joint_delta_mae_deg": 3.781662940979004,
+                "gripper_delta_mae": 0.06524952501058578
+              },
+              "50": {
+                "joint_delta_mae_deg": 4.110225200653076,
+                "gripper_delta_mae": 0.10705133527517319
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.5652641654014587,
+                "gripper_delta_mae": 0.013354778289794922
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.7320427894592285,
+                "gripper_delta_mae": 0.012261517345905304
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.7677252888679504,
+                "gripper_delta_mae": 0.04410224407911301
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.2184103727340698,
+                "gripper_delta_mae": 0.0980323851108551
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.1823173761367798,
+                "gripper_delta_mae": 0.1083134114742279
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.8664737939834595,
+                "gripper_delta_mae": 0.0925687700510025
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.7694355249404907,
+                "gripper_delta_mae": 0.006318002939224243
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.8539456129074097,
+                "gripper_delta_mae": 0.010717183351516724
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.3671908378601074,
+                "gripper_delta_mae": 0.030640816316008568
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            }
+          }
+        }
+      ],
+      "summary": {
+        "original": {
+          "1": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "8": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "50": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          }
+        },
+        "repeat": {
+          "1": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "8": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "50": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          }
+        },
+        "black_images": {
+          "1": {
+            "joint_delta_mae_deg": 6.969910701115926,
+            "gripper_delta_mae": 0.041101922591527305
+          },
+          "8": {
+            "joint_delta_mae_deg": 7.4733850955963135,
+            "gripper_delta_mae": 0.04903264530003071
+          },
+          "50": {
+            "joint_delta_mae_deg": 6.862806797027588,
+            "gripper_delta_mae": 0.06587331152210633
+          }
+        },
+        "other_episode_images": {
+          "1": {
+            "joint_delta_mae_deg": 0.5121200631062189,
+            "gripper_delta_mae": 0.005298753579457601
+          },
+          "8": {
+            "joint_delta_mae_deg": 0.6641225814819336,
+            "gripper_delta_mae": 0.007111539443333943
+          },
+          "50": {
+            "joint_delta_mae_deg": 0.8520961801211039,
+            "gripper_delta_mae": 0.019465183451150853
+          }
+        },
+        "empty_instruction": {
+          "1": {
+            "joint_delta_mae_deg": 4.6394102573394775,
+            "gripper_delta_mae": 0.06631920735041301
+          },
+          "8": {
+            "joint_delta_mae_deg": 5.450932304064433,
+            "gripper_delta_mae": 0.07205447740852833
+          },
+          "50": {
+            "joint_delta_mae_deg": 4.853346308072408,
+            "gripper_delta_mae": 0.07114915363490582
+          }
+        },
+        "right_arm_instruction": {
+          "1": {
+            "joint_delta_mae_deg": 1.6449873050053914,
+            "gripper_delta_mae": 0.013834243019421896
+          },
+          "8": {
+            "joint_delta_mae_deg": 1.6828269163767497,
+            "gripper_delta_mae": 0.014811684067050615
+          },
+          "50": {
+            "joint_delta_mae_deg": 2.361876348654429,
+            "gripper_delta_mae": 0.017371551599353552
+          }
+        },
+        "evaluation_instruction": {
+          "1": {
+            "joint_delta_mae_deg": 0.9614139795303345,
+            "gripper_delta_mae": 0.008310159047444662
+          },
+          "8": {
+            "joint_delta_mae_deg": 1.0106925467650096,
+            "gripper_delta_mae": 0.009644425784548124
+          },
+          "50": {
+            "joint_delta_mae_deg": 1.3994197249412537,
+            "gripper_delta_mae": 0.013097362515206138
+          }
+        }
+      }
+    },
+    {
+      "name": "smolvla_zu7_independent3000_seed42",
+      "dataset": "zu7_independent_accepted",
+      "weight_sha256": "4af14506cb023158935ebd2f17a539add85a62b594b8ed06813cf4432a023471",
+      "noise_seed": 42,
+      "observations": [
+        {
+          "episode": 0,
+          "frame": 0,
+          "training_instruction": "Pick the red block from the table, switch it from the left arm to the right, and place it down on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 9.182458877563477,
+                "gripper_delta_mae": 0.026006966829299927
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.19010066986084,
+                "gripper_delta_mae": 0.02461862936615944
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.26384449005127,
+                "gripper_delta_mae": 0.03689514845609665
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.3164426386356354,
+                "gripper_delta_mae": 0.006836205720901489
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.3913555145263672,
+                "gripper_delta_mae": 0.00573040172457695
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.6500422358512878,
+                "gripper_delta_mae": 0.00354150403290987
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 9.259247779846191,
+                "gripper_delta_mae": 0.03645262122154236
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.279454231262207,
+                "gripper_delta_mae": 0.03252439200878143
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.250008583068848,
+                "gripper_delta_mae": 0.07105661183595657
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.9005782008171082,
+                "gripper_delta_mae": 0.006207942962646484
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.0405129194259644,
+                "gripper_delta_mae": 0.007180098444223404
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.668452501296997,
+                "gripper_delta_mae": 0.009704944677650928
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.9264721870422363,
+                "gripper_delta_mae": 0.008116960525512695
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.8808417916297913,
+                "gripper_delta_mae": 0.006538964807987213
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.522308588027954,
+                "gripper_delta_mae": 0.008210444822907448
+              }
+            }
+          }
+        },
+        {
+          "episode": 0,
+          "frame": 60,
+          "training_instruction": "Pick the red block from the table, switch it from the left arm to the right, and place it down on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 4.102219104766846,
+                "gripper_delta_mae": 0.03554314374923706
+              },
+              "8": {
+                "joint_delta_mae_deg": 3.8330166339874268,
+                "gripper_delta_mae": 0.050162095576524734
+              },
+              "50": {
+                "joint_delta_mae_deg": 4.5004191398620605,
+                "gripper_delta_mae": 0.08988486975431442
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.33102935552597046,
+                "gripper_delta_mae": 0.0057830810546875
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.4366475045681,
+                "gripper_delta_mae": 0.0051644667983055115
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.7178331613540649,
+                "gripper_delta_mae": 0.015498404391109943
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 2.0822274684906006,
+                "gripper_delta_mae": 0.12884622812271118
+              },
+              "8": {
+                "joint_delta_mae_deg": 2.013226270675659,
+                "gripper_delta_mae": 0.14106418192386627
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.8274574279785156,
+                "gripper_delta_mae": 0.11900076270103455
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.8157880902290344,
+                "gripper_delta_mae": 0.011534392833709717
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.7300315499305725,
+                "gripper_delta_mae": 0.009181741625070572
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.8399521708488464,
+                "gripper_delta_mae": 0.013142419047653675
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.398499608039856,
+                "gripper_delta_mae": 0.0040781497955322266
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.5053091049194336,
+                "gripper_delta_mae": 0.00575537234544754
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.7808071374893188,
+                "gripper_delta_mae": 0.012659196741878986
+              }
+            }
+          }
+        },
+        {
+          "episode": 1,
+          "frame": 0,
+          "training_instruction": "Take the red block, pass it from the left arm to the right arm, and drop it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 9.850556373596191,
+                "gripper_delta_mae": 0.026449352502822876
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.883692741394043,
+                "gripper_delta_mae": 0.02880183979868889
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.433548927307129,
+                "gripper_delta_mae": 0.0403263121843338
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.6003575921058655,
+                "gripper_delta_mae": 0.008392691612243652
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.6719033718109131,
+                "gripper_delta_mae": 0.00610753521323204
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.2366846799850464,
+                "gripper_delta_mae": 0.01000204961746931
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 9.578093528747559,
+                "gripper_delta_mae": 0.03422650694847107
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.669062614440918,
+                "gripper_delta_mae": 0.030878428369760513
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.47985553741455,
+                "gripper_delta_mae": 0.07490647584199905
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.9670090675354004,
+                "gripper_delta_mae": 0.01875731348991394
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.090183138847351,
+                "gripper_delta_mae": 0.021016612648963928
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.0362513065338135,
+                "gripper_delta_mae": 0.015332375653088093
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 0.8484891057014465,
+                "gripper_delta_mae": 0.0012110471725463867
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.9585108757019043,
+                "gripper_delta_mae": 0.002583470195531845
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.9782918691635132,
+                "gripper_delta_mae": 0.005356274079531431
+              }
+            }
+          }
+        },
+        {
+          "episode": 1,
+          "frame": 60,
+          "training_instruction": "Take the red block, pass it from the left arm to the right arm, and drop it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 4.154665946960449,
+                "gripper_delta_mae": 0.049014151096343994
+              },
+              "8": {
+                "joint_delta_mae_deg": 3.8337745666503906,
+                "gripper_delta_mae": 0.05816086381673813
+              },
+              "50": {
+                "joint_delta_mae_deg": 4.463011264801025,
+                "gripper_delta_mae": 0.0917467474937439
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.4002518951892853,
+                "gripper_delta_mae": 0.004289120435714722
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.5840468406677246,
+                "gripper_delta_mae": 0.005520302802324295
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.7607574462890625,
+                "gripper_delta_mae": 0.021940385922789574
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.9917985200881958,
+                "gripper_delta_mae": 0.1404128074645996
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.9188508987426758,
+                "gripper_delta_mae": 0.14312127232551575
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.8010225296020508,
+                "gripper_delta_mae": 0.11009416729211807
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.5029902458190918,
+                "gripper_delta_mae": 0.013052880764007568
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.7302011251449585,
+                "gripper_delta_mae": 0.005600370466709137
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.9758954048156738,
+                "gripper_delta_mae": 0.008452508598566055
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 2.0716748237609863,
+                "gripper_delta_mae": 0.008017390966415405
+              },
+              "8": {
+                "joint_delta_mae_deg": 2.2521238327026367,
+                "gripper_delta_mae": 0.006229232996702194
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.370952606201172,
+                "gripper_delta_mae": 0.008824991062283516
+              }
+            }
+          }
+        },
+        {
+          "episode": 2,
+          "frame": 0,
+          "training_instruction": "Use the left arm to pick up the red block and transfer it to the right arm before placing it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 9.488268852233887,
+                "gripper_delta_mae": 0.030595719814300537
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.445253372192383,
+                "gripper_delta_mae": 0.026402290910482407
+              },
+              "50": {
+                "joint_delta_mae_deg": 8.702127456665039,
+                "gripper_delta_mae": 0.027235522866249084
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.4731254577636719,
+                "gripper_delta_mae": 0.0031048953533172607
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.5498902797698975,
+                "gripper_delta_mae": 0.002923920750617981
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.0780971050262451,
+                "gripper_delta_mae": 0.008537610992789268
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 9.45504093170166,
+                "gripper_delta_mae": 0.03779196739196777
+              },
+              "8": {
+                "joint_delta_mae_deg": 10.849883079528809,
+                "gripper_delta_mae": 0.03642985224723816
+              },
+              "50": {
+                "joint_delta_mae_deg": 9.385107040405273,
+                "gripper_delta_mae": 0.07688591629266739
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.2182873487472534,
+                "gripper_delta_mae": 0.009225308895111084
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.079196810722351,
+                "gripper_delta_mae": 0.007911011576652527
+              },
+              "50": {
+                "joint_delta_mae_deg": 1.8423758745193481,
+                "gripper_delta_mae": 0.00837867334485054
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.0254864692687988,
+                "gripper_delta_mae": 0.005495190620422363
+              },
+              "8": {
+                "joint_delta_mae_deg": 1.1530207395553589,
+                "gripper_delta_mae": 0.006856054067611694
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.083404779434204,
+                "gripper_delta_mae": 0.005550658795982599
+              }
+            }
+          }
+        },
+        {
+          "episode": 2,
+          "frame": 60,
+          "training_instruction": "Use the left arm to pick up the red block and transfer it to the right arm before placing it on the blue pad.",
+          "variants": {
+            "original": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "repeat": {
+              "1": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.0,
+                "gripper_delta_mae": 0.0
+              }
+            },
+            "black_images": {
+              "1": {
+                "joint_delta_mae_deg": 4.232572555541992,
+                "gripper_delta_mae": 0.036647140979766846
+              },
+              "8": {
+                "joint_delta_mae_deg": 4.1323933601379395,
+                "gripper_delta_mae": 0.052341219037771225
+              },
+              "50": {
+                "joint_delta_mae_deg": 5.26420259475708,
+                "gripper_delta_mae": 0.08720143139362335
+              }
+            },
+            "other_episode_images": {
+              "1": {
+                "joint_delta_mae_deg": 0.3474813401699066,
+                "gripper_delta_mae": 0.00203704833984375
+              },
+              "8": {
+                "joint_delta_mae_deg": 0.3626427948474884,
+                "gripper_delta_mae": 0.0031235069036483765
+              },
+              "50": {
+                "joint_delta_mae_deg": 0.3991459012031555,
+                "gripper_delta_mae": 0.016627004370093346
+              }
+            },
+            "empty_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 3.346050977706909,
+                "gripper_delta_mae": 0.12426215410232544
+              },
+              "8": {
+                "joint_delta_mae_deg": 3.418186902999878,
+                "gripper_delta_mae": 0.13670694828033447
+              },
+              "50": {
+                "joint_delta_mae_deg": 4.265355587005615,
+                "gripper_delta_mae": 0.13291902840137482
+              }
+            },
+            "right_arm_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 2.4365220069885254,
+                "gripper_delta_mae": 0.015492647886276245
+              },
+              "8": {
+                "joint_delta_mae_deg": 2.610732078552246,
+                "gripper_delta_mae": 0.013751216232776642
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.902374744415283,
+                "gripper_delta_mae": 0.010706589557230473
+              }
+            },
+            "evaluation_instruction": {
+              "1": {
+                "joint_delta_mae_deg": 1.883407711982727,
+                "gripper_delta_mae": 0.00910341739654541
+              },
+              "8": {
+                "joint_delta_mae_deg": 2.1506259441375732,
+                "gripper_delta_mae": 0.009494613856077194
+              },
+              "50": {
+                "joint_delta_mae_deg": 2.5708436965942383,
+                "gripper_delta_mae": 0.006978253833949566
+              }
+            }
+          }
+        }
+      ],
+      "summary": {
+        "original": {
+          "1": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "8": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "50": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          }
+        },
+        "repeat": {
+          "1": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "8": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          },
+          "50": {
+            "joint_delta_mae_deg": 0.0,
+            "gripper_delta_mae": 0.0
+          }
+        },
+        "black_images": {
+          "1": {
+            "joint_delta_mae_deg": 6.835123618443807,
+            "gripper_delta_mae": 0.03404274582862854
+          },
+          "8": {
+            "joint_delta_mae_deg": 7.21970522403717,
+            "gripper_delta_mae": 0.04008115641772747
+          },
+          "50": {
+            "joint_delta_mae_deg": 6.604525645573934,
+            "gripper_delta_mae": 0.0622150053580602
+          }
+        },
+        "other_episode_images": {
+          "1": {
+            "joint_delta_mae_deg": 0.41144804656505585,
+            "gripper_delta_mae": 0.005073840419451396
+          },
+          "8": {
+            "joint_delta_mae_deg": 0.4994143843650818,
+            "gripper_delta_mae": 0.004761689032117526
+          },
+          "50": {
+            "joint_delta_mae_deg": 0.8070934216181437,
+            "gripper_delta_mae": 0.012691159887860218
+          }
+        },
+        "empty_instruction": {
+          "1": {
+            "joint_delta_mae_deg": 5.952076534430186,
+            "gripper_delta_mae": 0.08366538087526958
+          },
+          "8": {
+            "joint_delta_mae_deg": 6.524777332941691,
+            "gripper_delta_mae": 0.0867875125259161
+          },
+          "50": {
+            "joint_delta_mae_deg": 5.668134450912476,
+            "gripper_delta_mae": 0.09747716039419174
+          }
+        },
+        "right_arm_instruction": {
+          "1": {
+            "joint_delta_mae_deg": 1.3068624933560689,
+            "gripper_delta_mae": 0.012378414471944174
+          },
+          "8": {
+            "joint_delta_mae_deg": 1.3801429371039073,
+            "gripper_delta_mae": 0.010773508499066034
+          },
+          "50": {
+            "joint_delta_mae_deg": 1.877550333738327,
+            "gripper_delta_mae": 0.01095291847983996
+          }
+        },
+        "evaluation_instruction": {
+          "1": {
+            "joint_delta_mae_deg": 1.359004984299342,
+            "gripper_delta_mae": 0.0060036927461624146
+          },
+          "8": {
+            "joint_delta_mae_deg": 1.4834053814411163,
+            "gripper_delta_mae": 0.00624295137822628
+          },
+          "50": {
+            "joint_delta_mae_deg": 2.0511014461517334,
+            "gripper_delta_mae": 0.007929969889422258
+          }
+        }
+      }
+    }
+  ],
+  "prediction_calls": 84,
+  "elapsed_seconds": 52.05035274200054,
+  "variant_order": [
+    "original",
+    "repeat",
+    "black_images",
+    "other_episode_images",
+    "empty_instruction",
+    "right_arm_instruction",
+    "evaluation_instruction"
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "scope": "Existing traces only; approach ends at first requested left aperture below .95.",
+  "limitations": [
+    "Straight-line distance is not a feasible collision-free path.",
+    "Ratios are descriptive; do not compare failed endpoints to successful grasps as path-quality scores.",
+    "No alternative IK branch or counterfactual collision-free path has been tested."
+  ],
+  "rows": [
+    {
+      "folder": "zu7_multiview_expert_seed6",
+      "seed": 6,
+      "source_sha256": "1770357175727221ae083336131e2d846e4940f51cf149fa85044e69c31b8a70",
+      "approach_end_step": 82,
+      "approach_s": 3.28,
+      "tcp_length_m": 2.775115972113368,
+      "direct_distance_m": 0.37736522232089675,
+      "detour_ratio": 7.353926138306187,
+      "start_left_joint_deg": [
+        0.00100009483700083,
+        80.21011478218047,
+        -97.40174873442676,
+        107.14283475510472,
+        89.99935363650701,
+        9.075206032139858e-06
+      ],
+      "end_left_joint_deg": [
+        -164.1464392660614,
+        132.11379462480707,
+        95.31938115084078,
+        132.5486181277484,
+        171.56739881814522,
+        -90.00313073111803
+      ]
+    },
+    {
+      "folder": "zu7_grasp_review6000_seed0_1",
+      "seed": 0,
+      "source_sha256": "46ee9fe6be1e9f10579aee6aa1540f390ceee62f62c84d66c94d78baabe2ca53",
+      "approach_end_step": 56,
+      "approach_s": 2.24,
+      "tcp_length_m": 1.3830924530897366,
+      "direct_distance_m": 0.8741280525516636,
+      "detour_ratio": 1.5822538231696799,
+      "start_left_joint_deg": [
+        0.00100009483700083,
+        80.21011478218047,
+        -97.40174873442676,
+        107.14283475510472,
+        89.99935363650701,
+        9.075206032139858e-06
+      ],
+      "end_left_joint_deg": [
+        -83.97108331656712,
+        106.38174677589019,
+        7.035769753180495,
+        120.54286677453683,
+        139.06448199215717,
+        -47.18737274903025
+      ]
+    },
+    {
+      "folder": "zu7_grasp_review6000_seed0_1",
+      "seed": 1,
+      "source_sha256": "d4081136f32d0570307bdaaa1a5120f982f38c925964f1b2af83a5f2272eebc2",
+      "approach_end_step": 24,
+      "approach_s": 0.96,
+      "tcp_length_m": 0.8001565837336038,
+      "direct_distance_m": 0.7304577661682811,
+      "detour_ratio": 1.0954179978548761,
+      "start_left_joint_deg": [
+        0.00100009483700083,
+        80.21011478218047,
+        -97.40174873442676,
+        107.14283475510472,
+        89.99935363650701,
+        9.075206032139858e-06
+      ],
+      "end_left_joint_deg": [
+        -46.25292432339705,
+        95.08505102079597,
+        -37.20375354111432,
+        111.94570766624179,
+        120.1304053109381,
+        -23.75106759337056
+      ]
+    },
+    {
+      "folder": "zu7_grasp_review6000_seed2",
+      "seed": 2,
+      "source_sha256": "8cc16d729149de6af465cae39424bfc379783365f3808d7765ea0ee729c8063e",
+      "approach_end_step": 32,
+      "approach_s": 1.28,
+      "tcp_length_m": 0.9780548475445413,
+      "direct_distance_m": 0.8301992991125623,
+      "detour_ratio": 1.1780964505631701,
+      "start_left_joint_deg": [
+        0.00100009483700083,
+        80.21011478218047,
+        -97.40174873442676,
+        107.14283475510472,
+        89.99935363650701,
+        9.075206032139858e-06
+      ],
+      "end_left_joint_deg": [
+        -55.62155329844504,
+        97.37127926053932,
+        -25.34337422665,
+        117.30546639097751,
+        124.65201786224323,
+        -33.705002799153625
+      ]
+    },
+    {
+      "folder": "zu7_grasp_review9000_seed6",
+      "seed": 6,
+      "source_sha256": "648376c2b928c95f33b31a621c71203559aa2ebf069b317d9ae1a2d992a30466",
+      "approach_end_step": 97,
+      "approach_s": 3.88,
+      "tcp_length_m": 2.734281034350963,
+      "direct_distance_m": 0.30267029198442863,
+      "detour_ratio": 9.033859968297229,
+      "start_left_joint_deg": [
+        0.00100009483700083,
+        80.21011478218047,
+        -97.40174873442676,
+        107.14283475510472,
+        89.99935363650701,
+        9.075206032139858e-06
+      ],
+      "end_left_joint_deg": [
+        -153.78576629520407,
+        128.97779522966573,
+        100.67222772413645,
+        129.85837053822047,
+        186.69820760344777,
+        -90.55555643118866
+      ]
+    }
+  ]
+}
