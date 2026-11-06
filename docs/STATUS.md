@@ -1,33 +1,38 @@
 # 当前 Zu7 修正批次
 
-采样时间：2026-11-06T14:02:31+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+采样时间：2026-11-06T15:06:38+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
 
 活跃项目脚本：[]
 
 | Zu7 实验产物 | 验收结果 |
 | --- | --- |
-| results/zu7_expert_collision_replay/results.json | 3/3 成功 |
-| results/zu7_expert_contact_diagnostic/results.json | 1/1 成功 |
-| results/zu7_expert_replay_v2/results.json | 0/3 成功 |
-| results/zu7_expert_replay_v3/results.json | 3/3 成功 |
-| results/zu7_independent_expert_replay/seed_11/results.json | 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_12/results.json | 0/1 成功 |
-| results/zu7_independent_expert_replay/seed_6/results.json | 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_7/results.json | 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_8/results.json | 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_9/results.json | 1/1 成功 |
-| results/zu7_learned_independent9000_seed3_5/results.json | 0/3 成功 |
-| results/zu7_learned_seen3000/results.json | 0/3 成功 |
-| results/zu7_learned_seen6000/results.json | 0/3 成功 |
-| results/zu7_learned_seen6000_zero/results.json | 0/3 成功 |
-| results/zu7_learned_unseen6000_seed3_5/results.json | 0/3 成功 |
-| results/zu7_learned_unseen6000_seed3_5_k1/results.json | 0/3 成功 |
-| results/zu7_learned_unseen6000_seed3_5_k4/results.json | 0/3 成功 |
-| results/zu7_task_probe_v3/result.json | 0/1 成功 |
-| results/zu7_task_probe_v4/result.json | 0/1 成功 |
-| results/zu7_task_probe_v5/result.json | 1/1 成功 |
-| results/zu7_task_probe_v6/result.json | 0/1 成功 |
-| results/zu7_task_probe_v7/result.json | 1/1 成功 |
+| results/zu7_expert_collision_replay/results.json | 完整任务 3/3 成功 |
+| results/zu7_expert_contact_diagnostic/results.json | 完整任务 1/1 成功 |
+| results/zu7_expert_replay_v2/results.json | 完整任务 0/3 成功 |
+| results/zu7_expert_replay_v3/results.json | 完整任务 3/3 成功 |
+| results/zu7_grasp_review6000_seed0_1/results.json | 完整任务 0/2 成功；左抓取 0/2 |
+| results/zu7_grasp_review6000_seed2/results.json | 完整任务 0/1 成功；左抓取 1/1 |
+| results/zu7_grasp_review9000_seed6/results.json | 完整任务 0/1 成功；左抓取 0/1 |
+| results/zu7_independent_expert_replay/seed_11/results.json | 完整任务 1/1 成功 |
+| results/zu7_independent_expert_replay/seed_12/results.json | 完整任务 0/1 成功 |
+| results/zu7_independent_expert_replay/seed_6/results.json | 完整任务 1/1 成功 |
+| results/zu7_independent_expert_replay/seed_7/results.json | 完整任务 1/1 成功 |
+| results/zu7_independent_expert_replay/seed_8/results.json | 完整任务 1/1 成功 |
+| results/zu7_independent_expert_replay/seed_9/results.json | 完整任务 1/1 成功 |
+| results/zu7_learned_independent9000_seed3_5/results.json | 完整任务 0/3 成功 |
+| results/zu7_learned_seen3000/results.json | 完整任务 0/3 成功 |
+| results/zu7_learned_seen6000/results.json | 完整任务 0/3 成功 |
+| results/zu7_learned_seen6000_zero/results.json | 完整任务 0/3 成功 |
+| results/zu7_learned_seen9000_seed6_8/results.json | 完整任务 0/3 成功 |
+| results/zu7_learned_unseen6000_seed3_5/results.json | 完整任务 0/3 成功 |
+| results/zu7_learned_unseen6000_seed3_5_k1/results.json | 完整任务 0/3 成功 |
+| results/zu7_learned_unseen6000_seed3_5_k4/results.json | 完整任务 0/3 成功 |
+| results/zu7_multiview_expert_seed6/results.json | 完整任务 1/1 成功；左抓取 1/1 |
+| results/zu7_task_probe_v3/result.json | 完整任务 0/1 成功 |
+| results/zu7_task_probe_v4/result.json | 完整任务 0/1 成功 |
+| results/zu7_task_probe_v5/result.json | 完整任务 1/1 成功 |
+| results/zu7_task_probe_v6/result.json | 完整任务 0/1 成功 |
+| results/zu7_task_probe_v7/result.json | 完整任务 1/1 成功 |
 | data/raw/zu7_collision_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 3 条原始示教 |
 | data/raw/zu7_independent_accepted/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 5 条原始示教 |
 | data/raw/zu7_independent_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 6 条原始示教 |
@@ -44,7 +49,7 @@
 
 # 当前运行状态（自动生成快照）
 
-采样时间：2026-11-06T14:02:31+08:00（北京时间）。
+采样时间：2026-11-06T15:06:38+08:00（北京时间）。
 
 此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
 阶段标记可能滞后，须结合进程和已落盘结果判断。
@@ -57,8 +62,8 @@
 | 原始示教已保存 / 规划种子 | 50 / 50 |
 | 训练进度（日志最近值） | 2000 / 2000 |
 | 最终检查点权重文件存在 | True |
-| 数据盘可用 | 93.15 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4090, 15 MiB, 24564 MiB, 0 % |
+| 数据盘可用 | 93.10 GiB |
+| GPU 快照 | NVIDIA GeForce RTX 4090, 16 MiB, 24564 MiB, 0 % |
 
 转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
 

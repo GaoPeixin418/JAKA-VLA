@@ -1,5 +1,7 @@
 # 在自己的电脑查看 JAKA-VLA
 
+最新全景包：`reviews/2026-11-06/jaka-zu7-multiview-20261106.zip`（约9.24MB）。在GitHub文件页面点Download raw file下载，完整解压后打开`jaka-zu7-multiview/index.html`。默认半速，可逐帧和全屏。首段为6000步SmolVLA的seed2抓取成功、后续交接失败；6000步seeds0/1/2抓取1/3、完整任务0/3。9000步失败和专家参考均分别标注。下文旧包作为历史保留。
+
 你已完成GitHub授权。后续查看不需要再输入这次的一次性代码，也不需要把密码或令牌发给任何人。
 
 ## 只看代码和技术文档

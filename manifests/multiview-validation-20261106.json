@@ -1,0 +1,58 @@
+[
+  {
+    "source": "zu7_learned_seen6000",
+    "review": "zu7_grasp_review6000_seed0_1",
+    "seed": 0,
+    "max_absolute_differences": {
+      "physics_trace": 0.0,
+      "control_trace": 0.0,
+      "raw_chunks": 0.0,
+      "blended_chunks": 0.0
+    },
+    "verified_grasp_s": 0.0,
+    "grasp_success": false,
+    "full_task_success": false
+  },
+  {
+    "source": "zu7_learned_seen6000",
+    "review": "zu7_grasp_review6000_seed0_1",
+    "seed": 1,
+    "max_absolute_differences": {
+      "physics_trace": 0.0,
+      "control_trace": 0.0,
+      "raw_chunks": 0.0,
+      "blended_chunks": 0.0
+    },
+    "verified_grasp_s": 0.0,
+    "grasp_success": false,
+    "full_task_success": false
+  },
+  {
+    "source": "zu7_learned_seen6000",
+    "review": "zu7_grasp_review6000_seed2",
+    "seed": 2,
+    "max_absolute_differences": {
+      "physics_trace": 0.0,
+      "control_trace": 0.0,
+      "raw_chunks": 0.0,
+      "blended_chunks": 0.0
+    },
+    "verified_grasp_s": 3.3600001595914364,
+    "grasp_success": true,
+    "full_task_success": false
+  },
+  {
+    "source": "zu7_learned_seen9000_seed6_8",
+    "review": "zu7_grasp_review9000_seed6",
+    "seed": 6,
+    "max_absolute_differences": {
+      "physics_trace": 0.0,
+      "control_trace": 0.0,
+      "raw_chunks": 0.0,
+      "blended_chunks": 0.0
+    },
+    "verified_grasp_s": 0.0,
+    "grasp_success": false,
+    "full_task_success": false
+  }
+]

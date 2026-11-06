@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-06",
+  "new_training_steps": 0,
+  "new_eval_episodes": 5,
+  "learned6000": {
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "grasp_successes": 1,
+    "full_task_successes": 0
+  },
+  "learned9000": {
+    "seeds": [
+      6
+    ],
+    "grasp_successes": 0,
+    "full_task_successes": 0
+  },
+  "expert_reference": {
+    "seeds": [
+      6
+    ],
+    "grasp_successes": 1,
+    "full_task_successes": 1
+  },
+  "validation": "All 4 learned re-runs have exactly identical old/new action and physics arrays; existing 6 tests pass; full decode and HTML links pass",
+  "video_archive": "reviews/2026-11-06/jaka-zu7-multiview-20261106.zip",
+  "code_sha256": {
+    "scripts/eval_v2.py": "3fe79728e251869f1f239b2817dedd10139cad9d48b1850ec3032ccf2e99b3ba",
+    "scripts/run_zu7_eval.py": "ff23d581c5785a61c8819869644f5ca80174b8c83ff1a41605bc438f7f3cc110",
+    "scripts/build_multiview_review.py": "6d473a5de9e36cc94041f73ebafd02d3f1f4f2651682e87ea9707f263ce86382",
+    "jaka_vla/review_video.py": "6648fc0f56f18c4cad42c96d7ce2323b6e3dec483871870e05ed2814604850e5"
+  }
+}

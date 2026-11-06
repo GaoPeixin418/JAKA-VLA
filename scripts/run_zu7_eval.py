@@ -1,5 +1,5 @@
 """Bounded two-environment evaluation; only manages the server process it creates."""
-import argparse,os,subprocess,time
+import argparse,json,os,subprocess,time
 from pathlib import Path
 ROOT=Path('/data/jaka-vla')
 
@@ -9,6 +9,7 @@ def main():
     p.add_argument('--seed-start',type=int,default=0);p.add_argument('--episodes',type=int,default=3)
     p.add_argument('--k',type=int,default=8);p.add_argument('--max-steps',type=int,default=650)
     p.add_argument('--noise-mode',choices=['fixed','random','zero'],default='fixed');p.add_argument('--noise-seed',type=int)
+    p.add_argument('--review-video',action='store_true')
     args=p.parse_args()
     if not args.name.startswith('zu7_') or not all(c.isalnum() or c in '_-' for c in args.name):raise ValueError('Invalid experiment name')
     output=ROOT/'results'/args.name;socket=ROOT/'run'/f'{args.name}.sock'
@@ -25,9 +26,12 @@ def main():
                 if server.poll() is not None:raise RuntimeError(f'Policy server exited; inspect {log}')
                 if time.monotonic()>deadline:raise TimeoutError('Policy server startup exceeded 120 s')
                 time.sleep(.25)
-            subprocess.run([str(ROOT/'envs/robotwin/bin/python'),'-u',str(ROOT/'scripts/eval_v2.py'),
+            eval_command=[str(ROOT/'envs/robotwin/bin/python'),'-u',str(ROOT/'scripts/eval_v2.py'),
                 '--socket',str(socket),'--output',str(output),'--seed-start',str(args.seed_start),'--episodes',str(args.episodes),
-                '--k',str(args.k),'--max-steps',str(args.max_steps)],stdout=evaluation_log,stderr=subprocess.STDOUT,cwd=ROOT,check=True,timeout=900)
+                '--k',str(args.k),'--max-steps',str(args.max_steps)]
+            if args.review_video:eval_command+=['--review-video']
+            subprocess.run(eval_command,stdout=evaluation_log,stderr=subprocess.STDOUT,cwd=ROOT,check=True,timeout=900)
+            (output/'run_config.json').write_text(json.dumps(vars(args),default=str,indent=2)+'\n')
             server.wait(timeout=30)
             if server.returncode:raise RuntimeError(f'Policy server exited with {server.returncode}')
         finally:

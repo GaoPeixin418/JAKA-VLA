@@ -1,5 +1,7 @@
 # 查看当前 Zu7 结果
 
+最新全景包：`reviews/2026-11-06/jaka-zu7-multiview-20261106.zip`（约9.24MB）。在GitHub文件页面点Download raw file下载，完整解压后打开`jaka-zu7-multiview/index.html`。默认半速，可逐帧和全屏。首段为6000步SmolVLA的seed2抓取成功、后续交接失败；6000步seeds0/1/2抓取1/3、完整任务0/3。9000步失败和专家参考均分别标注。下文旧包作为历史保留。
+
 当前报告：`/data/jaka-vla/docs/ZU7_CORRECTION_20261105.md`。
 
 优先下载服务器的`/data/jaka-vla/results/jaka-zu7-review.zip`，解压后打开`jaka-zu7-review/index.html`。页面分别展示失败诊断、专家回放和学习策略，视频与结果JSON均可离线查看。
