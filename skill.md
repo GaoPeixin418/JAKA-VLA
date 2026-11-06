@@ -87,3 +87,8 @@ nvidia-smi
 用户只授权本JAKA-VLA自动同步至GaoPeixin418/JAKA-VLA私有仓库，不据此同步其他项目或修改全局Git配置。该仓库的每个项目commit会由post-commit钩子推送到main；提交前先完成检查与记录。现有2026-11-05快照已上传并校验；不要因查看进度而重复打包或重复上传。训练依旧关闭push_to_hub/WandB。
 
 恢复/更新备份先读docs/BACKUP_RESTORE.md、docs/HOME_ACCESS.md和manifests/github-backup-20261105.json。Git clone只得到代码；完整实验附件在Release。仅有文件存在不代表传输完成，使用restore_backup.py完整校验；独立本地副本须检查LOCAL_BACKUP_COMPLETE.json而非仅查看目录大小。
+
+
+## 小体积录像查看包同步
+
+用户已授权本项目同步。生成完整校验过的小体积查看包（本轮约4.7MiB）后，可将固定日期的ZIP复制到reviews/YYYY-MM-DD/，附SHA256SUMS和中文查看说明，随项目commit同步。不要覆盖历史日期包；先核验本轮结果与MP4及页面引用齐全。数据集、权重与大规模原始视频仍走独立备份，不加入Git。更新HOME_ACCESS与README入口，不能把本地存在说成GitHub已同步。

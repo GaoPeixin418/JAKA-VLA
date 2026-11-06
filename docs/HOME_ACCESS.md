@@ -9,7 +9,15 @@
 3. 首页是README。点击 `docs` → `FINETUNING_GUIDE.md` 查看微调方法、数据和训练文件；`ZU7_CORRECTION_20261105.md` 是修正报告；根目录 `MEMORY.md` 是进展与限制。
 4. 如需保存到电脑，点绿色 `Code` → `Download ZIP`，下载后解压。用VS Code打开解压文件夹即可。只看代码不需要GPU、CUDA、Python或Git。
 
-## 看录像
+## 看最新录像（2026-11-06）
+
+1. 登录 GaoPeixin418，打开 https://github.com/GaoPeixin418/JAKA-VLA/tree/main/reviews/2026-11-06 。
+2. 点击 jaka-zu7-review-20261106.zip，在文件页点击 Download raw file（下载原始文件）。
+3. 完整解压，打开 jaka-zu7-review/index.html，或者直接用播放器打开子目录里的MP4。
+4. 最新学习策略目录是 zu7_learned_independent9000_seed3_5，包含seed3/4/5；均空抓、0/3。新增专家回放5/6完成任务，不能把专家成功当作模型成功。
+5. 本小体积录像查看包已经随代码提交同步到仓库；Code → Download ZIP也会包含它。数据集和权重大文件仍单独备份，不包含在该查看包中。
+
+## 看2026-11-05历史录像
 
 1. 打开 https://github.com/GaoPeixin418/JAKA-VLA/releases/tag/backup-2026-11-05 。全部21个附件已上传并校验通过。
 2. 在 `Assets` 展开附件列表，下载 `jaka-zu7-review.zip`。
