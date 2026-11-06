@@ -49,6 +49,8 @@ def main():
         source_identity=json.loads((args.dataset/'meta/project_identity.json').read_text())
         if source_identity['robot_id']!=args.robot_id:raise ValueError('Identity mismatch')
         identity.update(rig=source_identity['rig'],urdf_sha256=source_identity['urdf_sha256'])
+        if 'task_scope' in source_identity:
+            identity['task_scope']=source_identity['task_scope']
     args.config.with_suffix('.identity.json').write_text(json.dumps(identity,indent=2)+'\n')
     print(args.config)
 

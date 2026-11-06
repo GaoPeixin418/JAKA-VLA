@@ -1,0 +1,42 @@
+{
+  "training": {
+    "completed": true,
+    "wall_seconds_including_load_and_save": 313.5392117379997,
+    "peak_allocated_gib": 3.5749893188476562,
+    "peak_reserved_gib": 3.72265625,
+    "robot_id": "dual_jaka_zu7"
+  },
+  "learned_results": [
+    {
+      "seed": 6,
+      "grasp_success": false,
+      "oracle_max_object_lift_m": 0.0,
+      "failure_reason": {
+        "type": "step_budget_exhausted",
+        "budget": 200
+      }
+    },
+    {
+      "seed": 0,
+      "grasp_success": false,
+      "oracle_max_object_lift_m": 0.0,
+      "failure_reason": {
+        "type": "step_budget_exhausted",
+        "budget": 200
+      }
+    },
+    {
+      "seed": 1,
+      "grasp_success": false,
+      "oracle_max_object_lift_m": 2.980232238769531e-07,
+      "failure_reason": {
+        "type": "step_budget_exhausted",
+        "budget": 200
+      }
+    }
+  ],
+  "expert_grasp_successes": 3,
+  "servo_replay_grasp_successes": 3,
+  "data_frames": 398,
+  "backup_note": "Experts/data:83 files copied locally and verified. New model delta from independent3000 has exact reconstruction test; full optimizer archive incomplete at deadline."
+}

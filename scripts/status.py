@@ -135,10 +135,16 @@ def render_markdown(report):
              '| Zu7 实验产物 | 验收结果 |','| --- | --- |']
     for path,value in zu7.get('experiments',{}).items():
         rows=value if isinstance(value,list) else [value]
-        if rows and all('success' in x for x in rows):
+        if rows and all(x.get('complete_handover_tested') is False and 'grasp_success' in x for x in rows):
+            verdict=f"抓取子任务 {sum(bool(x['grasp_success']) for x in rows)}/{len(rows)}；未测试完整交接"
+            current.append(f"| {path} | {verdict} |")
+        elif rows and all('success' in x for x in rows):
             verdict=f"完整任务 {sum(bool(x['success']) for x in rows)}/{len(rows)} 成功"
             if all('grasp_success' in x for x in rows):
                 verdict+=f"；左抓取 {sum(bool(x['grasp_success']) for x in rows)}/{len(rows)}"
+            current.append(f"| {path} | {verdict} |")
+        elif rows and all('grasp_success' in x for x in rows):
+            verdict=f"专家抓取子任务 {sum(bool(x['grasp_success']) for x in rows)}/{len(rows)}；未测试完整交接"
             current.append(f"| {path} | {verdict} |")
     for path,value in zu7.get('raw_datasets',{}).items():current.append(f"| {path} | {value['episodes']} 条原始示教 |")
     for path,value in zu7.get('training',{}).items():current.append(f"| {path} | completed={value['completed']} |")

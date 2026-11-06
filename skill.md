@@ -5,6 +5,12 @@ description: 在 /data/jaka-vla 接续双臂 VLA 仿真项目，核查环境、�
 
 # 双臂 VLA 项目操作手册
 
+## 短路径抓取课程（2026-11-06 16时后）
+
+先读docs/SHORT_GRASP_20261106.md的本轮结果，避免重跑已结束预算。probe_zu7_short_grasp.py --seed N --output <新目录> [--collect]仅执行专家左抓取、抬升10cm、保持1秒。4个抓取面×2种等价夹爪roll，规划前段添加目标物体7×7×21cm避碰盒；末段允许目标接触，桌面/另一臂避碰保留。候选按完整两段的关节空间弧长选择并缓存执行，不重新随机规划。原选择器可加--original-selector进行同种子对照。
+
+采集产物在<输出>/raw，状态/动作仍为实测/下一25Hz采样点指令。必须用eval_v2.py --expert-hdf5 <raw/data> --seed-start N --episodes 1 --review-video逐条回放，再由assemble_grasp_curriculum.py验收。抓取课程只有一条所有场景共用的准确指令，不能解释为语言泛化。eval_v2.py和run_zu7_eval.py新增--instruction，默认原完整任务句不变；success仍只表示完整交接，grasp_success单独报告。
+
 ## 全景录像与抓取阶段评价（2026-11-06下午）
 
 `run_zu7_eval.py --review-video`会额外生成`seed_<seed>_multiview.mp4`，包括全局斜视、俯视、头部近景和左腕图像。`eval_v2.py`的专家回放也支持此参数。新录像补拍终态；片头2秒/片尾3秒明确标注静帧，原始仿真时长见results.json。不能为延长视频而继续执行失败动作或把静帧时间计为持物时间。

@@ -43,6 +43,8 @@ def main():
     p.add_argument('--socket',type=Path,default=ROOT/'run/policy-v2.sock');p.add_argument('--expert-hdf5',type=Path)
     p.add_argument('--blend-steps',type=int,default=4)
     p.add_argument('--review-video',action='store_true',help='Add an HD overview, overhead and close-up recording.')
+    p.add_argument('--instruction', default='Use the left arm to grab the red block, hand it to the right arm, and place it on the blue pad.')
+    p.add_argument('--task-scope', choices=['full_handover','left_grasp_lift_hold'], default='full_handover')
     args=p.parse_args()
     args.output=ROOT/args.output
     if args.expert_hdf5:args.expert_hdf5=ROOT/args.expert_hdf5
@@ -101,15 +103,15 @@ def main():
                     frame=review.capture(obs)
                     now=(task._jaka_sim_steps-initial_ticks)*dt
                     if step==0:review.write(frame,now,'INTRO / frozen initial frame; simulation has not advanced',round(review.intro_s*review.fps))
-                    status='RUNNING / full handover task'
-                    if grasp_success_time is not None:status='LEFT GRASP verified / handover task still running'
+                    status='RUNNING / '+args.task_scope
+                    if grasp_success_time is not None:status='LEFT GRASP verified / '+args.task_scope
                     review.write(frame,now,status)
                 if expert is not None:target=expert[min(step,len(expert)-1)]
                 else:
                     if step%args.k==0:
                         conn.send({'op':'predict','observation':{'state':obs['joint_measured']['vector'].astype(np.float32),
                             'images':[obs['observation'][c]['rgb'] for c in ['head_camera','left_camera','right_camera']],
-                            'instruction':'Use the left arm to grab the red block, hand it to the right arm, and place it on the blue pad.'}})
+                            'instruction':args.instruction}})
                         reply=conn.recv();calls.append(reply['inference_seconds'])
                         raw,blended,n=continuity.replace(reply['actions']);chunks.append((step,raw,blended))
                     target=continuity.pop()
@@ -153,6 +155,7 @@ def main():
                         break
                 if failure_reason:break
                 max_height=max(max_height,float(task.box.get_pose().p[2]))
+                if args.task_scope=='left_grasp_lift_hold' and grasp_success_time is not None:break
                 # Require measured release and 0.4 s of stable placement, not only a command to open.
                 measured_now=robot_vector(r)
                 object_velocity=object_body.linear_velocity
@@ -165,12 +168,13 @@ def main():
                         'evidence':'Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold.'}
                     break
             duration=(task._jaka_sim_steps-initial_ticks)*dt
-            if not success and failure_reason is None:failure_reason={'type':'step_budget_exhausted','budget':count}
+            subtask_complete=args.task_scope=='left_grasp_lift_hold' and grasp_success_time is not None and failure_reason is None
+            if not success and not subtask_complete and failure_reason is None:failure_reason={'type':'step_budget_exhausted','budget':count}
             final_obs=task.get_obs();frames.append(final_obs['observation']['head_camera']['rgb'])
             video_metadata=None
             if review:
                 last=review.capture(final_obs)
-                verdict='SUCCESS / full handover' if success else 'STOP / '+failure_reason['type']
+                verdict='SUCCESS / full handover' if success else ('GRASP VERIFIED / subtask only' if subtask_complete else 'STOP / '+failure_reason['type'])
                 if grasp_success_time is not None:verdict+=' / LEFT GRASP achieved'
                 review.write(last,duration,verdict)
                 review.write(last,duration,verdict+' / FROZEN final frame',round(review.outro_s*review.fps))
@@ -182,6 +186,8 @@ def main():
             physical=np.asarray(ticks);offset=1+2*layout.size
             tracking=np.abs(physical[:,1:1+layout.size]-physical[:,offset:offset+layout.size])[:,layout.joint_indices]
             report={'seed':seed,'success':bool(success),'steps':step+1,'sim_seconds':duration,'wall_seconds':time.perf_counter()-start,
+                'instruction':args.instruction,'success_scope':'full_handover','grasp_success_scope':'left_grasp_lift_hold',
+                'task_scope':args.task_scope,'complete_handover_tested':args.task_scope=='full_handover',
                 'k':args.k,'robot_id':args.robot_id,'rig_urdf_sha256':urdf_sha,'controller':'bounded_position_velocity_v2','sampling':mode,
                 'controller_limits':{key:rig[key] for key in ['joint_velocity_limit_rad_s','joint_acceleration_limit_rad_s2','gripper_rate_per_s','tracking_frequency_rad_s']},
                 'planning_calls':len(calls),'inference_seconds':calls,'tracking_joint_mae_rad':float(tracking.mean()),
