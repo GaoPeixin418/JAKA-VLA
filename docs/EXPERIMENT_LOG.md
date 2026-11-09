@@ -9,6 +9,7 @@
 - 数据兼容：OpenPI固定LeRobot读取原3.0数据报缺`meta/tasks.jsonl`并转去Hub报401。`scripts/convert_zu7_for_openpi.py`从8条1076帧`zu7_grasp_coverage_stable`生成独立旧格式副本，另有2条264帧pilot；源数据不变，转出的PNG保留源MP4已解码像素。OpenPI读取器读回8条1076帧、25Hz；全部state/action逐帧数值相同，8条首末共48张三相机图像像素相同。输出`data/openpi/zu7_grasp_coverage_v21_full`及内部`jaka_conversion_manifest.json`，不推Hub。
 - 变换：`jaka_vla/openpi_zu7.py`用头部/双腕相机、12关节增量、2夹爪绝对量；真实数据正反变换动作最大误差0。OpenPI模型前处理得到32维state、10×32动作、三路224×224 RGB及200 token指令。首次验收脚本因浅拷贝后就地修改产生误判，基准数组拷贝后复测通过；这不是模型训练失败。
 - 边界与下一步：未计算Zu7的OpenPI归一化、未运行真实batch前后向、未开始LoRA，也没有新物体/语言对照。先完成一个batch的显存和数值稳定性验收，再设计多物体多指令、固定数据和独立种子的SmolVLA/π0.5比较。完整条件见`docs/PI05_PREFLIGHT_20261109.md`。
+- 收尾：8项`unittest`、Python编译、Git差异检查通过；17:12状态刷新显示无项目活跃脚本。代码/文档提交`b75c104`已自动推送GitHub main。新兼容数据和事件JSON另存本地`outputs/jaka-vla/20261109/pi05-preflight/zu7-openpi-preflight-20261109.tar`，58,654,720字节、31成员、SHA256 `17aee1e1e53bded4102308ecdcbeb4a92ade0e53f909ae2174612ba10315a232`；本地解包核对关键文件通过。公开底模可重下，未放GitHub或本地归档；此备份不等于所有历史模型的完整备份。
 
 时间均按北京时间。早期条目依据现存 JSON、日志和代码回填，日期为 2026-11-05；没有精确起止时间时不补造。
 基础代码提交 `fbd1556`；各库/权重版本见 `manifests/sources.json`。本文件保留历史，当前快照见 `docs/STATUS.md`。
