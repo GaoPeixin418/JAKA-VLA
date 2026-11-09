@@ -1,6 +1,14 @@
 # 当前 Zu7 修正批次
 
-采样时间：2026-11-06T18:19:48+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+## 最新配对检查点诊断（2026-11-09）
+
+- stable1500、coverage3000、recovery4000在相同新种子203–207、左臂≤±0.04rad初态扰动、K8/H50/noise seed42/250步下，抓取子任务分别0/5、2/5、2/5。coverage与recovery均在204、207成功；recovery seed205步数耗尽。仅开发诊断，无完整交接。
+- 本轮未训练；三份逐物理步抓取证据复核一致；15条离线FK最大差<0.66µm。轨迹体现空中对准偏差与提前碰移物体两类失效，误差受物体移动影响，不能认定单一根因。
+- 本批最大实测关节速度1.34–1.40rad/s，最大位置跟踪误差0.018–0.032rad；不足以声明抖动在完整任务中已解决。
+- 查看页/ZIP：`reviews/2026-11-09/jaka-zu7-matched-checkpoints-20261109-v3/index.html`、`.zip`。详细分析见`docs/MATCHED_CHECKPOINTS_20261109.md`。
+- 服务器训练、评测作业均已结束；GPU空闲。本地配对实验归档已解包，222个文件逐项SHA256验证通过；7项`unittest`通过。归档清单与校验记录在`outputs/jaka-vla/20261109/matched-checkpoints/`。
+
+采样时间：2026-11-09T13:43:38+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
 
 活跃项目脚本：[]
 
@@ -30,6 +38,9 @@
 | results/zu7_learned_unseen6000_seed3_5/results.json | 完整任务 0/3 成功 |
 | results/zu7_learned_unseen6000_seed3_5_k1/results.json | 完整任务 0/3 成功 |
 | results/zu7_learned_unseen6000_seed3_5_k4/results.json | 完整任务 0/3 成功 |
+| results/zu7_matched_coverage3000_seed203_207/results.json | 抓取子任务 2/5；未测试完整交接 |
+| results/zu7_matched_recovery4000_seed203_207/results.json | 抓取子任务 2/5；未测试完整交接 |
+| results/zu7_matched_stable1500_seed203_207/results.json | 抓取子任务 0/5；未测试完整交接 |
 | results/zu7_multiview_expert_seed6/results.json | 完整任务 1/1 成功；左抓取 1/1 |
 | results/zu7_perturbed_collect_seed13/result.json | 抓取子任务 1/1；未测试完整交接 |
 | results/zu7_perturbed_collect_seed14/result.json | 抓取子任务 1/1；未测试完整交接 |
@@ -104,7 +115,7 @@
 
 # 当前运行状态（自动生成快照）
 
-采样时间：2026-11-06T18:19:48+08:00（北京时间）。
+采样时间：2026-11-09T13:43:38+08:00（北京时间）。
 
 此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
 阶段标记可能滞后，须结合进程和已落盘结果判断。
@@ -117,8 +128,8 @@
 | 原始示教已保存 / 规划种子 | 50 / 50 |
 | 训练进度（日志最近值） | 2000 / 2000 |
 | 最终检查点权重文件存在 | True |
-| 数据盘可用 | 85.82 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4090, 16 MiB, 24564 MiB, 0 % |
+| 数据盘可用 | 85.75 GiB |
+| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 16 MiB, 32760 MiB, 0 % |
 
 转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
 

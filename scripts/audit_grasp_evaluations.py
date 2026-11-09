@@ -65,7 +65,9 @@ def main():
                 condition = report['initial_condition']
                 if condition.get('scope') == 'intervened_recovery_start_not_executed_prefix':
                     group = 'intervened_recovery_start'
-                elif 'new_seed200_202' in name:
+                elif ('new_seed200_202' in name or '_matched_' in name
+                      or any(abs(float(x)) > 1e-8
+                             for x in condition.get('left_joint_offset_rad', []))):
                     group = 'new_scenes_with_initial_offset'
                 else:
                     group = 'seen_scenes_nominal_start'

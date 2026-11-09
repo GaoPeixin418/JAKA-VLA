@@ -19,7 +19,7 @@ def main():
              'p99_measured_joint_speed_rad_s':float(np.quantile(np.abs(measured_v),.99)),
              'max_raw_target_step_rad':float(np.abs(np.diff(control[:,29:43][:,joints],axis=0)).max())}
         reports.append(row)
-        if file.name!='seed_0_trace.npz':continue
+        seed = int(file.stem.split('_')[1])
         fig,axes=plt.subplots(2,2,figsize=(12,7),constrained_layout=True)
         t=physical[:,0];ct=control[:,0]/25
         ax=axes[0,0];ax.plot(t,np.max(np.abs(command_v),axis=1),label='Command');ax.plot(t,np.max(np.abs(measured_v),axis=1),label='Measured',alpha=.7)
@@ -32,7 +32,7 @@ def main():
         ax.set(title='Gripper aperture (0=closed, 1=open)',ylabel='Normalized aperture');ax.legend(ncol=2,fontsize=8)
         ax=axes[1,1];ax.plot(ct,control[:,59]);ax.set(title='Object height (evaluation only)',ylabel='World z (m)')
         for ax in axes.flat:ax.set_xlabel('Simulation time (s)');ax.grid(alpha=.2)
-        fig.savefig(args.results/'seed_0_control.png',dpi=160);plt.close(fig)
+        fig.savefig(args.results/f'seed_{seed}_control.png',dpi=160);plt.close(fig)
     (args.results/'control_metrics.json').write_text(json.dumps(reports,indent=2)+'\n')
     print(json.dumps(reports,indent=2))
 

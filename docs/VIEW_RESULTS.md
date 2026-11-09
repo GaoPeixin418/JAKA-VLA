@@ -1,5 +1,17 @@
 # 查看当前 Zu7 结果
 
+## 最新配对抓取诊断（2026-11-09）
+
+离线查看页：`reviews/2026-11-09/jaka-zu7-matched-checkpoints-20261109-v3/index.html`。ZIP下载包：`reviews/2026-11-09/jaka-zu7-matched-checkpoints-20261109-v3.zip`；包含stable1500、coverage3000、recovery4000三个检查点在相同新种子203–207上的15段全景视频、逐回合结果、速度/跟踪曲线和审计报告。录像均完整解码，页面本地链接已验证。评测只覆盖左臂红色方块抓取子任务，不代表完整交接、语言泛化或真机表现。
+
+可从自己的电脑下载ZIP（请用租赁平台提供的服务器地址；不要把连接凭据写入项目文件）：
+
+```bash
+scp -P <SSH端口> <用户名>@<SSH主机>:/data/jaka-vla/reviews/2026-11-09/jaka-zu7-matched-checkpoints-20261109-v3.zip ./jaka-zu7-matched-checkpoints-20261109.zip
+```
+
+解压后打开 `jaka-zu7-matched-checkpoints-20261109-v3/index.html`。本轮分析见 `docs/MATCHED_CHECKPOINTS_20261109.md`，文件校验清单在解压包的 `SHA256.json` 中。
+
 最新全景包：`reviews/2026-11-06/jaka-zu7-multiview-20261106.zip`（约9.24MB）。在GitHub文件页面点Download raw file下载，完整解压后打开`jaka-zu7-multiview/index.html`。默认半速，可逐帧和全屏。首段为6000步SmolVLA的seed2抓取成功、后续交接失败；6000步seeds0/1/2抓取1/3、完整任务0/3。9000步失败和专家参考均分别标注。下文旧包作为历史保留。
 
 当前报告：`/data/jaka-vla/docs/ZU7_CORRECTION_20261105.md`。
