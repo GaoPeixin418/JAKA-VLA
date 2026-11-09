@@ -1,5 +1,15 @@
 # 实验与工程验证记录
 
+## E12 · 已有抓取事件分类与π0.5工程预检（2026-11-09下午）
+
+- 目标：在服务器17:30关机前，把15条配对抓取失败拆成可复核事件类型，并验证32GB单卡接入π0.5的数据/权重条件。无新专家示教、SmolVLA训练、π0.5训练或闭环回合。
+- 旧轨迹审计：`scripts/classify_matched_grasp_events.py`读取E11同一15条；SHA256、首次闭爪步、逐物理步0.6秒持物判据逐条核对。`results/zu7_matched_event_labels_20261109_v2.json`统计stable1500先位移4/偏离1、coverage3000先位移2/偏离1/成功2、recovery4000先位移1/偏离1/未闭爪1/成功2。初版`_20261109.json`混用三维位移，v2修为水平位移；初版文件保留，不作最终指标。分类阈值20mm/40mm只供离线描述，不作因果或在线控制。
+- 环境：Ubuntu22.04.4，RTX4080 SUPER 32760MiB，OpenPI `215abfb217dbac7d5f1273282331b9b1866c0479`，独立`/data/pi05-env`，JAX0.5.3和PyTorch2.7.1+cu126均可见GPU。原SmolVLA环境未修改；上游源码持久副本`repos/openpi`，依赖由固定`uv.lock`解析。原镜像缺少system Python venv支持，改用独立uv创建环境；失败安装日志未作为成功证据。
+- 权重：官方公开`pi05_base/params`20个对象总12,441,721,931字节下载完成，本地相对路径和大小与GCS清单20/20吻合。`restore_params`恢复51个数组、总13,413,735,488字节，用时16.37秒、CPU峰值RSS 21,715,104KB；尚未做GPU前向/反向或LoRA显存实测。官方估计单卡LoRA>22.5GB、全量>70GB，不能把官方估计当本任务实测。
+- 数据兼容：OpenPI固定LeRobot读取原3.0数据报缺`meta/tasks.jsonl`并转去Hub报401。`scripts/convert_zu7_for_openpi.py`从8条1076帧`zu7_grasp_coverage_stable`生成独立旧格式副本，另有2条264帧pilot；源数据不变，转出的PNG保留源MP4已解码像素。OpenPI读取器读回8条1076帧、25Hz；全部state/action逐帧数值相同，8条首末共48张三相机图像像素相同。输出`data/openpi/zu7_grasp_coverage_v21_full`及内部`jaka_conversion_manifest.json`，不推Hub。
+- 变换：`jaka_vla/openpi_zu7.py`用头部/双腕相机、12关节增量、2夹爪绝对量；真实数据正反变换动作最大误差0。OpenPI模型前处理得到32维state、10×32动作、三路224×224 RGB及200 token指令。首次验收脚本因浅拷贝后就地修改产生误判，基准数组拷贝后复测通过；这不是模型训练失败。
+- 边界与下一步：未计算Zu7的OpenPI归一化、未运行真实batch前后向、未开始LoRA，也没有新物体/语言对照。先完成一个batch的显存和数值稳定性验收，再设计多物体多指令、固定数据和独立种子的SmolVLA/π0.5比较。完整条件见`docs/PI05_PREFLIGHT_20261109.md`。
+
 时间均按北京时间。早期条目依据现存 JSON、日志和代码回填，日期为 2026-11-05；没有精确起止时间时不补造。
 基础代码提交 `fbd1556`；各库/权重版本见 `manifests/sources.json`。本文件保留历史，当前快照见 `docs/STATUS.md`。
 

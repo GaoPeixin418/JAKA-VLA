@@ -5,6 +5,10 @@ description: 在 /data/jaka-vla 接续双臂 VLA 仿真项目，核查环境、�
 
 # 双臂 VLA 项目操作手册
 
+## 2026-11-09下午接续
+
+新增的`classify_matched_grasp_events.py`只分析既有15条轨迹；结果为`results/zu7_matched_event_labels_20261109_v2.json`，使用水平位移口径。π0.5独立环境`/data/pi05-env`、固定源码`repos/openpi`和底模缓存`/data/pi05-cache/models`不影响SmolVLA。`convert_zu7_for_openpi.py`用OpenPI环境运行，可从LeRobot 3.0生成独立旧格式副本；现有8条1076帧副本为`data/openpi/zu7_grasp_coverage_v21_full`。`jaka_vla/openpi_zu7.py`定义三相机和12关节增量/2夹爪绝对变换，尚未训练。先读`docs/GRASP_EVENT_TAXONOMY_20261109.md`和`docs/PI05_PREFLIGHT_20261109.md`，不要重复下载/转换或将预检称为模型效果。
+
 ## 当前批次：2026-11-09配对诊断已结束
 
 先读MEMORY最上方及`docs/MATCHED_CHECKPOINTS_20261109.md`。stable1500、coverage3000、recovery4000在相同新种子203–207、≤±0.04rad左臂初态扰动、K8/H50/noise42/250步下分别0/5、2/5、2/5。未新训练、未改策略或控制器。逐物理步判据、全部15条目标几何与跟踪诊断均已完成；失败混有接近偏差、提前推动物块和预算耗尽，不要简化为单一原因。下一步按“接近→接触/物块位移→闭爪→有效持物”标注失效，再设计数据/训练步数匹配的对照。

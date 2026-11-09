@@ -1,5 +1,13 @@
 # 项目长期记忆
 
+## 2026-11-09下午接续：事件分类与π0.5预检
+
+- 服务器已连接并核实：Ubuntu22.04、单RTX4080 SUPER 32760MiB（PyTorch可见31.47GiB）、系统内存58GiB、GPU空闲；项目Git工作树起始干净，原训练/评测无活跃作业。用户预计17:30关机。
+- 基于已有15条配对轨迹，`classify_matched_grasp_events.py`逐条校验SHA256/闭爪/持物判据并分类。stable1500：闭爪前物体水平位移≥20mm的失败4、偏离失败1；coverage3000：先位移失败2、偏离失败1、成功2；recovery4000：先位移失败1、偏离失败1、未闭爪1、成功2。结果`results/zu7_matched_event_labels_20261109_v2.json`；初版用三维位移，v2已统一水平位移。未新采样或训练。见`docs/GRASP_EVENT_TAXONOMY_20261109.md`。
+- OpenPI源码预检固定`215abfb217dbac7d5f1273282331b9b1866c0479`并保存在`repos/openpi`（Git忽略的第三方源码），独立环境`/data/pi05-env`安装成功，JAX GPU和PyTorch可用。官方单卡LoRA显存估计>22.5GB、全量>70GB。π0.5公开base参数20个对象、约11.59GiB已下载且与GCS对象大小逐项一致，51个参数数组实际CPU恢复成功；未做GPU前向/反向。
+- 原Zu7 LeRobot 3.0数据不能被OpenPI固定旧读取器直接加载。新转换脚本生成独立旧格式副本，2条264帧pilot和8条1076帧完整抓取课程均成功；OpenPI读取器能读完整副本，全部state/action逐帧完全一致，8条首末共48张三相机帧像素一致。Zu7三相机及12关节增量/2夹爪绝对变换经真实样本往返误差0，模型前处理产生32维state、10x32动作块、三路224图像和200 token指令。无π0.5训练、推理或闭环成功记录。见`docs/PI05_PREFLIGHT_20261109.md`。
+- 关机前完成状态刷新、测试、项目提交与GitHub同步；转换数据副本和结果另做本地备份。下一轮先算Zu7归一化并做一个真实batch前后向显存测试，再考虑LoRA和多物体语言任务。
+
 ## 当前接续入口：2026-11-09 配对检查点诊断完成
 
 - 服务器 `/data/jaka-vla` 当前为 JAKA-VLA GitHub `main` 同步代码；运行机为 Ubuntu 22.04、RTX 4080 SUPER、系统内存约58 GiB，数据盘约148 GiB。服务器仍属租用资源，结果需保留本地副本。
