@@ -41,9 +41,10 @@ def main():
         source=args.checkpoint/name
         if source.is_dir():shutil.copytree(source,args.output/name)
         elif source.exists():shutil.copy2(source,args.output/name)
+    known_reference=args.reference.resolve()==Path('/data/jaka-vla/checkpoints/openpi/pi05_zu7_lora_h50/pi05_qualification_20261111/3')
     report={'format':'pi05_exact_parameter_delta_v1','checkpoint':str(args.checkpoint),'reference_checkpoint':str(args.reference),
-            'reference_local_archive':'outputs/20261111/pi05/qualification_checkpoint_and_results.tar',
-            'reference_archive_sha256':'9438701e4e2007d936fa61361fff665c9477e04bfcd8fa8c9a3dc4a7f3f266a7',
+            'reference_local_archive':'outputs/20261111/pi05/qualification_checkpoint_and_results.tar' if known_reference else None,
+            'reference_archive_sha256':'9438701e4e2007d936fa61361fff665c9477e04bfcd8fa8c9a3dc4a7f3f266a7' if known_reference else None,
             'changed_arrays':len(arrays),'changed_elements':int(changed_elements),'all_parameter_bytes_reconstructed':True,'leaves':leaves,
             'scope':'exact model parameters, optimizer, normalization and identity; requires separately verified reference archive'}
     (args.output/'delta_manifest.json').write_text(json.dumps(report,indent=2)+'\n')

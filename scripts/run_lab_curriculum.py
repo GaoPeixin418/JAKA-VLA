@@ -39,7 +39,9 @@ def main():
     reuse_failed=False
     def command(argv,log):
         nonlocal reuse_failed
-        with log.open('w') as f:
+        # SAPIEN may change the process locale between inline probes. Upstream
+        # video export prints Unicode symbols, so never inherit the locale here.
+        with log.open('w', encoding='utf-8') as f:
             if args.reuse_planner and str(argv[0])=='scripts/probe_zu7_short_grasp.py':
                 import contextlib,gc,signal,traceback
                 from jaka_vla.planner_cache import release_scene_entities
@@ -78,8 +80,10 @@ def main():
                 full_review=layout%args.full_review_layout_every==0
                 probe_video_args=[] if full_review else ['--no-review-video']
                 row['full_review_video']=full_review
+                attempt_started=time.monotonic()
                 row['probe_returncode']=command(['scripts/probe_zu7_short_grasp.py','--rig-config','configs/robots/dual_zu7_lab.json',
                     '--scene-spec',scene,'--seed',seed,'--output',probe,'--collect',*probe_video_args],run/'logs'/f'{key}_probe.log')
+                row['probe_wall_seconds']=time.monotonic()-attempt_started
                 result=json.loads((probe/'result.json').read_text()) if (probe/'result.json').exists() else {}
                 row['probe_failure']=result.get('failure')
                 if row['probe_returncode']==0 and result.get('grasp_success') and result.get('failure') is None:
@@ -102,6 +106,7 @@ def main():
                 else:consecutive_setup_failures=0
                 if row['accepted']:
                     accepted_probes.append(probe);accepted_replays.append(replay);report['accepted']+=1
+                row['attempt_wall_seconds']=time.monotonic()-attempt_started
                 (run/'progress.json').write_text(json.dumps(report,indent=2)+'\n')
                 print(json.dumps(row),flush=True)
                 if reuse_failed:

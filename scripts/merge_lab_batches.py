@@ -16,6 +16,7 @@ def main():
         for row in progress['attempts']:
             if not row['accepted']:continue
             spec=json.loads((Path(row['probe'])/'result.json').read_text())['scene_spec']
+            if spec['split']!='train':raise ValueError('Nontraining layout cannot enter the training dataset')
             key=(spec['version'],row['layout'],row['target'])
             if key in keys:raise ValueError(f'Duplicate episode condition: {key}')
             keys.add(key);layout_targets[row['layout']].add(row['target'])

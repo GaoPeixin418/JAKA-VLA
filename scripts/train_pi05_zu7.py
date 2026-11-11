@@ -24,6 +24,7 @@ import numpy as np
 import optax
 from openpi.training import data_loader, checkpoints, sharding
 from jaka_vla.pi05_config import build_config
+from jaka_vla.identity import rig_urdf_hash
 
 
 def flat(state):
@@ -70,7 +71,7 @@ def main():
     cfg=build_config(args.dataset,args.name,steps=args.steps,batch_size=args.batch_size,horizon=args.horizon)
     output=ROOT/'results'/args.name;output.mkdir(parents=True,exist_ok=False)
     report={'arguments':vars(args),'completed':False,'stage':'initializing','metrics':[],'started_at':time.time(),
-            'scope':'engineering qualification; training loss is not task success'}
+            'scope':'engineering qualification; training loss is not task success' if args.steps<=3 else 'bounded pi0.5 fine-tuning; training loss is not task success'}
     stop=threading.Event();gpu=[]
     def monitor():
         while not stop.is_set():
@@ -132,9 +133,14 @@ def main():
         completed_steps=int(state.step)
         checkpoints.save_state(manager,state,loader,completed_steps);manager.wait_until_finished()
         report['checkpoint']=str(cfg.checkpoint_dir/str(completed_steps));report['completed_steps']=completed_steps
-        identity={'robot_id':'dual_jaka_zu7','state_dim':14,'action_dim':14,'dataset':args.dataset,
-                  'rig':json.loads((ROOT/'configs/robots/dual_zu7.json').read_text()),
-                  'urdf_sha256':hashlib.sha256((ROOT/'repos/RoboTwin/assets/embodiments/jaka-zu7-proxy/robot.urdf').read_bytes()).hexdigest(),
+        dataset_identity=ROOT/'data/openpi'/args.dataset/'meta/project_identity.json'
+        if dataset_identity.exists():
+            src_identity=json.loads(dataset_identity.read_text());rig=src_identity['rig'];urdf_sha=src_identity['urdf_sha256']
+        elif args.dataset=='zu7_grasp_coverage_v21_full':
+            rig=json.loads((ROOT/'configs/robots/dual_zu7.json').read_text());urdf_sha=rig_urdf_hash(rig)
+        else:raise ValueError('Dataset hardware identity missing')
+        identity={'robot_id':rig['robot_id'],'state_dim':14,'action_dim':14,'dataset':args.dataset,
+                  'rig':rig,'urdf_sha256':urdf_sha,
                   'model':'pi05','horizon':args.horizon,'discrete_state_input':True,
                   'config_name':cfg.name,'experiment':args.name,'completed_steps':completed_steps}
         (Path(report['checkpoint'])/'project_identity.json').write_text(json.dumps(identity,indent=2)+'\n')

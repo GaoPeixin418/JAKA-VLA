@@ -13,10 +13,47 @@
     "continuation_stop_new_attempts": "2026-11-11T20:40:00+08:00",
     "accepted_only": true,
     "required_replay": "same seed, same scene, bounded servo, no unintended arm contacts",
-    "training_layout_range": [0, 99],
-    "development_layout_range": [1000, 1009],
-    "final_holdout_layout_range": [2000, 2019],
-    "sufficiency_claim": "Counts are a bounded collection budget; adequacy must be assessed with coverage and held-out performance."
+    "training_layout_range": [
+      0,
+      99
+    ],
+    "development_layout_range": [
+      1000,
+      1009
+    ],
+    "final_holdout_layout_range": [
+      2000,
+      2019
+    ],
+    "sufficiency_claim": "Counts are a bounded collection budget; adequacy must be assessed with coverage and held-out performance.",
+    "continuation_batches": [
+      {
+        "name": "lab_multitarget_20261111_c",
+        "layouts": [
+          5,
+          14
+        ],
+        "max_attempts": 30
+      },
+      {
+        "name": "lab_multitarget_20261111_d",
+        "layouts": [
+          15,
+          24
+        ],
+        "max_attempts": 30
+      },
+      {
+        "name": "lab_multitarget_20261111_e",
+        "layouts": [
+          25,
+          34
+        ],
+        "max_attempts": 30
+      }
+    ],
+    "max_simultaneous_collection_workers": 2,
+    "training_overlap_with_collection": false
   },
   "training": {
     "model": "pi05_base",
@@ -33,9 +70,17 @@
     "stop_updates_by": "2026-11-11T21:15:00+08:00"
   },
   "evaluation": {
-    "seen_layouts": [0],
-    "development_layouts": [1000],
-    "targets_per_layout": [0, 1, 2],
+    "seen_layouts": [
+      0
+    ],
+    "development_layouts": [
+      1000
+    ],
+    "targets_per_layout": [
+      0,
+      1,
+      2
+    ],
     "max_rollouts": 6,
     "k": 8,
     "horizon": 50,
