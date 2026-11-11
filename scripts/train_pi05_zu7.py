@@ -72,6 +72,13 @@ def main():
     output=ROOT/'results'/args.name;output.mkdir(parents=True,exist_ok=False)
     report={'arguments':vars(args),'completed':False,'stage':'initializing','metrics':[],'started_at':time.time(),
             'scope':'engineering qualification; training loss is not task success' if args.steps<=3 else 'bounded pi0.5 fine-tuning; training loss is not task success'}
+    provenance_paths=[ROOT/'data/openpi'/args.dataset/'meta'/name for name in
+        ('info.json','episodes.jsonl','tasks.jsonl','project_identity.json')]
+    provenance_paths += [cfg.assets_dirs/args.dataset/name for name in ('norm_stats.json','audit.json')]
+    provenance_paths += [Path(__file__),ROOT/'jaka_vla/pi05_config.py',ROOT/'jaka_vla/openpi_zu7.py']
+    report['provenance']={'git_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+        'file_sha256':{str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
+                       for path in provenance_paths if path.exists()}}
     stop=threading.Event();gpu=[]
     def monitor():
         while not stop.is_set():
@@ -143,6 +150,7 @@ def main():
                   'rig':rig,'urdf_sha256':urdf_sha,
                   'model':'pi05','horizon':args.horizon,'discrete_state_input':True,
                   'config_name':cfg.name,'experiment':args.name,'completed_steps':completed_steps}
+        identity['provenance']=report['provenance']
         (Path(report['checkpoint'])/'project_identity.json').write_text(json.dumps(identity,indent=2)+'\n')
         report.update(completed=True,stage='saved',deadline_shortened=completed_steps!=args.steps)
     except Exception as exc:
