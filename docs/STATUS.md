@@ -1,24 +1,32 @@
 # 实验室归档硬件与 π0.5 当前状态
 
-采样时间：2026-11-11T18:47:48+08:00（北京时间）。
+采样时间：2026-11-11T21:31:46+08:00（北京时间）。
 
 按归档建模，尚未实机核对；夹爪行程、腕相机和光学坐标轴仍有假设。
 硬件与规划证据见 `docs/LAB_ARCHIVE_20261111.md`；π0.5工程验收见 `docs/PI05_QUALIFICATION_20261111.md`。
 
-活跃脚本：[{"pid": 12123, "scripts": ["scripts/run_lab_curriculum.py"]}, {"pid": 14757, "scripts": ["scripts/probe_zu7_short_grasp.py"]}]
+活跃脚本：[]
 
 | 新批次 | 当前结果 |
 | --- | --- |
-| results/lab_multitarget_20261111_a/progress.json | 9 条验收通过 / 9 次尝试；completed=False；None |
+| results/lab_multitarget_20261111_a/progress.json | 12 条验收通过 / 12 次尝试；completed=True；deadline |
+| results/lab_multitarget_20261111_b/progress.json | 1 条验收通过 / 2 次尝试；completed=True；persistent_worker_exception |
+| results/lab_multitarget_20261111_b2/progress.json | 2 条验收通过 / 2 次尝试；completed=True；attempt_budget |
+| results/lab_multitarget_20261111_c/progress.json | 30 条验收通过 / 30 次尝试；completed=True；attempt_budget |
+| results/lab_multitarget_20261111_d/progress.json | 30 条验收通过 / 30 次尝试；completed=True；attempt_budget |
+| results/lab_multitarget_20261111_e/progress.json | 22 条验收通过 / 22 次尝试；completed=True；deadline |
+| results/lab_pi05_finetune_20261111/audit.json | 更新 4854 步；completed=True；仅说明训练工程状态 |
 | results/pi05_qualification_20261111/audit.json | 更新 3 步；completed=True；仅说明训练工程状态 |
+| 新硬件合并训练集 | 97 条 / 41206 帧 / 33 布局；数据充分性未确立 |
+| results/lab_pi05_eval_20261111/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
 
 以下为旧硬件及 ALOHA 历史记录。
 
 # 历史 Zu7 临时夹爪实验
 
-采样时间：2026-11-11T18:47:48+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+采样时间：2026-11-11T21:31:46+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
 
-活跃项目脚本：[{"pid": 12123, "scripts": ["scripts/run_lab_curriculum.py"]}, {"pid": 14757, "scripts": ["scripts/probe_zu7_short_grasp.py"]}]
+活跃项目脚本：[]
 
 | Zu7 实验产物 | 验收结果 |
 | --- | --- |
@@ -124,7 +132,7 @@
 
 # 当前运行状态（自动生成快照）
 
-采样时间：2026-11-11T18:47:48+08:00（北京时间）。
+采样时间：2026-11-11T21:31:46+08:00（北京时间）。
 
 此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
 阶段标记可能滞后，须结合进程和已落盘结果判断。
@@ -137,8 +145,8 @@
 | 原始示教已保存 / 规划种子 | 50 / 50 |
 | 训练进度（日志最近值） | 2000 / 2000 |
 | 最终检查点权重文件存在 | True |
-| 数据盘可用 | 58.46 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 3913 MiB, 32760 MiB, 51 % |
+| 数据盘可用 | 38.22 GiB |
+| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 16 MiB, 32760 MiB, 0 % |
 
 转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
 

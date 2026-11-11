@@ -110,11 +110,20 @@ def collect_status():
     current={'curricula':{},'pi05':{},'hardware_profile':'configs/robots/lab_archive_20261111.json'}
     for path in sorted((ROOT/'results').glob('lab_*/progress.json')):
         data=json.loads(path.read_text())
+        if 'attempts' not in data:continue
         current['curricula'][str(path.relative_to(ROOT))]={k:data.get(k) for k in ('accepted','completed','stop_reason','raw_dataset')}
         current['curricula'][str(path.relative_to(ROOT))]['attempts']=len(data.get('attempts',[]))
     for path in sorted((ROOT/'results').glob('*pi05*/audit.json')):
         data=json.loads(path.read_text())
         current['pi05'][str(path.relative_to(ROOT))]={k:data.get(k) for k in ('completed','stage','completed_steps','checkpoint','error','gpu_observed_peak_mib')}
+    current['pi05_evaluations']={}
+    for path in sorted((ROOT/'results').glob('lab_pi05_eval_*/summary.json')):
+        data=json.loads(path.read_text())
+        current['pi05_evaluations'][str(path.relative_to(ROOT))]={k:data.get(k) for k in ('completed','groups','checkpoint','scope')}
+    coverage=ROOT/'data/raw/lab_multitarget_20261111_merged/coverage.json'
+    if coverage.exists():
+        data=json.loads(coverage.read_text())
+        current['accepted_dataset']={k:data[k] for k in ('episodes','frames','distinct_layouts','complete_three_target_layouts','color_counts')}
     report['archive_rig_and_pi05']=current
     return report
 
@@ -195,6 +204,13 @@ def render_markdown(report):
     if not active.get('curricula'):recent.append('| 新硬件专家数据 | 尚无批量验收记录；诊断失败不能计为示教 |')
     for name,data in active.get('pi05',{}).items():
         recent.append(f"| {name} | 更新 {data['completed_steps']} 步；completed={data['completed']}；仅说明训练工程状态 |")
+    if active.get('accepted_dataset'):
+        data=active['accepted_dataset']
+        recent.append(f"| 新硬件合并训练集 | {data['episodes']} 条 / {data['frames']} 帧 / {data['distinct_layouts']} 布局；数据充分性未确立 |")
+    for name,data in active.get('pi05_evaluations',{}).items():
+        groups=data.get('groups') or {}
+        text='；'.join(f"{key} 合格抓取 {value['successes']}/{value['episodes']}" for key,value in groups.items())
+        recent.append(f"| {name} | {text}；completed={data['completed']}；小样本开发诊断 |")
     return '\n'.join(recent+['','以下为旧硬件及 ALOHA 历史记录。','']+lines)
 
 
