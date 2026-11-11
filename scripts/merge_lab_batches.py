@@ -33,6 +33,8 @@ def main():
         holds.append(report['longest_verified_hold_s']);positions.append(report['scene_spec']['objects'][row['target']]['xyz'])
     report={'episodes':len(rows),'frames':sum(frame_counts),'fps':25,'duration_seconds':sum(frame_counts)/25,
         'source_batches':[str(x) for x in a.batches],'color_counts':dict(Counter(r['color'] for r in rows)),
+        'color_position_counts':{color:{str(target):sum(r['color']==color and r['target']==target for r in rows)
+            for target in range(3)} for color in ('red','blue','yellow')},
         'target_position_counts':dict(Counter(r['target'] for r in rows)),
         'layout_targets':{str(k):sorted(v) for k,v in layout_targets.items()},
         'distinct_layouts':len(layout_targets),'complete_three_target_layouts':sum(len(x)==3 for x in layout_targets.values()),

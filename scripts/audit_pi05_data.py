@@ -22,6 +22,8 @@ def main():
     for ep in eps:
         start=ds[offset];end=ds[offset+ep['length']-1]
         for label,sample in [('first',start),('last',end)]:
+            if len(ep['tasks'])!=1 or str(sample.get('prompt'))!=ep['tasks'][0]:
+                raise AssertionError('Loaded language prompt differs from episode task')
             s=np.asarray(sample['state']).copy();acts=np.asarray(sample['actions']).copy()
             inp=Zu7Inputs()(sample);delta=transforms.DeltaActions(JOINT_DELTA_MASK)(inp)
             expected=acts.copy();expected[:,mask]-=s[mask]
@@ -46,8 +48,14 @@ def main():
     original=base(sample);changed=dict(sample);changed['state']=np.asarray(sample['state']).copy();changed['state'][0]-=.2
     modified=base(changed)
     if np.array_equal(original['tokenized_prompt'],modified['tokenized_prompt']):raise AssertionError('State missing from pi0.5 tokens')
+    tasks=[json.loads(x)['task'] for x in (source/'meta/tasks.jsonl').read_text().splitlines()]
+    prompt_tokens=[base({**sample,'prompt':task})['tokenized_prompt'] for task in tasks]
+    for i,tokens in enumerate(prompt_tokens):
+        if any(np.array_equal(tokens,other) for other in prompt_tokens[:i]):
+            raise AssertionError('Distinct task prompts produced identical model tokens')
     report={'passed':True,'episodes':len(eps),'frames':offset,'horizon':50,'discrete_state_input':True,
-            'boundary_checks':checks,'nonfinite_rejection':True,'state_changes_tokens':True}
+            'boundary_checks':checks,'nonfinite_rejection':True,'state_changes_tokens':True,
+            'loaded_prompts_match_episode_tasks':True,'distinct_task_prompt_tokens':len(prompt_tokens)}
     a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
 
 if __name__=='__main__':main()
