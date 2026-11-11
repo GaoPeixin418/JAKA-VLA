@@ -1,0 +1,654 @@
+{
+  "profile_id": "dual_zu7_lab_archive_20261111",
+  "robot_id": "dual_jaka_zu7_lab_archive",
+  "evidence_status": "archive-derived; current real installation unconfirmed by user",
+  "source_root_runtime": "/data/jaka-vla/data/hardware/lab_archive_20261111",
+  "source_manifest": {
+    "Kinect标定文件/004878164947/calib_color.yaml": {
+      "sha256": "12375aa1b3017bb929b47c6f59d2e10d23426b9834ba8af10caa0575e6e9cdbc",
+      "bytes": 763
+    },
+    "Kinect标定文件/004878164947/calib_depth.yaml": {
+      "sha256": "6d2f75ab1aca30a4f7ef1d9a64bd0a94861a2682717a6d97b90dcab1c4d70cc4",
+      "bytes": 50
+    },
+    "Kinect标定文件/004878164947/calib_ir.yaml": {
+      "sha256": "40de9012215d45b2c202c3dd6f42ca32d90acdcadecd849be6f740f79292b4b4",
+      "bytes": 763
+    },
+    "Kinect标定文件/004878164947/calib_pose.yaml": {
+      "sha256": "31f6fd8325b7e7b0d0c985156a5a0d50ef96ff2c52720eef5065d4cd190f4992",
+      "bytes": 1091
+    },
+    "dual_moveit_config/config/dual.srdf": {
+      "sha256": "1e67a0d6e231d152c8444813699800f257eed33a5805f3f2825b9c6c46a69e8e",
+      "bytes": 10633
+    },
+    "dual_moveit_config/config/joint_limits.yaml": {
+      "sha256": "77c2da7cd907d7ec93e0d392e258ad5e000949c33b6952405da2a6219e8b244f",
+      "bytes": 2858
+    },
+    "dual_moveit_config/config/kinematics.yaml": {
+      "sha256": "321027ebd0ffe9dcd5ff013cc653ef3968f314704321f71fcdb9d17e938fdcf8",
+      "bytes": 373
+    },
+    "jaka_zu7_v2/meshes/base_link.STL": {
+      "sha256": "13d020aa0902d9851c8435ec6f94ea34923a61fc192030bffa74d6162f0e9ee2",
+      "bytes": 366484
+    },
+    "jaka_zu7_v2/meshes/gripper-raw.STL": {
+      "sha256": "61f18efc6b5cab59dabc4c92de7d0ec316343f0519444d6a6fe9d820cae778ab",
+      "bytes": 59984
+    },
+    "jaka_zu7_v2/meshes/link_1.STL": {
+      "sha256": "e10d98dcb04c046e60b9757a3009b4de958ca7871a02e3665e52ea1cd99ad1fe",
+      "bytes": 222284
+    },
+    "jaka_zu7_v2/meshes/link_2.STL": {
+      "sha256": "7a3857e7c66c5681d54eae68010f6164893bba650f24eb2a1b13eeee7e4d9992",
+      "bytes": 779784
+    },
+    "jaka_zu7_v2/meshes/link_3.STL": {
+      "sha256": "d3e2988f06f7e14c51a39441f6bf3a074e252691c2f99ebf1dac0a96cba3a6bb",
+      "bytes": 439184
+    },
+    "jaka_zu7_v2/meshes/link_4.STL": {
+      "sha256": "d32da3c8567f77a4bb4d4b6fc68fbb544d1f8f15434dba17f9029ef2cae437ce",
+      "bytes": 172784
+    },
+    "jaka_zu7_v2/meshes/link_5.STL": {
+      "sha256": "d3f3ffc83edcbaaac2fe7203d19703d184122df16ec12d3569c60e94b61718b0",
+      "bytes": 237284
+    },
+    "jaka_zu7_v2/meshes/link_6.STL": {
+      "sha256": "184a630539320c9f0ff32854f3291fb212444fbb313e6c3d03670d1375e503ee",
+      "bytes": 218984
+    },
+    "jaka_zu7_v2/urdf/jaka_zu7_v2.xacro": {
+      "sha256": "a83971bb3115c646b9ab5da3b2eb5515aa5d2f885e6f59a8b0dbbb1b27b5dc48",
+      "bytes": 8745
+    },
+    "pickingv2/launch/cam_to_right.launch": {
+      "sha256": "6c087f22016079d13ab38054ff938e9d0ce5e370c24b55af10cb1fe6dea0c226",
+      "bytes": 528
+    },
+    "pickingv2/scripts/base/config.py": {
+      "sha256": "9aa3f49e51e560926f6c05ceebb79cb4a4eedbe6827d8f63242fc14deb02f478",
+      "bytes": 5445
+    },
+    "pickingv2/scripts/base/ik.py": {
+      "sha256": "48bfedb2682c7dd08b7b74a9ae59b86ad2fac5f5c2c2c63304f1c4c43e0562a1",
+      "bytes": 10589
+    },
+    "pickingv2/scripts/center.py": {
+      "sha256": "a76c41f8ba48fbbf05d5a5bc024f017255d26728852bf1006903cbea57fd12f0",
+      "bytes": 32413
+    },
+    "pickingv2/urdf/jaka_dual.xacro": {
+      "sha256": "d40d00c130fb23108b4d4839b7301afdf3a248a5f760f8dc7097af18ad77a552",
+      "bytes": 11054
+    },
+    "qjaka_gui/README.md": {
+      "sha256": "6d354afee5fa1693b3bf0689b8747220de7910f9d356887a5050c14dd36462d5",
+      "bytes": 3259
+    },
+    "qjaka_gui/src/mainwindow.cpp": {
+      "sha256": "1ce8791fd2156e175ca427422505644879053599d6df5ce1fed4e43ed6ecded4",
+      "bytes": 4189
+    },
+    "qjaka_gui/src/robot.hpp": {
+      "sha256": "1585149d322a80cbeab0c587c63b18986737654649c59beb94aca8eadf7e5c97",
+      "bytes": 14394
+    },
+    "qjaka_gui/src/subwindow.cpp": {
+      "sha256": "3e169c66183492caf569611b11cb7395284a9750c902941bf1bb031f58dc0634",
+      "bytes": 20861
+    },
+    "qjaka_gui/srv/GraspService.srv": {
+      "sha256": "458b91186d6406e0c7c31428ffaed5b8cda31a9fa2fe037e52ccbb2a0782e1f3",
+      "bytes": 93
+    },
+    "qjaka_gui/urdf/jaka_dual.urdf": {
+      "sha256": "a33f6755267a250928368b32bda231ca913d2da50ad426f4cd414171311099c0",
+      "bytes": 16170
+    },
+    "qjaka_gui/urdf/jaka_dual.xacro": {
+      "sha256": "e22af0b7cc35447dbd10a37b8bdc03dc8180a711e3b471f8f320f6079fae4b5b",
+      "bytes": 3061
+    },
+    "zu7/mesh/p11.dae": {
+      "sha256": "e1786543238fb7c73807f084af1e9e10f318e8fb8f8ebdbb416931cfb0abbcfa",
+      "bytes": 2844594
+    },
+    "zu7/mesh/p22.dae": {
+      "sha256": "a245054eeb4c053b349e4ff8ed89bef91c1e112b2267650dc31d2c4ec5adc6f5",
+      "bytes": 5422452
+    },
+    "zu7/mesh/p35.dae": {
+      "sha256": "b913d52509a0c9542b70b27dc72ee96d21c8fdd92b75a6dfdfe3bf915faf6d52",
+      "bytes": 13602722
+    },
+    "zu7/mesh/p44.dae": {
+      "sha256": "1e57e14ed53d78959b5cb44e69c40cf0d3835b02514e1b3d6f7fc64ad4555348",
+      "bytes": 21611185
+    },
+    "zu7/mesh/p55.dae": {
+      "sha256": "845250e92f946b8b2b162e705a6e5adee4347c714a7a94d27d4f313e7f7f15e2",
+      "bytes": 4960015
+    },
+    "zu7/mesh/p66.dae": {
+      "sha256": "96f84001bcfe26e430a1ecdffa5eddf9c6109934b87bec4cb9257d759481fb6c",
+      "bytes": 7217325
+    },
+    "zu7/mesh/p77.dae": {
+      "sha256": "4b199e951e0ac45bc56615d42feb10823d542d011aed2c5bc6d8d551523df838",
+      "bytes": 637086
+    },
+    "zu7/urdf/jaka_macro.xacro": {
+      "sha256": "14ad8ccd8ad7a2281b6477c1cae746ea4b5bb3c582ecb6896bb6a69cc179d833",
+      "bytes": 6677
+    },
+    "joint_limits_notes.txt": {
+      "sha256": "038c63b7a8071879cb839ce7dd668e7879685837bdfb68e244d93a8c77ea9e2a",
+      "bytes": 2641
+    }
+  },
+  "arms": {
+    "left": {
+      "source_model": "zu7_v1",
+      "joints": [
+        {
+          "name": "left_joint_1",
+          "type": "revolute",
+          "parent": "left_base_link",
+          "child": "left_link_1",
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.114
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "limit": {
+            "effort": 1000.0,
+            "lower": -4.963716393,
+            "upper": 4.963716393,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "left_joint_2",
+          "type": "revolute",
+          "parent": "left_link_1",
+          "child": "left_link_2",
+          "xyz_m": [
+            0.0,
+            0.005,
+            0.0
+          ],
+          "rpy_rad": [
+            1.5707963267948966,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "limit": {
+            "effort": 1000.0,
+            "lower": -1.171988593,
+            "upper": 3.653846789,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "left_joint_3",
+          "type": "revolute",
+          "parent": "left_link_2",
+          "child": "left_link_3",
+          "xyz_m": [
+            0.353,
+            0.0,
+            0.005
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "limit": {
+            "effort": 1000.0,
+            "lower": -2.412917691,
+            "upper": 2.412917691,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "left_joint_4",
+          "type": "revolute",
+          "parent": "left_link_3",
+          "child": "left_link_4",
+          "xyz_m": [
+            0.303,
+            0.0,
+            -0.1155
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "limit": {
+            "effort": 1000.0,
+            "lower": -1.171988593,
+            "upper": 3.653846789,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "left_joint_5",
+          "type": "revolute",
+          "parent": "left_link_4",
+          "child": "left_link_5",
+          "xyz_m": [
+            0.0,
+            -0.1025,
+            0.0
+          ],
+          "rpy_rad": [
+            1.5707963267948966,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "limit": {
+            "effort": 1000.0,
+            "lower": -4.963716393,
+            "upper": 4.963716393,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "left_joint_6",
+          "type": "revolute",
+          "parent": "left_link_5",
+          "child": "left_link_6",
+          "xyz_m": [
+            0.0,
+            0.0595,
+            0.0
+          ],
+          "rpy_rad": [
+            -1.5707963267948966,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "limit": {
+            "effort": 1000.0,
+            "lower": -4.963716393,
+            "upper": 4.963716393,
+            "velocity": 3.14
+          }
+        }
+      ],
+      "flange_to_gripper_base": {
+        "name": "left_ee_joint",
+        "type": "fixed",
+        "parent": "left_link_6",
+        "child": "left_gripper_base_link",
+        "xyz_m": [
+          0.0,
+          0.0,
+          0.0355
+        ],
+        "rpy_rad": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "home_joint_deg": [
+        -90,
+        90,
+        -50,
+        200,
+        170,
+        0
+      ]
+    },
+    "right": {
+      "source_model": "zu7_v2",
+      "joints": [
+        {
+          "name": "right_joint_1",
+          "type": "revolute",
+          "parent": "right_base_link",
+          "child": "right_link_1",
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.04
+          ],
+          "rpy_rad": [
+            1.5707963267949,
+            0.0,
+            1.5707963267949
+          ],
+          "axis": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "limit": {
+            "effort": 0.0,
+            "lower": -4.963716393,
+            "upper": 4.963716393,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "right_joint_2",
+          "type": "revolute",
+          "parent": "right_link_1",
+          "child": "right_link_2",
+          "xyz_m": [
+            0.064,
+            0.0801499805565675,
+            0.0
+          ],
+          "rpy_rad": [
+            -1.5707963267949,
+            -1.5707963267949,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "limit": {
+            "effort": 0.0,
+            "lower": -1.171988593,
+            "upper": 3.653846789,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "right_joint_3",
+          "type": "revolute",
+          "parent": "right_link_2",
+          "child": "right_link_3",
+          "xyz_m": [
+            0.36,
+            0.0,
+            0.0
+          ],
+          "rpy_rad": [
+            3.14159265358979,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "limit": {
+            "effort": 0.0,
+            "lower": -2.412917691,
+            "upper": 2.412917691,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "right_joint_4",
+          "type": "revolute",
+          "parent": "right_link_3",
+          "child": "right_link_4",
+          "xyz_m": [
+            0.3035,
+            -0.00551249887704253,
+            0.0
+          ],
+          "rpy_rad": [
+            -1.5707963267949,
+            0.0,
+            -1.5707963267949
+          ],
+          "axis": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "limit": {
+            "effort": 0.0,
+            "lower": -1.171988593,
+            "upper": 3.653846789,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "right_joint_5",
+          "type": "revolute",
+          "parent": "right_link_4",
+          "child": "right_link_5",
+          "xyz_m": [
+            0.0455,
+            -0.068,
+            0.0
+          ],
+          "rpy_rad": [
+            3.141592653589793,
+            0.0,
+            1.5707963267949
+          ],
+          "axis": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "limit": {
+            "effort": 0.0,
+            "lower": -4.963716393,
+            "upper": 4.963716393,
+            "velocity": 3.14
+          }
+        },
+        {
+          "name": "right_joint_6",
+          "type": "revolute",
+          "parent": "right_link_5",
+          "child": "right_link_6",
+          "xyz_m": [
+            -0.0455,
+            -0.068,
+            0.0
+          ],
+          "rpy_rad": [
+            1.5707963267948966,
+            1.5707963267948966,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "limit": {
+            "effort": 0.0,
+            "lower": -4.963716393,
+            "upper": 4.963716393,
+            "velocity": 3.14
+          }
+        }
+      ],
+      "flange_to_gripper_base": {
+        "name": "right_ee_joint",
+        "type": "fixed",
+        "parent": "right_link_6",
+        "child": "right_gripper_base_link",
+        "xyz_m": [
+          0.0,
+          0.0,
+          0.039
+        ],
+        "rpy_rad": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "home_joint_deg": [
+        90,
+        90,
+        60,
+        -30,
+        -170,
+        0
+      ]
+    }
+  },
+  "mounting": {
+    "right_base_to_left_base": {
+      "name": "left_to_right",
+      "type": "fixed",
+      "parent": "right_base_link",
+      "child": "left_base_link",
+      "xyz_m": [
+        0.48622462,
+        0.0084934,
+        -0.00136687
+      ],
+      "rpy_rad": [
+        -0.015272913100903103,
+        0.01866994910995618,
+        0.02274242853030429
+      ]
+    },
+    "base_separation_m": 0.48630071691423743,
+    "platform_to_right_base": {
+      "name": "right_to_platform",
+      "type": "fixed",
+      "parent": "platform",
+      "child": "right_base_link",
+      "xyz_m": [
+        0.2,
+        0.4,
+        0.0
+      ],
+      "rpy_rad": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "platform_size_m": [
+      1.2,
+      0.6,
+      0.6
+    ]
+  },
+  "gripper": {
+    "mesh": "jaka_zu7_v2/meshes/gripper-raw.STL",
+    "mesh_bounds_m": [
+      [
+        -0.06777769327163696,
+        -0.046348344534635544,
+        1.1686076550887492e-09
+      ],
+      [
+        0.06777764111757278,
+        0.07104608416557312,
+        0.17906323075294495
+      ]
+    ],
+    "geometry": "three-finger fixed whole-tool mesh; no articulated fingers in archive",
+    "tcp_from_gripper_base_m": [
+      0,
+      0,
+      0.12
+    ],
+    "tcp_evidence": "pickingv2/scripts/base/config.py; IK d6 includes flange-to-gripper mount",
+    "tcp_from_flange_m": {
+      "left": [
+        0,
+        0,
+        0.1555
+      ],
+      "right": [
+        0,
+        0,
+        0.159
+      ]
+    },
+    "control": {
+      "controller": "right_arm_cabinet",
+      "left_channel": 0,
+      "right_channel": 1,
+      "open_level": false,
+      "close_level": true,
+      "interface": "JAKA SDK set_digital_output(IO_CABINET, index, value)"
+    },
+    "grasp_service_semantics": "sixth arm joint rotation; not gripper opening/closing",
+    "stroke_m": null,
+    "measured_aperture_available": null,
+    "force_feedback_available": null,
+    "movable_simulation_model": "requires explicitly labelled approximation and replay validation"
+  },
+  "camera": {
+    "name": "Kinect2",
+    "serial_from_calibration": "004878164947",
+    "right_base_to_kinect2_link": {
+      "xyz_m": [
+        0.151197,
+        -0.0294089,
+        0.144123
+      ],
+      "quaternion_xyzw": [
+        0.025197,
+        -0.514666,
+        0.856983,
+        -0.00806656
+      ]
+    },
+    "calibration_dir": "Kinect标定文件/004878164947",
+    "wrist_cameras_evidenced": false,
+    "note": "calib_pose.yaml is RGB/depth sensor calibration, not robot hand-eye calibration; optical-frame transform still needs validation"
+  },
+  "conflicts": [
+    "URDF limits differ from MoveIt YAML and joint_limits_notes.txt; use conservative intersection for simulation, not hardware-certified limits",
+    "Right URDF effort=0 is a CAD export placeholder; simulation drive effort must be declared separately",
+    "Kinematic models differ by side; old shared-URDF training data is incompatible",
+    "Source GUI reports commanded digital output success without measured aperture confirmation"
+  ],
+  "real_robot_connected": false
+}

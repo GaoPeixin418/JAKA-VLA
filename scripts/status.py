@@ -103,10 +103,19 @@ def collect_status():
             command=(proc/'cmdline').read_bytes().split(b'\0')
             # Record only project script names, never shell commands/connection arguments.
             names=[os.fsdecode(x) for x in command if x.startswith(b'scripts/') and any(t in x for t in
-                    [b'zu7',b'training_v2',b'eval_v2',b'policy_server_v2',b'dataset_v2'])]
+                    [b'zu7',b'training_v2',b'eval_v2',b'policy_server_v2',b'dataset_v2',b'lab_',b'pi05'])]
             if names and b'python' in command[0]:zu7['active_scripts'].append({'pid':int(proc.name),'scripts':names})
         except OSError:pass
     report['zu7']=zu7
+    current={'curricula':{},'pi05':{},'hardware_profile':'configs/robots/lab_archive_20261111.json'}
+    for path in sorted((ROOT/'results').glob('lab_*/progress.json')):
+        data=json.loads(path.read_text())
+        current['curricula'][str(path.relative_to(ROOT))]={k:data.get(k) for k in ('accepted','completed','stop_reason','raw_dataset')}
+        current['curricula'][str(path.relative_to(ROOT))]['attempts']=len(data.get('attempts',[]))
+    for path in sorted((ROOT/'results').glob('*pi05*/audit.json')):
+        data=json.loads(path.read_text())
+        current['pi05'][str(path.relative_to(ROOT))]={k:data.get(k) for k in ('completed','stage','completed_steps','checkpoint','error','gpu_observed_peak_mib')}
+    report['archive_rig_and_pi05']=current
     return report
 
 
@@ -130,7 +139,7 @@ def render_markdown(report):
              f"| 数据盘可用 | {report['disk_free_gib']:.2f} GiB |",
              f"| GPU 快照 | {report['gpu_snapshot'].replace(chr(10), '; ')} |", '']
     zu7=report.get('zu7',{})
-    current=['# 当前 Zu7 修正批次','',f"采样时间：{report['observed_at']}。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。",'',
+    current=['# 历史 Zu7 临时夹爪实验','',f"采样时间：{report['observed_at']}。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。",'',
              f"活跃项目脚本：{json.dumps(zu7.get('active_scripts',[]),ensure_ascii=False)}",'',
              '| Zu7 实验产物 | 验收结果 |','| --- | --- |']
     for path,value in zu7.get('experiments',{}).items():
@@ -175,7 +184,18 @@ def render_markdown(report):
                   '- `logs/collect-pilot.log`、`logs/convert-pilot.log`、`logs/train-pilot.log`、`logs/eval-baselines.log`：各阶段日志。',
                   '- `results/handover_pilot_validation.json`、`checkpoints/smolvla_pilot_seed42/resource_profile.json`、`results/pilot_baselines.json`：阶段结束后生成。',
                   '- `docs/EXPERIMENT_LOG.md`：历史验证、实验参数和结论边界。', ''])
-    return '\n'.join(lines)
+    active=report.get('archive_rig_and_pi05',{})
+    recent=['# 实验室归档硬件与 π0.5 当前状态','',f"采样时间：{report['observed_at']}（北京时间）。",'',
+            '按归档建模，尚未实机核对；夹爪行程、腕相机和光学坐标轴仍有假设。',
+            '硬件与规划证据见 `docs/LAB_ARCHIVE_20261111.md`；π0.5工程验收见 `docs/PI05_QUALIFICATION_20261111.md`。','',
+            f"活跃脚本：{json.dumps(zu7.get('active_scripts',[]),ensure_ascii=False)}",'',
+            '| 新批次 | 当前结果 |','| --- | --- |']
+    for name,data in active.get('curricula',{}).items():
+        recent.append(f"| {name} | {data['accepted']} 条验收通过 / {data['attempts']} 次尝试；completed={data['completed']}；{data['stop_reason']} |")
+    if not active.get('curricula'):recent.append('| 新硬件专家数据 | 尚无批量验收记录；诊断失败不能计为示教 |')
+    for name,data in active.get('pi05',{}).items():
+        recent.append(f"| {name} | 更新 {data['completed_steps']} 步；completed={data['completed']}；仅说明训练工程状态 |")
+    return '\n'.join(recent+['','以下为旧硬件及 ALOHA 历史记录。','']+lines)
 
 
 def main():

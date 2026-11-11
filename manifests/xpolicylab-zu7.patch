@@ -1,8 +1,8 @@
 diff --git a/utils/robot/_robot_info.json b/utils/robot/_robot_info.json
-index 332f089..f91bc61 100644
+index 332f089..778df48 100644
 --- a/utils/robot/_robot_info.json
 +++ b/utils/robot/_robot_info.json
-@@ -1,26 +1,72 @@
+@@ -1,26 +1,82 @@
  {
 -    "piper": {
 -        "arm_dim": [6, 6],
@@ -89,6 +89,16 @@ index 332f089..f91bc61 100644
 +    ]
 +  },
 +  "dual_jaka_zu7": {
++    "arm_dim": [
++      6,
++      6
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
++  },
++  "dual_jaka_zu7_lab_archive": {
 +    "arm_dim": [
 +      6,
 +      6

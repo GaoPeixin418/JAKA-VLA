@@ -4,6 +4,9 @@ import hashlib
 import json
 import shutil
 from pathlib import Path
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from jaka_vla.contact_acceptance import lab_forbidden_contact
 
 
 def main():
@@ -23,12 +26,18 @@ def main():
             raise ValueError('Replay seed mismatch')
         replay_report = review[0]
         source_identity = json.loads((probe/'raw/robot_identity.json').read_text())
+        if source_identity.get('scene_spec') != replay_report.get('scene_spec'):
+            raise ValueError(f'Scene/target differs between collection and replay: {probe}')
         contacts = json.loads((replay/f'seed_{report["seed"]}_contacts.json').read_text())
         interarm = [c for c in contacts if any(x.startswith('left:') for x in c['pair']) and any(x.startswith('right:') for x in c['pair'])]
         if not report['grasp_success'] or report['failure'] is not None or not replay_report['grasp_success'] or interarm:
             raise ValueError(f'Grasp acceptance failed: {probe}')
         if replay_report['failure_reason'] and replay_report['failure_reason']['type'] != 'step_budget_exhausted':
             raise ValueError(f'Controller protection fired: {replay}')
+        if source_identity.get('scene_spec'):
+            probe_contacts=json.loads((probe/'contacts.json').read_text())
+            if any(lab_forbidden_contact(c['pair']) for c in [*contacts,*probe_contacts]):
+                raise ValueError(f'Unintended arm contact: {probe}')
         current = {k: source_identity[k] for k in ('robot_id', 'rig', 'urdf_sha256', 'task_scope')}
         if identity is not None and identity != current:
             raise ValueError('Mixed robot/task identities')
@@ -44,8 +53,10 @@ def main():
         initial=json.loads((probe/'raw/robot_identity.json').read_text()).get('initial_condition')
         manifest.append({'episode': index, 'seed': seed, 'source': str(source), 'replay': str(replay),
                          'initial_condition':initial,
+                         'scene_spec':json.loads((probe/'raw/robot_identity.json').read_text()).get('scene_spec'),
                          'sha256': hashlib.sha256(dest.read_bytes()).hexdigest()})
     identity['initial_conditions_by_episode']={str(r['episode']):r['initial_condition'] for r in manifest}
+    identity['scenes_by_episode']={str(r['episode']):r['scene_spec'] for r in manifest}
     if len(set(r['seed'] for r in manifest))==len(manifest):
         identity['initial_conditions_by_seed']={str(r['seed']):r['initial_condition'] for r in manifest}
     (args.output/'seed.txt').write_text(' '.join(str(s) for _, _, s in accepted)+'\n')

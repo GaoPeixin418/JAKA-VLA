@@ -33,7 +33,9 @@ def _image(value):
 @dataclasses.dataclass(frozen=True)
 class Zu7Inputs(transforms.DataTransformFn):
     def __call__(self, data: dict) -> dict:
-        state = np.asarray(data["state"], dtype=np.float32)
+        # OpenPI DeltaActions/AbsoluteActions modify their arrays in place.
+        # Own these buffers so cached dataset samples and caller observations stay intact.
+        state = np.array(data["state"], dtype=np.float32, copy=True)
         if state.shape != (14,) or not np.isfinite(state).all():
             raise ValueError("Expected finite 14D measured Zu7 state")
         result = {
@@ -42,7 +44,7 @@ class Zu7Inputs(transforms.DataTransformFn):
             "image_mask": {target: np.True_ for target in CAMERA_KEYS},
         }
         if "actions" in data:
-            actions = np.asarray(data["actions"], dtype=np.float32)
+            actions = np.array(data["actions"], dtype=np.float32, copy=True)
             if actions.ndim != 2 or actions.shape[1] != 14 or not np.isfinite(actions).all():
                 raise ValueError("Expected finite [horizon, 14] Zu7 actions")
             result["actions"] = actions
@@ -55,9 +57,9 @@ class Zu7Inputs(transforms.DataTransformFn):
 class Zu7Outputs(transforms.DataTransformFn):
     def __call__(self, data: dict) -> dict:
         actions = np.asarray(data["actions"])
-        if actions.ndim != 2 or actions.shape[1] < 14:
-            raise ValueError("Expected OpenPI [horizon, >=14] action output")
-        return {"actions": actions[:, :14]}
+        if actions.ndim != 2 or actions.shape[0] < 1 or actions.shape[1] < 14 or not np.isfinite(actions).all():
+            raise ValueError("Expected finite OpenPI [horizon, >=14] action output")
+        return {"actions": np.array(actions[:, :14], dtype=np.float32, copy=True)}
 
 
 @dataclasses.dataclass(frozen=True)

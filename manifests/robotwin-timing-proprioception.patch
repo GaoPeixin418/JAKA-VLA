@@ -5,10 +5,10 @@ diff --git a/XPolicyLab b/XPolicyLab
 -Subproject commit fa431ecd893ee706883e64fe5fe1464ec8cd928d
 +Subproject commit fa431ecd893ee706883e64fe5fe1464ec8cd928d-dirty
 diff --git a/env_cfg/robot/_robot_info.json b/env_cfg/robot/_robot_info.json
-index 399f996..cd192a4 100644
+index 399f996..18cb8b3 100644
 --- a/env_cfg/robot/_robot_info.json
 +++ b/env_cfg/robot/_robot_info.json
-@@ -1,26 +1,66 @@
+@@ -1,26 +1,76 @@
  {
 -    "franka": {
 -        "arm_dim": [7],
@@ -99,13 +99,23 @@ index 399f996..cd192a4 100644
 +      1,
 +      1
 +    ]
++  },
++  "dual_jaka_zu7_lab_archive": {
++    "arm_dim": [
++      6,
++      6
++    ],
++    "ee_dim": [
++      1,
++      1
++    ]
 +  }
 +}
 diff --git a/env_cfg/task_config/_embodiment_config.yml b/env_cfg/task_config/_embodiment_config.yml
-index 672c88e..98b60dd 100644
+index 672c88e..abbeffa 100644
 --- a/env_cfg/task_config/_embodiment_config.yml
 +++ b/env_cfg/task_config/_embodiment_config.yml
-@@ -1,14 +1,12 @@
+@@ -1,14 +1,16 @@
  aloha-agilex:
 -  file_path: "./assets/embodiments/aloha-agilex/"
 -
@@ -127,6 +137,10 @@ index 672c88e..98b60dd 100644
 +  file_path: ./assets/embodiments/ur5-wsg
 +jaka-zu7-proxy:
 +  file_path: /data/jaka-vla/repos/RoboTwin/assets/embodiments/jaka-zu7-proxy
++jaka-zu7-lab-left:
++  file_path: /data/jaka-vla/repos/RoboTwin/assets/embodiments/jaka-zu7-lab-left
++jaka-zu7-lab-right:
++  file_path: /data/jaka-vla/repos/RoboTwin/assets/embodiments/jaka-zu7-lab-right
 diff --git a/envs/_base_task.py b/envs/_base_task.py
 index ace13e6..766d1e2 100644
 --- a/envs/_base_task.py
@@ -323,10 +337,19 @@ index 219e3d5..d3dde8b 100644
                  self.box,
                  target_pose=self.target_box.get_functional_point(1, "pose"),
 diff --git a/envs/robot/planner.py b/envs/robot/planner.py
-index 21ae432..07f4ecf 100644
+index 21ae432..be176b0 100644
 --- a/envs/robot/planner.py
 +++ b/envs/robot/planner.py
-@@ -71,9 +71,19 @@ try:
+@@ -52,6 +52,8 @@ try:
+             with open(self.yml_path, "r") as f:
+                 yml_data = yaml.safe_load(f)
+             self.frame_bias = yml_data["planner"]["frame_bias"]
++            self.project_plan_options = yml_data.get("planner", {}).get("plan_options", {})
++            self.project_retime_fallback = yml_data.get("planner", {}).get("retime_fallback", False)
+ 
+             # motion generation
+             if True:
+@@ -71,10 +73,21 @@ try:
                          },
                      }
                  }
@@ -344,20 +367,25 @@ index 21ae432..07f4ecf 100644
                  world_config,
 +                collision_cache={"obb": 16, "mesh": 16} if self.other_arm_enabled else None,
                  interpolation_dt=1 / 250,
++                **yml_data.get("planner", {}).get("motion_gen_options", {}),
                  num_trajopt_seeds=1,
              )
-@@ -83,6 +93,7 @@ try:
+ 
+@@ -83,12 +96,54 @@ try:
              motion_gen_config = MotionGenConfig.load_from_robot_config(
                  self.yml_path,
                  world_config,
 +                collision_cache={"obb": 16, "mesh": 16} if self.other_arm_enabled else None,
                  interpolation_dt=1 / 250,
++                **yml_data.get("planner", {}).get("motion_gen_options", {}),
                  num_trajopt_seeds=1,
                  num_graph_seeds=1,
-@@ -90,6 +101,45 @@ try:
+             )
              self.motion_gen_batch = MotionGen(motion_gen_config)
-             self.motion_gen_batch.warmup(batch=CONFIGS.ROTATE_NUM)
- 
+-            self.motion_gen_batch.warmup(batch=CONFIGS.ROTATE_NUM)
++            if not yml_data.get("planner", {}).get("skip_batch_warmup", False):
++                self.motion_gen_batch.warmup(batch=CONFIGS.ROTATE_NUM)
++
 +        def refresh_other_arm_world(self):
 +            if not self.other_arm_enabled or self.other_arm_entity is None:
 +                return
@@ -367,7 +395,7 @@ index 21ae432..07f4ecf 100644
 +            from copy import deepcopy
 +            from curobo.geom.types import WorldConfig
 +            if not hasattr(self, "_other_arm_geometries"):
-+                root = ET.parse(Path(self.yml_path).parent / "robot.urdf").getroot()
++                root = ET.parse(getattr(self, "other_arm_urdf_path", Path(self.yml_path).parent / "robot.urdf")).getroot()
 +                self._other_arm_geometries = []
 +                for link in root.findall("link"):
 +                    for index, collision in enumerate(link.findall("collision")):
@@ -396,11 +424,10 @@ index 21ae432..07f4ecf 100644
 +            config = WorldConfig.from_dict(world)
 +            self.motion_gen.update_world(config)
 +            self.motion_gen_batch.update_world(config)
-+
+ 
          def plan_path(
              self,
-             curr_joint_pos,
-@@ -97,6 +147,7 @@ try:
+@@ -97,6 +152,7 @@ try:
              constraint_pose=None,
              arms_tag=None,
          ):  
@@ -408,7 +435,48 @@ index 21ae432..07f4ecf 100644
              world_base_pose = np.concatenate([
                  np.array(self.robot_origion_pose.p),
                  np.array(self.robot_origion_pose.q),
-@@ -176,6 +227,7 @@ try:
+@@ -132,7 +188,7 @@ try:
+                 joint_names=self.active_joints_name,
+             )
+             # plan
+-            plan_config = MotionGenPlanConfig(max_attempts=10)
++            plan_config = MotionGenPlanConfig(max_attempts=10, **self.project_plan_options)
+             if constraint_pose is not None:
+                 pose_cost_metric = PoseCostMetric(
+                     hold_partial_pose=True,
+@@ -141,11 +197,31 @@ try:
+                 plan_config.pose_cost_metric = pose_cost_metric
+ 
+             result = self.motion_gen.plan_single(start_joint_states, goal_pose_of_ee, plan_config)
++            if self.project_retime_fallback and not result.success.item() and "FINETUNE_TRAJOPT_FAIL" in str(result.status):
++                # Keep geometric collision/joint checks. Timing is solved separately
++                # and every resampled 250 Hz state is checked again before execution.
++                candidate = result.debug_info.get("project_geometric_candidate") if result.debug_info else None
++                print("GEOMETRY_DEBUG", list(result.debug_info or {}), None if candidate is None else {k: v.detach().cpu().tolist() for k,v in candidate.items() if k != "position"}, flush=True)
++                if candidate is not None:
++                    from types import SimpleNamespace
++                    index = 0
++                    positions = candidate["position"]
++                    knots = positions.reshape(-1, positions.shape[-2], 6)[index].clone()
++                    geometric = SimpleNamespace(interpolated_plan=SimpleNamespace(position=knots))
++                    from jaka_vla.lab_retiming import retime_and_validate
++                    try:
++                        retimed = retime_and_validate(self, geometric, goal=goal_pose_of_ee, start=start_joint_states.position, hold_orientation=constraint_pose is not None)
++                        print("TOPPRA_RETIMED", retimed["retiming"], flush=True)
++                        return retimed
++                    except (ValueError, RuntimeError) as error:
++                        print("TOPPRA_REJECTED", str(error), flush=True)
+ 
+             # output
+             res_result = dict()
+             if result.success.item() == False:
+                 res_result["status"] = "Fail"
++                res_result["planner_status"] = str(result.status)
++                print("PLANNER_FAILURE", result.status, flush=True)
+                 return res_result
+             else:
+                 res_result["status"] = "Success"
+@@ -176,6 +252,7 @@ try:
  
              num_poses = len(target_gripper_pose_list)
              # transformation from world to arm's base
@@ -416,11 +484,28 @@ index 21ae432..07f4ecf 100644
              world_base_pose = np.concatenate([
                  np.array(self.robot_origion_pose.p),
                  np.array(self.robot_origion_pose.q),
+@@ -217,7 +294,7 @@ try:
+             joint_angles_cuda = torch.cat([joint_angles_cuda] * num_poses, dim=0)
+             start_joint_states = JointState.from_position(joint_angles_cuda, joint_names=self.active_joints_name)
+             # plan
+-            plan_config = MotionGenPlanConfig(max_attempts=10)
++            plan_config = MotionGenPlanConfig(max_attempts=10, **self.project_plan_options)
+             if constraint_pose is not None:
+                 pose_cost_metric = PoseCostMetric(
+                     hold_partial_pose=True,
 diff --git a/envs/robot/robot.py b/envs/robot/robot.py
-index 9dfc08f..631bab3 100644
+index 9dfc08f..62dc5c0 100644
 --- a/envs/robot/robot.py
 +++ b/envs/robot/robot.py
-@@ -51,6 +51,7 @@ class Robot:
+@@ -36,6 +36,7 @@ class Robot:
+         right_robot_file = kwargs["right_robot_file"]
+ 
+         self.need_topp = need_topp
++        self.project_inprocess_planners = left_embodiment_args.get("project_inprocess_planners", False) and right_embodiment_args.get("project_inprocess_planners", False)
+ 
+         self.left_urdf_path = os.path.join(left_robot_file, left_embodiment_args["urdf_path"])
+         self.left_srdf_path = left_embodiment_args.get("srdf_path", None)
+@@ -51,6 +52,7 @@ class Robot:
          self.left_ee_name = left_embodiment_args["ee_joints"][0]
          self.left_arm_joints_name = left_embodiment_args["arm_joints_name"][0]
          self.left_gripper_name = left_embodiment_args["gripper_name"][0]
@@ -428,7 +513,7 @@ index 9dfc08f..631bab3 100644
          self.left_gripper_bias = left_embodiment_args["gripper_bias"]
          self.left_gripper_scale = left_embodiment_args["gripper_scale"]
          self.left_homestate = left_embodiment_args.get("homestate", [[0] * len(self.left_arm_joints_name)])[0]
-@@ -78,6 +79,7 @@ class Robot:
+@@ -78,6 +80,7 @@ class Robot:
          self.right_ee_name = right_embodiment_args["ee_joints"][1]
          self.right_arm_joints_name = right_embodiment_args["arm_joints_name"][1]
          self.right_gripper_name = right_embodiment_args["gripper_name"][1]
@@ -436,17 +521,60 @@ index 9dfc08f..631bab3 100644
          self.right_gripper_bias = right_embodiment_args["gripper_bias"]
          self.right_gripper_scale = right_embodiment_args["gripper_scale"]
          self.right_homestate = right_embodiment_args.get("homestate", [[1] * len(self.right_arm_joints_name)])[1]
-@@ -273,6 +275,9 @@ class Robot:
+@@ -228,6 +231,18 @@ class Robot:
+             )
+ 
+     def move_to_homestate(self):
++        # Lab initialization: reset before the first physics step, never during execution.
++        if self.project_inprocess_planners:
++            for arm in ("left", "right"):
++                entity = getattr(self, arm + "_entity")
++                active = entity.get_active_joints()
++                values = entity.get_qpos().copy()
++                for j, v in zip(getattr(self, arm + "_arm_joints"), getattr(self, arm + "_homestate")):
++                    values[active.index(j)] = v
++                for j, multiplier, offset in getattr(self, arm + "_gripper"):
++                    values[active.index(j)] = .05 * multiplier + offset
++                entity.set_qpos(values)
++                entity.set_qvel(np.zeros_like(values))
+         for i, joint in enumerate(self.left_arm_joints):
+             joint.set_drive_target(self.left_homestate[i])
+ 
+@@ -258,21 +273,30 @@ class Robot:
+         abs_left_curobo_yml_path = os.path.join(CONFIGS.ROOT_PATH, self.left_curobo_yml_path)
+         abs_right_curobo_yml_path = os.path.join(CONFIGS.ROOT_PATH, self.right_curobo_yml_path)
+ 
+-        self.communication_flag = (abs_left_curobo_yml_path != abs_right_curobo_yml_path)
++        self.communication_flag = (abs_left_curobo_yml_path != abs_right_curobo_yml_path) and not self.project_inprocess_planners
+ 
+         if self.is_dual_arm:
+             abs_left_curobo_yml_path = abs_left_curobo_yml_path.replace("curobo.yml", "curobo_left.yml")
+             abs_right_curobo_yml_path = abs_right_curobo_yml_path.replace("curobo.yml", "curobo_right.yml")
+ 
+         if not self.communication_flag:
+-            self.left_planner = CuroboPlanner(self.left_entity_origion_pose,
++            factory = CuroboPlanner
++            if self.project_inprocess_planners:
++                from jaka_vla.lazy_planner import LazyPlanner
++                factory = lambda *a, **kw: LazyPlanner(CuroboPlanner, *a, **kw)
++            self.left_planner = factory(self.left_entity_origion_pose,
+                                               self.left_arm_joints_name,
+                                               [joint.get_name() for joint in self.left_entity.get_active_joints()],
+                                               yml_path=abs_left_curobo_yml_path)
+-            self.right_planner = CuroboPlanner(self.right_entity_origion_pose,
++            self.right_planner = factory(self.right_entity_origion_pose,
                                                 self.right_arm_joints_name,
                                                 [joint.get_name() for joint in self.right_entity.get_active_joints()],
                                                 yml_path=abs_right_curobo_yml_path)
 +            # Project adapter: each expert move treats the stationary other arm as an obstacle.
 +            self.left_planner.other_arm_entity = self.right_entity
 +            self.right_planner.other_arm_entity = self.left_entity
++            self.left_planner.other_arm_urdf_path = self.right_urdf_path
++            self.right_planner.other_arm_urdf_path = self.left_urdf_path
          else:
              self.left_conn, left_child_conn = mp.Pipe()
              self.right_conn, right_child_conn = mp.Pipe()
-@@ -568,7 +573,7 @@ class Robot:
+@@ -568,7 +592,7 @@ class Robot:
          return self._trans_endpose(arm_tag="right", is_endpose=True)
  
      def get_left_orig_endpose(self):
@@ -455,7 +583,7 @@ index 9dfc08f..631bab3 100644
          global_trans_matrix = self.left_global_trans_matrix
          pose.p = pose.p - self.left_entity_origion_pose.p
          pose.p = t3d.quaternions.quat2mat(self.left_entity_origion_pose.q).T @ pose.p
-@@ -577,7 +582,7 @@ class Robot:
+@@ -577,7 +601,7 @@ class Robot:
              @ global_trans_matrix).tolist())
  
      def get_right_orig_endpose(self):
@@ -464,7 +592,7 @@ index 9dfc08f..631bab3 100644
          global_trans_matrix = self.right_global_trans_matrix
          pose.p = pose.p - self.right_entity_origion_pose.p
          pose.p = t3d.quaternions.quat2mat(self.right_entity_origion_pose.q).T @ pose.p
-@@ -592,7 +597,9 @@ class Robot:
+@@ -592,7 +616,9 @@ class Robot:
          gripper_bias = (self.left_gripper_bias if arm_tag == "left" else self.right_gripper_bias)
          global_trans_matrix = (self.left_global_trans_matrix if arm_tag == "left" else self.right_global_trans_matrix)
          delta_matrix = (self.left_delta_matrix if arm_tag == "left" else self.right_delta_matrix)

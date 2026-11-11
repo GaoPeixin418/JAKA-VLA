@@ -49,7 +49,7 @@ def load_source(source):
     return info, episodes, info_path
 
 
-def open_video(source, info, key, episode, video_starts):
+def open_video(source, info, key, episode):
     chunk = episode[f"videos/{key}/chunk_index"]
     file_index = episode[f"videos/{key}/file_index"]
     relative = info["video_path"].format(video_key=key, chunk_index=chunk, file_index=file_index)
@@ -57,7 +57,8 @@ def open_video(source, info, key, episode, video_starts):
     capture = cv2.VideoCapture(str(path))
     if not capture.isOpened():
         raise RuntimeError(f"Cannot open video: {path}")
-    frame_offset = round((float(episode[f"videos/{key}/from_timestamp"]) - video_starts[path]) * 25)
+    # LeRobot v3 timestamps are relative to the containing video file.
+    frame_offset = round(float(episode[f"videos/{key}/from_timestamp"]) * 25)
     if frame_offset < 0:
         raise ValueError(f"Negative frame offset: {path}")
     return capture, path, frame_offset
@@ -71,15 +72,9 @@ def convert(source, output, max_episodes):
         raise ValueError("max_episodes must be positive")
     selected = episodes[:max_episodes]
     source_files = {info_path}
-    video_starts = {}
-    for episode in selected:
-        for key in CAMERAS:
-            chunk = episode[f"videos/{key}/chunk_index"]
-            file_index = episode[f"videos/{key}/file_index"]
-            relative = info["video_path"].format(video_key=key, chunk_index=chunk, file_index=file_index)
-            path = source / relative
-            start = float(episode[f"videos/{key}/from_timestamp"])
-            video_starts[path] = min(video_starts.get(path, start), start)
+    identity_path=source/'meta/project_identity.json'
+    identity=json.loads(identity_path.read_text()) if identity_path.exists() else None
+    if identity_path.exists():source_files.add(identity_path)
     features = {
         "state": {"dtype": "float32", "shape": (14,), "names": ["state"]},
         "actions": {"dtype": "float32", "shape": (14,), "names": ["actions"]},
@@ -90,7 +85,7 @@ def convert(source, output, max_episodes):
     dataset = LeRobotDataset.create(
         repo_id=output.name,
         root=output,
-        robot_type="jaka_zu7_proxy",
+        robot_type=identity['robot_id'] if identity else info.get('robot_type','jaka_zu7_proxy'),
         fps=25,
         features=features,
         use_videos=False,
@@ -105,7 +100,8 @@ def convert(source, output, max_episodes):
         file_index = episode["data/file_index"]
         data_path = source / info["data_path"].format(chunk_index=chunk, file_index=file_index)
         source_files.add(data_path)
-        rows = pq.read_table(data_path).slice(episode["dataset_from_index"], episode["length"]).to_pylist()
+        # dataset_from_index is global; it is not an offset into each Parquet file.
+        rows = pq.read_table(data_path, filters=[('episode_index','=',source_episode)]).to_pylist()
         if len(rows) != episode["length"]:
             raise ValueError("Episode length mismatch")
         timestamps = np.asarray([float(row["timestamp"]) for row in rows])
@@ -114,7 +110,7 @@ def convert(source, output, max_episodes):
         captures = {}
         try:
             for key in CAMERAS:
-                capture, video_path, frame_offset = open_video(source, info, key, episode, video_starts)
+                capture, video_path, frame_offset = open_video(source, info, key, episode)
                 source_files.add(video_path)
                 capture.set(cv2.CAP_PROP_POS_FRAMES, frame_offset)
                 captures[key] = capture
@@ -162,6 +158,8 @@ def convert(source, output, max_episodes):
         "episodes": checks,
     }
     (output / "jaka_conversion_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    if identity:
+        (output/'meta/project_identity.json').write_text(json.dumps(identity,indent=2)+'\n')
     return manifest
 
 

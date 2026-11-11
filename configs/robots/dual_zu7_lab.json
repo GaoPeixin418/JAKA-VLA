@@ -1,0 +1,213 @@
+{
+  "robot_id": "dual_jaka_zu7_lab_archive",
+  "arms": [
+    "JAKA Zu7",
+    "JAKA Zu7"
+  ],
+  "source_repository": "lab_archive:JAKA_Dual",
+  "source_revision": "934cd6cd79dd8f27a82b066e95c3e2d36eb5a55afce3ba28901e9617a69dbc7c",
+  "mounting": {
+    "archive_profile": "dual_zu7_lab_archive_20261111",
+    "world_bases": {
+      "left": [
+        [
+          -0.9995671687490661,
+          0.023022859054586165,
+          -0.018314560325832868,
+          -0.24311231000000005
+        ],
+        [
+          -0.022736504941975322,
+          -0.9996183199173867,
+          -0.015692859158371545,
+          -0.008493399999999941
+        ],
+        [
+          -0.018668864507501336,
+          -0.015269657707152896,
+          0.9997091132181936,
+          0.73863313
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "right": [
+        [
+          -1.0,
+          -1.2246467991473532e-16,
+          0.0,
+          0.24311230999999994
+        ],
+        [
+          1.2246467991473532e-16,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.74
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "home_joint_rad": {
+    "left": [
+      -1.5707963267948966,
+      1.5707963267948966,
+      -0.8726646259971648,
+      3.490658503988659,
+      2.9670597283903604,
+      0.0
+    ],
+    "right": [
+      1.5707963267948966,
+      1.5707963267948966,
+      1.0471975511965976,
+      -0.5235987755982988,
+      -2.9670597283903604,
+      0.0
+    ]
+  },
+  "gripper": {
+    "name": "lab_three_finger_radial_proxy",
+    "physical_model_confirmed": false,
+    "tcp_offset_m": 0.12,
+    "max_radial_stroke_m": 0.05,
+    "source_mesh": "jaka_zu7_v2/meshes/gripper-raw.STL",
+    "binary_real_control": true,
+    "simulation_aperture_feedback_only": true
+  },
+  "expert_handover_grasp_heights_m": [
+    0.07,
+    -0.07
+  ],
+  "receiving_platform_height_m": 0.08,
+  "interarm_collision_planning": true,
+  "sequential_return": true,
+  "physics_hz": 250,
+  "control_hz": 25,
+  "joint_velocity_limit_rad_s": 1.5,
+  "joint_acceleration_limit_rad_s2": 3.0,
+  "expert_velocity_scale": 0.5,
+  "gripper_rate_per_s": 2.0,
+  "tracking_frequency_rad_s": 28.0,
+  "drive_stiffness": 10000,
+  "drive_damping": 500,
+  "notes": "Archive arm kinematics and base transform; approximate articulated gripper and simulation-only cameras; no real hardware validation.",
+  "generated": {
+    "left": {
+      "asset": "/data/jaka-vla/repos/RoboTwin/assets/embodiments/jaka-zu7-lab-left",
+      "urdf_sha256": "d1210a66d2bc33af67c4d3de560760278c683530956a41ed6f4b107509f860fd",
+      "world_base_matrix": [
+        [
+          -0.9995671687490661,
+          0.023022859054586165,
+          -0.018314560325832868,
+          -0.24311231000000005
+        ],
+        [
+          -0.022736504941975322,
+          -0.9996183199173867,
+          -0.015692859158371545,
+          -0.008493399999999941
+        ],
+        [
+          -0.018668864507501336,
+          -0.015269657707152896,
+          0.9997091132181936,
+          0.73863313
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "home_joint_rad": [
+        -1.5707963267948966,
+        1.5707963267948966,
+        -0.8726646259971648,
+        3.490658503988659,
+        2.9670597283903604,
+        0.0
+      ]
+    },
+    "right": {
+      "asset": "/data/jaka-vla/repos/RoboTwin/assets/embodiments/jaka-zu7-lab-right",
+      "urdf_sha256": "36fee7fea3470f6f0580d66544dd18fb81db13365470e306b628adfb62646156",
+      "world_base_matrix": [
+        [
+          -1.0,
+          -1.2246467991473532e-16,
+          0.0,
+          0.24311230999999994
+        ],
+        [
+          1.2246467991473532e-16,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.74
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "home_joint_rad": [
+        1.5707963267948966,
+        1.5707963267948966,
+        1.0471975511965976,
+        -0.5235987755982988,
+        -2.9670597283903604,
+        0.0
+      ]
+    }
+  },
+  "task_config": "zu7_lab_smoke",
+  "simulated_camera_collision": "disabled: unsupported proxy shell overlapped gripper fingers; optical sensors remain simulated",
+  "cameras": {
+    "external": {
+      "name": "head_camera",
+      "type": "D435",
+      "position": [
+        -0.25,
+        0.85,
+        1.65
+      ],
+      "forward": [
+        0,
+        -0.65,
+        -0.85
+      ],
+      "left": [
+        1,
+        0,
+        0
+      ]
+    },
+    "wrist": "RoboTwin simulated link-mounted RGB cameras",
+    "evidence_status": "simulation configuration; not calibrated to archived Kinect or real wrist cameras"
+  }
+}

@@ -15,6 +15,7 @@ from jaka_vla.grasp_monitor import EmptyGraspMonitor
 from jaka_vla.identity import physical_rig_hash
 from jaka_vla.review_video import ReviewVideo
 from jaka_vla.initial_conditions import apply_left_offset, apply_recorded_condition, sample_left_offset
+from jaka_vla.lab_scene import install_scene, rig_urdf_hash
 
 
 def robot_vector(robot,velocity=False):
@@ -48,6 +49,9 @@ def main():
     p.add_argument('--task-scope', choices=['full_handover','left_grasp_lift_hold'], default='full_handover')
     p.add_argument('--initial-offset',type=float,default=0.)
     p.add_argument('--initial-condition-file',type=Path)
+    p.add_argument('--policy-label',default='SmolVLA')
+    p.add_argument('--rig-config',type=Path,default=ROOT/'configs/robots/dual_zu7.json')
+    p.add_argument('--scene-spec',type=Path)
     args=p.parse_args()
     args.output=ROOT/args.output
     if args.expert_hdf5:args.expert_hdf5=ROOT/args.expert_hdf5
@@ -56,12 +60,17 @@ def main():
         raise ValueError('A single expert trajectory can only be replayed in its own episode; pass the data directory for multiple seeds')
     args.output.mkdir(parents=True,exist_ok=False)
     dims=get_robot_action_dim_info(args.robot_id);layout=ActionLayout(tuple(dims['arm_dim']),tuple(dims['ee_dim']))
-    rig=json.loads((ROOT/'configs/robots/dual_zu7.json').read_text())
-    urdf_sha=hashlib.sha256((REPO/'assets/embodiments/jaka-zu7-proxy/robot.urdf').read_bytes()).hexdigest()
+    rig=json.loads((ROOT/args.rig_config).read_text())
+    urdf_sha=rig_urdf_hash(rig)
     if args.robot_id!=rig['robot_id']:raise ValueError('Rig identity mismatch')
-    cfg,_=load_task_args({'task_name':'handover_block','task_config':args.task_config,'policy_name':'SmolVLA'})
+    cfg,_=load_task_args({'task_name':'handover_block','task_config':rig.get('task_config',args.task_config),'policy_name':'SmolVLA'})
     cfg.update(save_data=False,need_plan=False,eval_mode=True,render_freq=0,eval_video_save_dir=None)
     task=class_decorator('handover_block')
+    spec=json.loads((ROOT/args.scene_spec).read_text()) if args.scene_spec else None
+    if spec:
+        if args.instruction != spec['instruction']:
+            raise ValueError('Instruction does not identify the scene target')
+        install_scene(task,spec)
     conn=None if args.expert_hdf5 else Client(str(args.socket),family='AF_UNIX')
     reports=[];review=None
     try:
@@ -81,6 +90,9 @@ def main():
                     expert_index=matches[0]
                 else:
                     expert_index=int(args.expert_hdf5.stem.split('_')[-1])
+                recorded_scene = source_metadata.get('scenes_by_episode', {}).get(str(expert_index), source_metadata.get('scene_spec'))
+                if recorded_scene != spec:
+                    raise ValueError('Expert replay scene/target differs from collected episode')
                 condition=source_metadata.get('initial_conditions_by_episode',{}).get(str(expert_index),
                     source_metadata.get('initial_conditions_by_seed',{}).get(str(seed),source_metadata.get('initial_condition')))
             initial_condition=apply_recorded_condition(task,condition) if condition is not None else apply_left_offset(task,offset)
@@ -116,7 +128,7 @@ def main():
             grasp_ticks=0;longest_grasp_ticks=0;grasp_success_time=None;grasp_evidence=[]
             if args.review_video:
                 review=ReviewVideo(task,args.output/f'seed_{seed}_multiview.mp4',rig['control_hz'],
-                    'EXPERT REPLAY' if expert is not None else 'LEARNED SmolVLA',seed)
+                    'EXPERT REPLAY' if expert is not None else 'LEARNED '+args.policy_label,seed)
             for step in range(count):
                 obs=task.get_obs();frames.append(obs['observation']['head_camera']['rgb'])
                 if review:
@@ -153,7 +165,7 @@ def main():
                         if impulse<1e-5:continue
                         labels=sorted(f"{arm_links.get(body.entity.global_id,'scene')}:{body.entity.name}" for body in contact.bodies)
                         if 'scene:box' in labels:
-                            left_fingers.update(s for s in labels if s in ('left:finger_left','left:finger_right'))
+                            left_fingers.update(s for s in labels if s in ('left:finger_left','left:finger_right','left:finger_third'))
                             right_object_contact=right_object_contact or any(s.startswith('right:') for s in labels)
                         key=' / '.join(labels);now=(task._jaka_sim_steps-initial_ticks)*dt
                         entry=contacts.setdefault(key,{'pair':labels,'ticks':0,'peak_impulse_ns':0.,'peak_time_s':now,'first_time_s':now})
@@ -162,13 +174,13 @@ def main():
                     # Simulator truth is evaluation-only: it never changes the commanded action.
                     lift=float(task.box.get_pose().p[2])-initial_height
                     aperture=float(measured_tick[layout.gripper_indices[0]])
-                    held=lift>.05 and .15<aperture<.85 and len(left_fingers)==2 and not right_object_contact
+                    held=(lift>.05 and .08<aperture<.90 and len(left_fingers)>=2 and not right_object_contact) if spec else (lift>.05 and .15<aperture<.85 and len(left_fingers)==2 and not right_object_contact)
                     grasp_ticks=grasp_ticks+1 if held else 0
                     longest_grasp_ticks=max(longest_grasp_ticks,grasp_ticks)
                     if grasp_ticks*dt>=.6 and grasp_success_time is None:
                         grasp_success_time=(task._jaka_sim_steps-initial_ticks)*dt
                     grasp_evidence.append([(task._jaka_sim_steps-initial_ticks)*dt,lift,aperture,
-                                           len(left_fingers)==2,right_object_contact,held])
+                                           len(left_fingers)>=2,right_object_contact,held])
                     tracking_error=float(np.abs(position-measured_tick)[layout.joint_indices].max())
                     tracking_error_time=tracking_error_time+dt if tracking_error>.12 else 0.
                     if tracking_error_time>=.04:
@@ -223,6 +235,9 @@ def main():
                 'oracle_max_object_lift_m':max_height-initial_height,'oracle_note':'Object height is evaluation-only, never policy input or controller gate.',
                 'mode':'expert_replay' if expert is not None else 'synchronous_zero_simulated_inference_latency',
                 'review_video':video_metadata}
+            if spec:
+                report['scene_spec']=spec
+                report['grasp_definition']='Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only'
             reports.append(report);(args.output/'results.json').write_text(json.dumps(reports,indent=2)+'\n')
             images_to_video(np.stack(frames),str(args.output/f'seed_{seed}.mp4'),fps=rig['control_hz'])
             print(json.dumps(report),flush=True);task.close_env(clear_cache=True)

@@ -1,0 +1,46 @@
+{
+  "left": {
+    "voxel_pitch_m_by_link": {
+      "Link_1": 0.005,
+      "Link_2": 0.01,
+      "Link_3": 0.01,
+      "Link_4": 0.01,
+      "Link_5": 0.01,
+      "Link_6": 0.01
+    },
+    "fit": "deterministic clusters enclosing every filled voxel",
+    "counts": {
+      "Link_1": 256,
+      "Link_2": 48,
+      "Link_3": 32,
+      "Link_4": 12,
+      "Link_5": 12,
+      "Link_6": 8
+    },
+    "total_spheres": 444,
+    "fixed_base_excluded": "anchored table contact; opposite-arm base mesh remains an obstacle",
+    "camera_proxy_collision_removed": true
+  },
+  "right": {
+    "voxel_pitch_m_by_link": {
+      "Link_1": 0.005,
+      "Link_2": 0.01,
+      "Link_3": 0.01,
+      "Link_4": 0.01,
+      "Link_5": 0.01,
+      "Link_6": 0.01
+    },
+    "fit": "deterministic clusters enclosing every filled voxel",
+    "counts": {
+      "Link_1": 256,
+      "Link_2": 48,
+      "Link_3": 32,
+      "Link_4": 12,
+      "Link_5": 12,
+      "Link_6": 8
+    },
+    "total_spheres": 444,
+    "fixed_base_excluded": "anchored table contact; opposite-arm base mesh remains an obstacle",
+    "camera_proxy_collision_removed": true
+  }
+}

@@ -11,5 +11,12 @@ class RigIdentityTest(unittest.TestCase):
         changed['mounting']['base_separation_m']+=.05
         self.assertNotEqual(physical_rig_hash(rig),physical_rig_hash(changed))
 
+    def test_camera_geometry_changes_identity(self):
+        rig=json.loads((Path(__file__).resolve().parents[1]/'configs/robots/dual_zu7.json').read_text())
+        changed=copy.deepcopy(rig);changed['cameras']={'external':{'position':[0,1,2]}}
+        self.assertNotEqual(physical_rig_hash(rig),physical_rig_hash(changed))
+        moved=copy.deepcopy(changed);moved['cameras']['external']['position'][0]=.1
+        self.assertNotEqual(physical_rig_hash(changed),physical_rig_hash(moved))
+
 
 if __name__=='__main__':unittest.main()

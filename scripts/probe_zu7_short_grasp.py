@@ -19,6 +19,7 @@ from eval_v2 import robot_vector
 from jaka_vla.review_video import ReviewVideo
 from jaka_vla.short_grasp import install_short_grasp
 from jaka_vla.initial_conditions import apply_left_offset, apply_left_configuration, sample_left_offset
+from jaka_vla.lab_scene import install_scene, install_lab_grasp, rig_urdf_hash
 
 
 def main():
@@ -26,16 +27,23 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--seed', type=int, default=6)
     p.add_argument('--original-selector', action='store_true')
+    p.add_argument('--no-review-video',action='store_true',help='Keep policy RGB data and numeric evidence; omit extra HD observer rendering')
     p.add_argument('--collect', action='store_true', help='Save identified, uniformly sampled grasp-only supervision')
     p.add_argument('--initial-offset', type=float, default=0., help='Uniform initial left joint perturbation amplitude in rad')
     p.add_argument('--start-trace',type=Path)
     p.add_argument('--start-step',type=int)
+    p.add_argument('--rig-config',type=Path,default=ROOT/'configs/robots/dual_zu7.json')
+    p.add_argument('--scene-spec',type=Path)
     args = p.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
-    cfg, _ = load_task_args({'task_name': 'handover_block', 'task_config': 'zu7_smoke', 'policy_name': 'SmolVLA'})
+    rig=json.loads((ROOT/args.rig_config).read_text())
+    spec=json.loads(args.scene_spec.read_text()) if args.scene_spec else None
+    instruction=spec['instruction'] if spec else 'Use the left arm to grasp the red block, lift it, and hold it.'
+    cfg, _ = load_task_args({'task_name': 'handover_block', 'task_config': rig.get('task_config','zu7_smoke'), 'policy_name': 'SmolVLA'})
     cfg.update(save_data=False, need_plan=True, eval_mode=False, render_freq=0,
                save_freq=10 if args.collect else None, save_path=str(args.output/'raw'))
     task = class_decorator('handover_block')
+    if spec:install_scene(task,spec)
     task.setup_demo(now_ep_num=0, seed=args.seed, **cfg)
     if args.start_trace:
         if args.start_step is None or args.initial_offset:
@@ -56,8 +64,8 @@ def main():
         task.save_data = True
         task._jaka_capture_active = True
         task._take_picture(_jaka_force=True)
-    audit = {} if args.original_selector else install_short_grasp(task)
-    video = ReviewVideo(task, args.output/f'seed_{args.seed}_multiview.mp4', 25, 'EXPERT GRASP PATH PROBE', args.seed)
+    audit = {} if args.original_selector else (install_lab_grasp(task) if spec else install_short_grasp(task))
+    video = None if args.no_review_video else ReviewVideo(task, args.output/f'seed_{args.seed}_multiview.mp4', 25, 'EXPERT GRASP PATH PROBE', args.seed)
     r = task.robot
     arms = {link.entity.global_id: arm for arm in ('left', 'right') for link in getattr(r, f'{arm}_entity').get_links()}
     t0 = task._jaka_sim_steps
@@ -71,8 +79,9 @@ def main():
     start_wall = time.perf_counter()
     arm_indices = [*range(6), *range(7, 13)]
     initial_tcp = np.asarray(r.get_left_tcp_pose()[:3])
-    first = video.capture(task.get_obs())
-    video.write(first, 0, 'INTRO / frozen frame', 50)
+    if video:
+        first = video.capture(task.get_obs())
+        video.write(first, 0, 'INTRO / frozen frame', 50)
 
     def observe():
         nonlocal held_ticks, longest, track_ticks
@@ -93,18 +102,18 @@ def main():
                 continue
             contacts.append({'time_s': now, 'pair': labels, 'impulse_ns': impulse})
             if 'scene:box' in labels:
-                fingers.update(s for s in labels if s in ('left:finger_left', 'left:finger_right'))
+                fingers.update(s for s in labels if s in ('left:finger_left', 'left:finger_right','left:finger_third'))
                 right_contact |= any(s.startswith('right:') for s in labels)
             cross |= {arms.get(b.entity.global_id) for b in contact.bodies} == {'left', 'right'}
         lift = float(task.box.get_pose().p[2])-initial_height
-        held = lift > .05 and .15 < measured[6] < .85 and len(fingers) == 2 and not right_contact
+        held = lift > .05 and .08 < measured[6] < .90 and len(fingers) >= 2 and not right_contact if spec else lift > .05 and .15 < measured[6] < .85 and len(fingers) == 2 and not right_contact
         held_ticks = held_ticks+1 if held else 0
         longest = max(longest, held_ticks)
         error = float(np.abs(commanded-measured)[arm_indices].max())
         track_ticks = track_ticks+1 if error > .12 else 0
         traces.append(np.r_[now, measured, velocity, commanded, r.get_left_tcp_pose(), task.box.get_pose().p,
                                lift, held, error, len(fingers)])
-        if (task._jaka_sim_steps-t0) % 10 == 0:
+        if video and (task._jaka_sim_steps-t0) % 10 == 0:
             frame = video.capture(task.get_obs())
             video.write(frame, now, phase+' / expert only')
         if cross:
@@ -130,20 +139,23 @@ def main():
     finally:
         array = np.asarray(traces)
         duration = (task._jaka_sim_steps-t0)*.004
-        frame = video.capture(task.get_obs())
-        status = 'GRASP VERIFIED / expert only' if longest*.004 >= .6 else 'GRASP NOT VERIFIED'
-        if failure:
-            status += ' / STOP '+failure
-        video.write(frame, duration, status)
-        video.write(frame, duration, status+' / FROZEN final frame', 75)
-        video.close()
-        report = {'seed': args.seed, 'mode': 'expert_grasp_subtask_only', 'selector': 'original' if args.original_selector else 'short_grasp_v1',
+        if video:
+            frame = video.capture(task.get_obs())
+            status = 'GRASP VERIFIED / expert only' if longest*.004 >= .6 else 'GRASP NOT VERIFIED'
+            if failure:
+                status += ' / STOP '+failure
+            video.write(frame, duration, status)
+            video.write(frame, duration, status+' / FROZEN final frame', 75)
+            video.close()
+        report = {'seed': args.seed, 'mode': 'expert_grasp_subtask_only','scene_spec':spec,'instruction':instruction, 'selector': 'original' if args.original_selector else 'short_grasp_v1',
                   'grasp_success': longest*.004 >= .6, 'complete_handover_tested': False,
                   'initial_condition': initial_condition,
                   'longest_verified_hold_s': longest*.004, 'failure': failure,
-                  'sim_seconds': duration, 'wall_seconds': time.perf_counter()-start_wall, 'video': video.metadata(),
+                  'sim_seconds': duration, 'wall_seconds': time.perf_counter()-start_wall, 'video': video.metadata() if video else {'extra_observer_video':False,'policy_rgb_in_raw_dataset':bool(args.collect)},
                   'grasp_definition': 'lift >5cm, measured aperture 15-85%, bilateral finger impulses >1e-5Ns, no right-arm contact, continuous 0.6s'}
         report['selector'] = 'original' if args.original_selector else audit['method']
+        if spec:
+            report['grasp_definition']='lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only'
         if len(array):
             # time + measured14 + velocity14 + commanded14 + left_tcp7 + object3 + lift/held/error/fingers
             closed = np.flatnonzero(array[:, 29+6] < .95)
@@ -163,12 +175,12 @@ def main():
         (args.output/'contacts.json').write_text(json.dumps(contacts, indent=2)+'\n')
         (args.output/'result.json').write_text(json.dumps(report, indent=2)+'\n')
         print(json.dumps(report), flush=True)
-        if args.collect:
-            task.merge_pkl_to_hdf5_video(instructions=['Use the left arm to grasp the red block, lift it, and hold it.'])
+        if args.collect and duration>=.04:
+            task.merge_pkl_to_hdf5_video(instructions=[instruction])
             raw = args.output/'raw'
-            identity = {'robot_id': 'dual_jaka_zu7',
-                        'rig': json.loads((ROOT/'configs/robots/dual_zu7.json').read_text()),
-                        'urdf_sha256': hashlib.sha256((REPO/'assets/embodiments/jaka-zu7-proxy/robot.urdf').read_bytes()).hexdigest(),
+            identity = {'robot_id': rig['robot_id'],
+                        'rig':rig,'scene_spec':spec,
+                        'urdf_sha256':rig_urdf_hash(rig),
                         'task_scope': 'left_grasp_lift_hold', 'seed': args.seed,
                         'initial_condition': initial_condition,
                         'expert_probe_passed': bool(report['grasp_success'] and failure is None),
@@ -180,6 +192,11 @@ def main():
                 hf.attrs['robot_id'] = identity['robot_id']
                 hf.attrs['rig_urdf_sha256'] = identity['urdf_sha256']
                 hf.attrs['task_scope'] = identity['task_scope']
+            task.remove_data_cache()
+        elif args.collect:
+            report['dataset_saved']=False
+            report['dataset_skip_reason']='Fewer than two observation frames; failed probe retained without training pairs'
+            (args.output/'result.json').write_text(json.dumps(report,indent=2)+'\n')
             task.remove_data_cache()
         task.close_env(clear_cache=True)
 

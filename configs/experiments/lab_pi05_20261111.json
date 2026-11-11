@@ -1,0 +1,52 @@
+{
+  "experiment_date": "2026-11-11",
+  "timezone": "Asia/Shanghai",
+  "authorization": "User extended server availability to 22:00 and asked to continue expert collection, new-rig fine-tuning and evaluation.",
+  "server_shutdown_planned": "2026-11-11T22:00:00+08:00",
+  "rig_config": "configs/robots/dual_zu7_lab.json",
+  "task_scope": "left_grasp_lift_hold",
+  "collection": {
+    "first_batch": "lab_multitarget_20261111_a",
+    "first_batch_max_attempts": 30,
+    "first_batch_stop_new_attempts": "2026-11-11T18:55:00+08:00",
+    "continuation_max_attempts": 90,
+    "continuation_stop_new_attempts": "2026-11-11T20:40:00+08:00",
+    "accepted_only": true,
+    "required_replay": "same seed, same scene, bounded servo, no unintended arm contacts",
+    "training_layout_range": [0, 99],
+    "development_layout_range": [1000, 1009],
+    "final_holdout_layout_range": [2000, 2019],
+    "sufficiency_claim": "Counts are a bounded collection budget; adequacy must be assessed with coverage and held-out performance."
+  },
+  "training": {
+    "model": "pi05_base",
+    "initialization": "fresh base; do not mix old-rig checkpoint updates",
+    "steps_max": 6000,
+    "batch_size": 1,
+    "action_horizon": 50,
+    "seed": 42,
+    "freeze": "SigLIP and original VLM/action-expert weights",
+    "trainable": "VLM/action-expert LoRA and action/time projections",
+    "minimum_accepted_episodes": 9,
+    "minimum_distinct_layouts": 3,
+    "require_all_three_colors": true,
+    "stop_updates_by": "2026-11-11T21:15:00+08:00"
+  },
+  "evaluation": {
+    "seen_layouts": [0],
+    "development_layouts": [1000],
+    "targets_per_layout": [0, 1, 2],
+    "max_rollouts": 6,
+    "k": 8,
+    "horizon": 50,
+    "noise_seed": 42,
+    "max_steps": 650,
+    "final_holdout_used": false,
+    "scope": "development diagnostics; not statistical evidence of generalization"
+  },
+  "backup": {
+    "data_backup_may_overlap_training": true,
+    "checkpoint": "exact parameter delta plus optimizer/assets against separately verified qualification archive, with roundtrip verification; full checkpoint stays on server",
+    "finish_before": "2026-11-11T21:55:00+08:00"
+  }
+}

@@ -1,16 +1,24 @@
-# 当前 Zu7 修正批次
+# 实验室归档硬件与 π0.5 当前状态
 
-## 2026-11-09下午预检与事件审计
+采样时间：2026-11-11T18:47:48+08:00（北京时间）。
 
-服务器在17:12刷新时无项目训练/评测作业。已保存的15条配对轨迹完成离线事件分类：stable1500先位移失败4/偏离失败1；coverage3000先位移失败2/偏离失败1/抓取成功2；recovery4000先位移失败1/偏离失败1/未闭爪1/抓取成功2。见`docs/GRASP_EVENT_TAXONOMY_20261109.md`。本次没有新仿真回合或训练。
+按归档建模，尚未实机核对；夹爪行程、腕相机和光学坐标轴仍有假设。
+硬件与规划证据见 `docs/LAB_ARCHIVE_20261111.md`；π0.5工程验收见 `docs/PI05_QUALIFICATION_20261111.md`。
 
-独立OpenPI环境可识别GPU；官方π0.5底模20/20对象缓存并完成CPU参数恢复。Zu7抓取课程8条1076帧已转为OpenPI可读副本，state/action全帧一致、抽样48张相机图像像素一致；14维双臂动作映射往返误差0。尚未进行真实batch的GPU前后向、LoRA训练或π0.5闭环评测。见`docs/PI05_PREFLIGHT_20261109.md`。
+活跃脚本：[{"pid": 12123, "scripts": ["scripts/run_lab_curriculum.py"]}, {"pid": 14757, "scripts": ["scripts/probe_zu7_short_grasp.py"]}]
 
-本轮代码与文档提交`b75c104`已自动推送GitHub main；8项单元测试通过。新兼容数据/事件JSON本地归档SHA256为`17aee1e1e53bded4102308ecdcbeb4a92ade0e53f909ae2174612ba10315a232`，具体位置见`MEMORY.md`。此状态是人工补记；下方自动表采样于17:12。
+| 新批次 | 当前结果 |
+| --- | --- |
+| results/lab_multitarget_20261111_a/progress.json | 9 条验收通过 / 9 次尝试；completed=False；None |
+| results/pi05_qualification_20261111/audit.json | 更新 3 步；completed=True；仅说明训练工程状态 |
 
-采样时间：2026-11-09T17:12:26+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+以下为旧硬件及 ALOHA 历史记录。
 
-活跃项目脚本：[]
+# 历史 Zu7 临时夹爪实验
+
+采样时间：2026-11-11T18:47:48+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+
+活跃项目脚本：[{"pid": 12123, "scripts": ["scripts/run_lab_curriculum.py"]}, {"pid": 14757, "scripts": ["scripts/probe_zu7_short_grasp.py"]}]
 
 | Zu7 实验产物 | 验收结果 |
 | --- | --- |
@@ -52,6 +60,7 @@
 | results/zu7_perturbed_replay_seed15/results.json | 抓取子任务 1/1；未测试完整交接 |
 | results/zu7_perturbed_replay_seed16/results.json | 抓取子任务 1/1；未测试完整交接 |
 | results/zu7_perturbed_replay_seed17/results.json | 抓取子任务 1/1；未测试完整交接 |
+| results/zu7_pi05_qualification_20261111/results.json | 抓取子任务 0/1；未测试完整交接 |
 | results/zu7_recovery4000_intervened_seed0_step50/results.json | 抓取子任务 0/1；未测试完整交接 |
 | results/zu7_recovery4000_intervened_seed101_step45/results.json | 抓取子任务 0/1；未测试完整交接 |
 | results/zu7_recovery4000_intervened_seed6_step35/results.json | 抓取子任务 0/1；未测试完整交接 |
@@ -115,7 +124,7 @@
 
 # 当前运行状态（自动生成快照）
 
-采样时间：2026-11-09T17:12:26+08:00（北京时间）。
+采样时间：2026-11-11T18:47:48+08:00（北京时间）。
 
 此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
 阶段标记可能滞后，须结合进程和已落盘结果判断。
@@ -128,8 +137,8 @@
 | 原始示教已保存 / 规划种子 | 50 / 50 |
 | 训练进度（日志最近值） | 2000 / 2000 |
 | 最终检查点权重文件存在 | True |
-| 数据盘可用 | 64.52 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 16 MiB, 32760 MiB, 0 % |
+| 数据盘可用 | 58.46 GiB |
+| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 3913 MiB, 32760 MiB, 51 % |
 
 转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
 

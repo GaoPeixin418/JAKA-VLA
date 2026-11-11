@@ -1,0 +1,35 @@
+diff --git a/src/curobo/rollout/cost/self_collision_cost.py b/src/curobo/rollout/cost/self_collision_cost.py
+index 76dc949..804d3cc 100644
+--- a/src/curobo/rollout/cost/self_collision_cost.py
++++ b/src/curobo/rollout/cost/self_collision_cost.py
+@@ -56,6 +56,12 @@ class SelfCollisionCost(CostBase, SelfCollisionCostConfig):
+ 
+     def forward(self, robot_spheres):
+         self.update_batch_size(robot_spheres)
++        # Project regression: the pinned slow kernel does not write a zero result
++        # for collision-free queries and does not clear old gradient entries.
++        if not self.self_collision_kin_config.experimental_kernel:
++            self._out_distance.zero_()
++            self._out_vec.zero_()
++            self._sparse_sphere_idx.zero_()
+ 
+         dist = SelfCollisionDistance.apply(
+             self._out_distance,
+diff --git a/src/curobo/wrap/reacher/motion_gen.py b/src/curobo/wrap/reacher/motion_gen.py
+index c2b3d97..45d09bf 100644
+--- a/src/curobo/wrap/reacher/motion_gen.py
++++ b/src/curobo/wrap/reacher/motion_gen.py
+@@ -3510,6 +3510,13 @@ class MotionGen(MotionGenConfig):
+                 self.trajopt_solver.interpolation_type = og_value
+             if self.store_debug_in_result:
+                 result.debug_info["trajopt_result"] = traj_result
++                # Project fallback needs a snapshot before the finetune solver reuses buffers.
++                result.debug_info["project_geometric_candidate"] = {
++                    "position": traj_result.solution.position.detach().clone(),
++                    "success": traj_result.success.detach().clone(),
++                    "position_error": traj_result.position_error.detach().clone(),
++                    "rotation_error": traj_result.rotation_error.detach().clone(),
++                }
+             # run finetune
+             if plan_config.enable_finetune_trajopt and torch.count_nonzero(traj_result.success) > 0:
+                 with profiler.record_function("motion_gen/finetune_trajopt"):
