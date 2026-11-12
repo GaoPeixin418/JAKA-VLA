@@ -77,6 +77,8 @@ def main():
     parser.add_argument('--steps', type=int, default=5000, help='Additional updates, not total updates')
     parser.add_argument('--schedule-steps', type=int, default=6000,
                         help='Must match the source run so restored optimizer moments keep the same LR schedule')
+    parser.add_argument('--seed', type=int, default=43,
+                        help='Independent data-order seed; do not reuse the source run seed')
     parser.add_argument('--deadline', default=None, help='Optional ISO-8601 deadline with timezone')
     args = parser.parse_args()
     if args.steps < 1 or args.schedule_steps < 1 or not all(c.isalnum() or c in '_-' for c in args.name):
@@ -86,13 +88,19 @@ def main():
     source_identity = json.loads((source / 'project_identity.json').read_text())
     if source_identity['dataset'] != args.dataset or source_identity['model'] != 'pi05':
         raise ValueError('Source checkpoint dataset/model identity mismatch')
-    config = build_config(args.dataset, args.name, steps=args.schedule_steps,
-                          batch_size=1, horizon=source_identity['horizon'])
+    source_audit_path = ROOT / 'results' / source_identity['experiment'] / 'audit.json'
+    source_audit = json.loads(source_audit_path.read_text()) if source_audit_path.exists() else {}
+    source_data_seed = source_audit.get('data_order_seed', source_audit.get('arguments', {}).get('data_seed', 42))
+    if args.seed == source_data_seed:
+        raise ValueError(f'Data-order seed {args.seed} repeats the source run seed')
+    config = dataclasses.replace(build_config(args.dataset, args.name, steps=args.schedule_steps,
+                                               batch_size=1, horizon=source_identity['horizon']), seed=args.seed)
     output = ROOT / 'results' / args.name
     output.mkdir(parents=True, exist_ok=False)
     report = {'arguments': vars(args) | {'source_checkpoint': str(source)}, 'completed': False,
               'stage': 'initializing', 'metrics': [], 'source_checkpoint': str(source),
               'scope': 'continued pi0.5 fine-tuning from full model+optimizer state; loss is not task success',
+              'data_order_seed': args.seed, 'source_data_order_seed': source_data_seed,
               'started_at': time.time()}
     provenance_paths = [ROOT / 'scripts/continue_pi05_zu7.py', ROOT / 'scripts/train_pi05_zu7.py',
                         ROOT / 'jaka_vla/pi05_config.py', ROOT / 'jaka_vla/openpi_zu7.py']
