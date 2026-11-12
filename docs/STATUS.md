@@ -1,11 +1,11 @@
 # 实验室归档硬件与 π0.5 当前状态
 
-采样时间：2026-11-12T15:26:14+08:00（北京时间）。
+采样时间：2026-11-12T16:45:30+08:00（北京时间）。
 
 按归档建模，尚未实机核对；夹爪行程、腕相机和光学坐标轴仍有假设。
 硬件与规划证据见 `docs/LAB_ARCHIVE_20261111.md`；π0.5工程验收见 `docs/PI05_QUALIFICATION_20261111.md`。
 
-活跃脚本：[{"pid": 24298, "scripts": ["scripts/train_pi05_zu7.py"]}]
+活跃脚本：[]
 
 | 新批次 | 当前结果 |
 | --- | --- |
@@ -19,7 +19,7 @@
 | results/lab_pi05_finetune_stage2_20261112/audit.json | 更新 9854 步；completed=True；仅说明训练工程状态 |
 | results/lab_pi05_finetune_stage3_20261112/audit.json | 更新 14854 步；completed=True；仅说明训练工程状态 |
 | results/lab_pi05_single_scene_20261112/audit.json | 更新 2000 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_three_targets_20261112/audit.json | 更新 None 步；completed=False；仅说明训练工程状态 |
+| results/lab_pi05_three_targets_20261112/audit.json | 更新 5744 步；completed=True；仅说明训练工程状态 |
 | results/pi05_qualification_20261111/audit.json | 更新 3 步；completed=True；仅说明训练工程状态 |
 | 新硬件合并训练集 | 97 条 / 41206 帧 / 33 布局；数据充分性未确立 |
 | results/lab_pi05_eval_20261111/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
@@ -28,14 +28,17 @@
 | results/lab_pi05_eval_stage2b_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
 | results/lab_pi05_eval_stage3_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
 | results/lab_pi05_eval_stage3_k50_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_three_targets_dev_k25_20261112/summary.json | seen 合格抓取 0/0；development 合格抓取 2/3；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_three_targets_k25_20261112/summary.json | seen 合格抓取 1/3；development 合格抓取 0/0；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_three_targets_seen_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/0；completed=True；小样本开发诊断 |
 
 以下为旧硬件及 ALOHA 历史记录。
 
 # 历史 Zu7 临时夹爪实验
 
-采样时间：2026-11-12T15:26:14+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+采样时间：2026-11-12T16:45:30+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
 
-活跃项目脚本：[{"pid": 24298, "scripts": ["scripts/train_pi05_zu7.py"]}]
+活跃项目脚本：[]
 
 | Zu7 实验产物 | 验收结果 |
 | --- | --- |
@@ -141,7 +144,7 @@
 
 # 当前运行状态（自动生成快照）
 
-采样时间：2026-11-12T15:26:14+08:00（北京时间）。
+采样时间：2026-11-12T16:45:30+08:00（北京时间）。
 
 此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
 阶段标记可能滞后，须结合进程和已落盘结果判断。
@@ -154,8 +157,8 @@
 | 原始示教已保存 / 规划种子 | 50 / 50 |
 | 训练进度（日志最近值） | 2000 / 2000 |
 | 最终检查点权重文件存在 | True |
-| 数据盘可用 | 19.09 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 8508 MiB, 32760 MiB, 100 % |
+| 数据盘可用 | 12.66 GiB |
+| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 15 MiB, 32760 MiB, 0 % |
 
 转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
 
