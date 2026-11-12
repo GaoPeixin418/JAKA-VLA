@@ -43,8 +43,9 @@ def main():
         for right in range(left + 1, 3):
             state_diffs.append(float(np.max(np.abs(np.asarray(samples[left]['state']) - np.asarray(samples[right]['state'])))))
             for key in ('image', 'left_wrist_image', 'right_wrist_image'):
-                image_diffs.append(int(np.max(np.abs(np.asarray(samples[left][key]).astype(np.int16) -
-                                                       np.asarray(samples[right][key]).astype(np.int16)))))
+                # LeRobot decodes floating RGB in [0,1]; integer casting erased differences.
+                image_diffs.append(float(np.max(np.abs(np.asarray(samples[left][key],dtype=np.float32) -
+                                                        np.asarray(samples[right][key],dtype=np.float32)))))
 
     policy = create_trained_policy(cfg, args.checkpoint, sample_kwargs={'num_steps': 10})
     noise = np.random.default_rng(42).standard_normal((identity['horizon'], 32)).astype(np.float32)
@@ -87,8 +88,9 @@ def main():
                             'length': episode['length']} for i, (_, episode) in enumerate(chosen)],
               'same_initial_state_max_abs_difference': max(state_diffs),
               'same_initial_image_max_abs_difference': max(image_diffs),
+              'image_difference_units': 'decoded float RGB [0,1]',
               'prompt_sensitivity': sensitivity, 'cross_target_errors': cross_errors,
-              'scope': 'Same initial state and three RGB images; prompt is varied across target instructions. Fixed noise seed 42; no rollout or weight updates.'}
+              'scope': 'Each prompt comparison holds its image source and state exactly fixed. Different video sources may differ after codec decoding. Fixed noise seed 42; sensitivity alone does not establish correctness; no rollout or weight updates.'}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({'output': str(args.output), 'same_initial_state_max_abs_difference': max(state_diffs),

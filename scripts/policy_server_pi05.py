@@ -19,7 +19,9 @@ def main():
     p.add_argument('--connections',type=int,default=1,help='Number of sequential evaluation clients before closing')
     p.add_argument('--robot-id',required=True);p.add_argument('--socket',type=Path,required=True)
     p.add_argument('--noise-mode',choices=['fixed','random','zero'],default='fixed');p.add_argument('--noise-seed',type=int,default=42)
+    p.add_argument('--observation-dir',type=Path,help='Optional exact inference inputs and outputs for offline diagnosis')
     args=p.parse_args()
+    if args.observation_dir is not None:args.observation_dir.mkdir(parents=True,exist_ok=False)
     if not 1<=args.connections<=12:raise ValueError('Invalid connection budget')
     identity=json.loads((args.checkpoint/'project_identity.json').read_text())
     if identity['robot_id']!=args.robot_id or identity['model']!='pi05':raise ValueError('Checkpoint identity mismatch')
@@ -40,6 +42,7 @@ def main():
     with Listener(str(args.socket),family='AF_UNIX') as listener:
         print('READY',args.socket,flush=True)
         for connection_index in range(args.connections):
+            prediction_index=0
             with listener.accept() as conn:
                 while True:
                     request=conn.recv()
@@ -61,6 +64,10 @@ def main():
                     actions=policy.infer(frame,noise=None if args.noise_mode=='random' else noise)['actions']
                     seconds=time.monotonic()-start
                     if actions.shape!=(identity['horizon'],14) or not np.isfinite(actions).all():raise ValueError('Invalid actions')
+                    if args.observation_dir is not None:
+                        np.savez_compressed(args.observation_dir/f'connection_{connection_index:02d}_prediction_{prediction_index:04d}.npz',
+                            **frame,actions=actions,noise=noise if args.noise_mode!='random' else np.empty(0))
+                    prediction_index+=1
                     conn.send({'actions':actions,'inference_seconds':seconds,'noise_mode':args.noise_mode,
                                'normalized_state_abs_max':normalized_state_abs_max})
 

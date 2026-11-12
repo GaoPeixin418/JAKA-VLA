@@ -22,7 +22,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import optax
-from openpi.training import data_loader, checkpoints, sharding
+from openpi.training import data_loader, checkpoints, sharding, weight_loaders
 from jaka_vla.pi05_config import build_config
 from jaka_vla.identity import rig_urdf_hash
 
@@ -66,11 +66,21 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--dataset',required=True);p.add_argument('--name',required=True)
     p.add_argument('--steps',type=int,default=3);p.add_argument('--batch-size',type=int,default=1)
     p.add_argument('--horizon',type=int,default=50);p.add_argument('--deadline',default='2026-11-11T19:05:00+08:00')
+    p.add_argument('--episodes',type=int,nargs='+',help='Explicit episode subset for a bounded fit diagnostic')
+    p.add_argument('--initial-checkpoint',type=Path,help='Initialize weights from this checkpoint; optimizer and schedule start fresh')
+    p.add_argument('--seed',type=int,default=42)
     args=p.parse_args()
     if args.steps<1 or not all(c.isalnum() or c in '_-' for c in args.name):raise ValueError('Invalid run')
-    cfg=build_config(args.dataset,args.name,steps=args.steps,batch_size=args.batch_size,horizon=args.horizon)
+    cfg=dataclasses.replace(build_config(args.dataset,args.name,steps=args.steps,batch_size=args.batch_size,horizon=args.horizon),seed=args.seed)
+    source_identity=None
+    if args.initial_checkpoint is not None:
+        args.initial_checkpoint=args.initial_checkpoint.resolve()
+        source_identity=json.loads((args.initial_checkpoint/'project_identity.json').read_text())
+        if source_identity['dataset']!=args.dataset or source_identity['horizon']!=args.horizon or source_identity['model']!='pi05':
+            raise ValueError('Initialization checkpoint dataset/model/horizon mismatch')
+        cfg=dataclasses.replace(cfg,weight_loader=weight_loaders.CheckpointWeightLoader(str(args.initial_checkpoint/'params')))
     output=ROOT/'results'/args.name;output.mkdir(parents=True,exist_ok=False)
-    report={'arguments':vars(args),'completed':False,'stage':'initializing','metrics':[],'started_at':time.time(),
+    report={'arguments':vars(args) | {'initial_checkpoint':str(args.initial_checkpoint) if args.initial_checkpoint else None},'completed':False,'stage':'initializing','metrics':[],'started_at':time.time(),
             'scope':'engineering qualification; training loss is not task success' if args.steps<=3 else 'bounded pi0.5 fine-tuning; training loss is not task success'}
     provenance_paths=[ROOT/'data/openpi'/args.dataset/'meta'/name for name in
         ('info.json','episodes.jsonl','tasks.jsonl','project_identity.json')]
@@ -92,11 +102,40 @@ def main():
         mesh=sharding.make_mesh(1)
         ds=jax.sharding.NamedSharding(mesh,jax.sharding.PartitionSpec(sharding.DATA_AXIS))
         rep=jax.sharding.NamedSharding(mesh,jax.sharding.PartitionSpec())
-        loader=data_loader.create_data_loader(cfg,sharding=ds,shuffle=True);iterator=iter(loader);batch=next(iterator)
+        sample_order=None
+        if args.episodes is None:
+            loader=data_loader.create_data_loader(cfg,sharding=ds,shuffle=True)
+        else:
+            episodes=[json.loads(line) for line in (ROOT/'data/openpi'/args.dataset/'meta/episodes.jsonl').read_text().splitlines()]
+            requested=set(args.episodes);selected=[];offset=0;chosen=[]
+            for episode in episodes:
+                if episode['episode_index'] in requested:
+                    selected.extend(range(offset,offset+episode['length']));chosen.append(episode)
+                offset+=episode['length']
+            if len(chosen)!=len(requested) or not selected:
+                raise ValueError('Requested episode subset is missing or empty')
+            dc=cfg.data.create(cfg.assets_dirs,cfg.model)
+            raw=data_loader.create_torch_dataset(dc,args.horizon,cfg.model)
+            if len(raw)!=offset:raise ValueError('Episode metadata and dataset length disagree')
+            transformed=data_loader.transform_dataset(raw,dc)
+            generator=np.random.default_rng(args.seed);order=[]
+            # Record exact anchors, with complete shuffled passes before any repeat.
+            while len(order)<(args.steps+1)*args.batch_size:
+                order.extend(generator.permutation(selected).tolist())
+            sample_order=np.asarray(order[:(args.steps+1)*args.batch_size],dtype=np.int64)
+            np.save(output/'planned_sample_indices.npy',sample_order)
+            loader=data_loader.DataLoaderImpl(dc,data_loader.TorchDataLoader(transformed,
+                local_batch_size=args.batch_size,sharding=ds,shuffle=False,sampler=sample_order.tolist(),
+                num_workers=0,seed=args.seed))
+            report['training_selection']={'episodes':chosen,'eligible_frames':len(selected),'seed':args.seed,
+                'scope':'same-scene fit diagnostic; no generalization claim',
+                'sample_order_sha256':hashlib.sha256(sample_order.tobytes()).hexdigest()}
+        report['optimizer_initialization']='fresh optimizer and LR schedule'
+        iterator=iter(loader);batch=next(iterator)
         spec=importlib.util.spec_from_file_location('pinned_openpi_train',ROOT/'repos/openpi/scripts/train.py')
         upstream=importlib.util.module_from_spec(spec);spec.loader.exec_module(upstream)
-        rng,init_rng=jax.random.split(jax.random.key(42))
-        print('INITIALIZING REAL BASE WEIGHTS',flush=True)
+        rng,init_rng=jax.random.split(jax.random.key(args.seed))
+        print('INITIALIZING WEIGHTS',str(args.initial_checkpoint) if args.initial_checkpoint else 'public pi05 base',flush=True)
         t=time.monotonic();state,state_sharding=upstream.init_train_state(cfg,init_rng,mesh,resume=False)
         jax.block_until_ready(state);report['init_seconds']=time.monotonic()-t
         trainable=flat(state.params.filter(cfg.trainable_filter));all_params=flat(state.params)
@@ -138,6 +177,10 @@ def main():
         report['stage']='saving'
         manager,_=checkpoints.initialize_checkpoint_dir(cfg.checkpoint_dir,keep_period=None,overwrite=False,resume=False)
         completed_steps=int(state.step)
+        if sample_order is not None:
+            consumed=sample_order[:completed_steps*args.batch_size]
+            np.save(output/'consumed_sample_indices.npy',consumed)
+            report['training_selection'].update(consumed_frames=len(consumed),unique_anchors=int(len(np.unique(consumed))))
         checkpoints.save_state(manager,state,loader,completed_steps);manager.wait_until_finished()
         report['checkpoint']=str(cfg.checkpoint_dir/str(completed_steps));report['completed_steps']=completed_steps
         dataset_identity=ROOT/'data/openpi'/args.dataset/'meta/project_identity.json'
@@ -151,6 +194,8 @@ def main():
                   'model':'pi05','horizon':args.horizon,'discrete_state_input':True,
                   'config_name':cfg.name,'experiment':args.name,'completed_steps':completed_steps}
         identity['provenance']=report['provenance']
+        if source_identity is not None:identity['initial_checkpoint']=str(args.initial_checkpoint)
+        if 'training_selection' in report:identity['training_selection']=report['training_selection']
         (Path(report['checkpoint'])/'project_identity.json').write_text(json.dumps(identity,indent=2)+'\n')
         report.update(completed=True,stage='saved',deadline_shortened=completed_steps!=args.steps)
     except Exception as exc:
