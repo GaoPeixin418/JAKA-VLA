@@ -1,2 +1,8 @@
 # Unified diffs contain space-prefixed context lines, including blank lines.
 manifests/*.patch -whitespace
+
+# Generated review artifacts retain their verified byte representation.
+reviews/2026-11-16/*.pdf binary
+reviews/2026-11-16/*.csv -text whitespace=cr-at-eol
+# Matplotlib SVG path records contain insignificant trailing spaces.
+reviews/2026-11-16/*.svg -whitespace

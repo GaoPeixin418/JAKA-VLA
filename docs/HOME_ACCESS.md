@@ -1,5 +1,13 @@
 # 在自己的电脑查看 JAKA-VLA
 
+
+## 最新：2026-11-16 π0.5 性能评测
+
+本轮固定π0.5 three_targets/5744、K25/H50/noise42，共完成333/333回合；训练布局复现1/3（33.3%），开发集6/30（20.0%），原定留出15/60（25.0%），追加留出56/240（23.3%），全部独立留出71/300（23.7%）。完整独立留出布局100个，布局聚类bootstrap 95%区间19.3% - 28.0%。运行异常0，未完成0。
+
+打开[本轮资料目录](../reviews/2026-11-16/README.md)，可直接看PDF与Demo，或下载全部录像查看包。GitHub文件页面点Download raw file；完整解压后打开review/index.html。服务器关机后仍可查看。以下旧日期资料均为历史结果。
+
+
 最新全景包：`reviews/2026-11-06/jaka-zu7-recovery-progress-20261106-1830.zip`（9,879,558字节）。在GitHub文件页面点 Download raw file，完整解压后打开 `jaka-zu7-recovery-progress-20261106-1830/index.html`。含全部9段学习录像和1段专家恢复参考，默认半速，可逐帧和全屏。新 recovery4000 原场景1/3、新场景1/3、明确重设初态的恢复子任务0/3，未达到预期改善。详情见 `RECOVERY_CURRICULUM_20261106.md`。
 
 此前 stable1500 的成功参考仍在 `jaka-zu7-grasp-progress-20261106-1730.zip`：stable 原场景2/3；coverage 原场景1/3、新 seeds100–102 为2/3。查看时注意检查点和任务初态。
