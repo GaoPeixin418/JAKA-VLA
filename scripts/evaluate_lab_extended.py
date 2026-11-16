@@ -75,7 +75,7 @@ def main():
                 scene = run/'scenes'/f'{key}.json'
                 save(scene, spec)
                 cases.append({'key':key, 'split':split, 'layout':layout, 'target':target, 'color':spec['objects'][target]['color'],
-                    'seed':60000+layout*3+target, 'worker':group_index%2, 'scene':str(scene), 'scene_sha256':digest(scene),
+                    'seed':60000+layout*3+target, 'worker':group_index%3, 'scene':str(scene), 'scene_sha256':digest(scene),
                     'instruction':spec['instruction'], 'review_video':layout%5 == 0})
         if len(cases) != 240 or len({c['key'] for c in cases}) != 240:
             raise ValueError('Unexpected case population')
@@ -83,7 +83,7 @@ def main():
         code_files = ['scripts/eval_v2.py','scripts/policy_server_pi05.py','scripts/evaluate_lab_extended.py','jaka_vla/control.py','jaka_vla/grasp_monitor.py','jaka_vla/lab_scene.py','jaka_vla/contact_acceptance.py','jaka_vla/openpi_zu7.py','configs/robots/dual_zu7_lab.json']
         plan = {'created_at':datetime.now().astimezone().isoformat(), 'arguments':vars(args),
             'git_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-            'conditions':{'K':25,'H':50,'noise_seed':42,'noise_mode':'fixed','max_steps':650,'physics_hz':250,'control_hz':25,'workers':2},
+            'conditions':{'K':25,'H':50,'noise_seed':42,'noise_mode':'fixed','max_steps':650,'physics_hz':250,'control_hz':25,'workers':3},
             'scope':'Frozen current checkpoint, left grasp lift hold only; synchronous inference pauses simulation; no training or parameter selection during this evaluation.',
             'primary_population':'240 supplementary heldout episodes in layouts 2020-2099, three targets each. Extension declared based on measured throughput before these layouts are evaluated. All attempts retained; layout is the independent sampling unit. Development and reproduction reported separately.',
             'success_definition':'Lift >0.05m, measured simulated aperture 0.08-0.90, at least 2 of 3 fingers contact target, no right target contact, continuous >=0.6s; no failure and no forbidden contact.',
@@ -148,7 +148,7 @@ def main():
             if server is not None:stop(server)
             status.update(stage='finished',finished_at=datetime.now().astimezone().isoformat());status.pop('active_case',None);save(summary,status)
 
-    threads=[threading.Thread(target=worker,args=(i,)) for i in range(2)]
+    threads=[threading.Thread(target=worker,args=(i,)) for i in range(3)]
     for thread in threads:thread.start()
     for thread in threads:thread.join()
     save(run/'execution_finished.json',{'at':datetime.now().astimezone().isoformat()})
