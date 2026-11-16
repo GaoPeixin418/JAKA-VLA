@@ -16,13 +16,13 @@ from jaka_vla.identity import physical_rig_hash
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--checkpoint',type=Path,required=True)
-    p.add_argument('--connections',type=int,default=1,help='Number of sequential evaluation clients before closing')
+    p.add_argument('--reload-output-dir',type=Path,help='Store reload evidence outside the checkpoint');p.add_argument('--connections',type=int,default=1,help='Number of sequential evaluation clients before closing')
     p.add_argument('--robot-id',required=True);p.add_argument('--socket',type=Path,required=True)
     p.add_argument('--noise-mode',choices=['fixed','random','zero'],default='fixed');p.add_argument('--noise-seed',type=int,default=42)
     p.add_argument('--observation-dir',type=Path,help='Optional exact inference inputs and outputs for offline diagnosis')
     args=p.parse_args()
     if args.observation_dir is not None:args.observation_dir.mkdir(parents=True,exist_ok=False)
-    if not 1<=args.connections<=12:raise ValueError('Invalid connection budget')
+    if not 1<=args.connections<=256:raise ValueError('Invalid connection budget')
     identity=json.loads((args.checkpoint/'project_identity.json').read_text())
     if identity['robot_id']!=args.robot_id or identity['model']!='pi05':raise ValueError('Checkpoint identity mismatch')
     config=build_config(identity['dataset'],identity['experiment'],horizon=identity['horizon'])
@@ -33,8 +33,10 @@ def main():
     noise=np.random.default_rng(args.noise_seed).standard_normal((identity['horizon'],32)).astype(np.float32)
     first=policy.infer(sample,noise=noise)['actions']
     if first.shape!=(identity['horizon'],14) or not np.isfinite(first).all():raise ValueError('Reload inference invalid')
-    np.save(args.checkpoint/'reload_first_actions.npy',first)
-    (args.checkpoint/'reload_verification.json').write_text(json.dumps({'success':True,'fresh_process':True,
+    reload_output=args.reload_output_dir or args.checkpoint
+    reload_output.mkdir(parents=True,exist_ok=True)
+    np.save(reload_output/'reload_first_actions.npy',first)
+    (reload_output/'reload_verification.json').write_text(json.dumps({'success':True,'fresh_process':True,
         'elapsed_seconds':time.monotonic()-start,'output_shape':list(first.shape),'output_finite':True,
         'checkpoint':str(args.checkpoint),'sample':'training dataset first frame','task_success_claim':False},indent=2)+'\n')
     args.socket.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
