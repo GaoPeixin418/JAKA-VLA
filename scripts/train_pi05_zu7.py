@@ -86,12 +86,14 @@ def main():
             target_identity=json.loads((target_root/'meta/project_identity.json').read_text())
             target_info=json.loads((target_root/'meta/info.json').read_text())
             features=target_info['features']
+            state_shapes=[features[key].get('shape') for key in ('observation.state','state') if key in features]
+            action_shapes=[features[key].get('shape') for key in ('action','actions') if key in features]
             if (source_identity.get('robot_id')!=target_identity.get('robot_id') or
                 source_identity.get('urdf_sha256')!=target_identity.get('urdf_sha256') or
                 source_identity.get('state_dim')!=14 or source_identity.get('action_dim')!=14 or
                 source_identity.get('rig')!=target_identity.get('rig') or
-                features.get('observation.state',{}).get('shape')!=[14] or
-                features.get('action',{}).get('shape')!=[14]):
+                not state_shapes or not action_shapes or
+                any(shape!=[14] for shape in state_shapes+action_shapes)):
                 raise ValueError('Unsafe dataset transfer: robot, URDF, rig, or 14D feature schema differs')
             stats=cfg.assets_dirs/args.dataset/'norm_stats.json'
             checkpoint_transfer={'from_dataset':source_identity['dataset'],'to_dataset':args.dataset,
