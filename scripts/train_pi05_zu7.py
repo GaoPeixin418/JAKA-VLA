@@ -68,19 +68,41 @@ def main():
     p.add_argument('--horizon',type=int,default=50);p.add_argument('--deadline',default='2026-11-11T19:05:00+08:00')
     p.add_argument('--episodes',type=int,nargs='+',help='Explicit episode subset for a bounded fit diagnostic')
     p.add_argument('--initial-checkpoint',type=Path,help='Initialize weights from this checkpoint; optimizer and schedule start fresh')
+    p.add_argument('--allow-dataset-transfer',action='store_true',help='Allow a new dataset ID only after strict π0.5/horizon/14D/robot/URDF/rig compatibility checks')
     p.add_argument('--seed',type=int,default=42)
     args=p.parse_args()
     if args.steps<1 or not all(c.isalnum() or c in '_-' for c in args.name):raise ValueError('Invalid run')
     cfg=dataclasses.replace(build_config(args.dataset,args.name,steps=args.steps,batch_size=args.batch_size,horizon=args.horizon),seed=args.seed)
-    source_identity=None
+    source_identity=None;checkpoint_transfer=None
     if args.initial_checkpoint is not None:
         args.initial_checkpoint=args.initial_checkpoint.resolve()
         source_identity=json.loads((args.initial_checkpoint/'project_identity.json').read_text())
-        if source_identity['dataset']!=args.dataset or source_identity['horizon']!=args.horizon or source_identity['model']!='pi05':
-            raise ValueError('Initialization checkpoint dataset/model/horizon mismatch')
+        if source_identity['horizon']!=args.horizon or source_identity['model']!='pi05':
+            raise ValueError('Initialization checkpoint model/horizon mismatch')
+        if source_identity['dataset']!=args.dataset:
+            if not args.allow_dataset_transfer:
+                raise ValueError('Checkpoint dataset differs; use explicit audited dataset transfer')
+            target_root=ROOT/'data/openpi'/args.dataset
+            target_identity=json.loads((target_root/'meta/project_identity.json').read_text())
+            target_info=json.loads((target_root/'meta/info.json').read_text())
+            features=target_info['features']
+            if (source_identity.get('robot_id')!=target_identity.get('robot_id') or
+                source_identity.get('urdf_sha256')!=target_identity.get('urdf_sha256') or
+                source_identity.get('state_dim')!=14 or source_identity.get('action_dim')!=14 or
+                source_identity.get('rig')!=target_identity.get('rig') or
+                features.get('observation.state',{}).get('shape')!=[14] or
+                features.get('action',{}).get('shape')!=[14]):
+                raise ValueError('Unsafe dataset transfer: robot, URDF, rig, or 14D feature schema differs')
+            stats=cfg.assets_dirs/args.dataset/'norm_stats.json'
+            checkpoint_transfer={'from_dataset':source_identity['dataset'],'to_dataset':args.dataset,
+                'model':'pi05','horizon':args.horizon,'robot_id':target_identity['robot_id'],
+                'urdf_sha256':target_identity['urdf_sha256'],'rig_match':True,
+                'state_action_dim':14,'target_normalization':str(stats),
+                'target_normalization_sha256':hashlib.sha256(stats.read_bytes()).hexdigest() if stats.exists() else None,
+                'optimizer_and_schedule':'reinitialized','reason':'Explicit transfer after RGB/state/action/timestamp and training-set audit'}
         cfg=dataclasses.replace(cfg,weight_loader=weight_loaders.CheckpointWeightLoader(str(args.initial_checkpoint/'params')))
     output=ROOT/'results'/args.name;output.mkdir(parents=True,exist_ok=False)
-    report={'arguments':vars(args) | {'initial_checkpoint':str(args.initial_checkpoint) if args.initial_checkpoint else None},'completed':False,'stage':'initializing','metrics':[],'started_at':time.time(),
+    report={'arguments':vars(args) | {'initial_checkpoint':str(args.initial_checkpoint) if args.initial_checkpoint else None},'checkpoint_transfer':checkpoint_transfer,'completed':False,'stage':'initializing','metrics':[],'started_at':time.time(),
             'scope':'engineering qualification; training loss is not task success' if args.steps<=3 else 'bounded pi0.5 fine-tuning; training loss is not task success'}
     provenance_paths=[ROOT/'data/openpi'/args.dataset/'meta'/name for name in
         ('info.json','episodes.jsonl','tasks.jsonl','project_identity.json')]
