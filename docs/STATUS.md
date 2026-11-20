@@ -1,196 +1,21 @@
-# 实验室归档硬件与 π0.5 当前状态
+# JAKA 双臂 π0.5 项目当前状态
 
-采样时间：2026-11-20T11:01:54+08:00（北京时间）。
+更新时间：2026-11-20 14:47（北京时间）。
 
-按归档建模，尚未实机核对；夹爪行程、腕相机和光学坐标轴仍有假设。
-硬件与规划证据见 `docs/LAB_ARCHIVE_20261111.md`；π0.5工程验收见 `docs/PI05_QUALIFICATION_20261111.md`。
+## 本轮结果
 
-活跃脚本：[]
+- 新增专家数据：30 条通过验收，12,639 帧；训练布局 4010、4011、4012、4020、4026，蓝/黄/红各 10 条。
+- 微调：π0.5 完成 4,000 次更新，batch=1、H=50；本轮 4,000 个锚点无放回且不重复，训练数据只使用这 30 条新轨迹，权重从既有检查点初始化、优化器重置。
+- 配对评测：固定 K=25、H=50、noise seed=42、每回合最多 650 步，在 6 个开发布局共 18 个相同场景/目标/随机种子上对比。新模型合格抓取 5/18（27.8%），5744 步基线 6/18（33.3%）；原始物理抓取均为 6/18。当前数据不支持“新数据微调已提升”结论。
+- 36/36 段新旧模型视频通过元数据和完整解码检查；逐物理步抓取审计已完成。14 项自动化测试通过，`git diff --check` 通过。
+- 当前没有训练或评测进程运行。
 
-| 新批次 | 当前结果 |
-| --- | --- |
-| results/lab_multitarget_20261111_a/progress.json | 12 条验收通过 / 12 次尝试；completed=True；deadline |
-| results/lab_multitarget_20261111_b/progress.json | 1 条验收通过 / 2 次尝试；completed=True；persistent_worker_exception |
-| results/lab_multitarget_20261111_b2/progress.json | 2 条验收通过 / 2 次尝试；completed=True；attempt_budget |
-| results/lab_multitarget_20261111_c/progress.json | 30 条验收通过 / 30 次尝试；completed=True；attempt_budget |
-| results/lab_multitarget_20261111_d/progress.json | 30 条验收通过 / 30 次尝试；completed=True；attempt_budget |
-| results/lab_multitarget_20261111_e/progress.json | 22 条验收通过 / 22 次尝试；completed=True；deadline |
-| results/lab_recovery_20261118/progress.json | None 条验收通过 / 1 次尝试；completed=False；None |
-| results/lab_pi05_finetune_20261111/audit.json | 更新 4854 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_finetune_stage2_20261112/audit.json | 更新 9854 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_finetune_stage3_20261112/audit.json | 更新 14854 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_multilayout_20261118/audit.json | 更新 3500 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_multilayout_20261119_97plus29_1000steps/audit.json | 更新 None 步；completed=False；仅说明训练工程状态 |
-| results/lab_pi05_multilayout_20261119_97plus29_gpu_cumulative4000/audit.json | 更新 3000 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_multilayout_20261119_97plus29_gpu_retry1000/audit.json | 更新 1000 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_single_scene_20261112/audit.json | 更新 2000 步；completed=True；仅说明训练工程状态 |
-| results/lab_pi05_three_targets_20261112/audit.json | 更新 5744 步；completed=True；仅说明训练工程状态 |
-| results/pi05_qualification_20261111/audit.json | 更新 3 步；completed=True；仅说明训练工程状态 |
-| 新硬件合并训练集 | 97 条 / 41206 帧 / 33 布局；数据充分性未确立 |
-| results/lab_pi05_eval_20261111/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_baseline5744_k25_20261119/summary.json | development_unseen_layouts 合格抓取 0/3；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_baseline5744_k25_b_20261119/summary.json | development_unseen_layouts 合格抓取 1/6；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_c4000_k25_20261119_retry/summary.json | development_unseen_layouts 合格抓取 0/3；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_c4000_k25_b_20261119/summary.json | development_unseen_layouts 合格抓取 3/6；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_posttrain_20261119_97plus29_gpu_retry1000/summary.json | development_unseen_layouts 合格抓取 0/9；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_pretrain_20261119_retry1/summary.json | development_unseen_layouts 合格抓取 0/9；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_single_scene_20261112/summary.json | seen 合格抓取 0/1；development 合格抓取 0/0；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_single_scene_k50_20261112/summary.json | seen 合格抓取 1/1；development 合格抓取 0/0；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_stage2b_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_stage3_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_stage3_k50_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_three_targets_dev_k25_20261112/summary.json | seen 合格抓取 0/0；development 合格抓取 2/3；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_three_targets_k25_20261112/summary.json | seen 合格抓取 1/3；development 合格抓取 0/0；completed=True；小样本开发诊断 |
-| results/lab_pi05_eval_three_targets_seen_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/0；completed=True；小样本开发诊断 |
+## 产物与限制
 
-以下为旧硬件及 ALOHA 历史记录。
+报告、配对查看器、36 段视频、训练采样记录和审计 JSON 已推送 GitHub。入口：`reviews/2026-11-20/paired-pi05/README.md`。提交：`71a4c93`（评测和视频链接）。大模型检查点未上传 GitHub，完整 4000 步检查点仍在服务器：`checkpoints/openpi/pi05_zu7_lora_h50/lab_pi05_expert30_20261120_stage4000_retry1/4000`。本机 `outputs/20261120/backup/pi05_delta_from_3000` 保存参数差分和训练状态；重建依赖服务器 3000 步参考检查点，不是独立完整权重备份。
 
-# 历史 Zu7 临时夹爪实验
+这次只评测左臂抓取、抬升并持物 0.6 秒；18 个样本是开发布局配对测试，不是独立最终盲测，也不代表真机、交接、放置、复位或双臂协作性能。少量预置初态扰动示教不等同于策略偏离后的 DAgger 纠偏数据。
 
-采样时间：2026-11-20T11:01:54+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+## 下一步
 
-活跃项目脚本：[]
-
-| Zu7 实验产物 | 验收结果 |
-| --- | --- |
-| results/zu7_coverage3000_new_seed100_102/results.json | 抓取子任务 2/3；未测试完整交接 |
-| results/zu7_coverage3000_seen_seed0_1/results.json | 抓取子任务 1/2；未测试完整交接 |
-| results/zu7_coverage3000_seen_seed6/results.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_expert_collision_replay/results.json | 完整任务 3/3 成功 |
-| results/zu7_expert_contact_diagnostic/results.json | 完整任务 1/1 成功 |
-| results/zu7_expert_replay_v2/results.json | 完整任务 0/3 成功 |
-| results/zu7_expert_replay_v3/results.json | 完整任务 3/3 成功 |
-| results/zu7_grasp_review6000_seed0_1/results.json | 完整任务 0/2 成功；左抓取 0/2 |
-| results/zu7_grasp_review6000_seed2/results.json | 完整任务 0/1 成功；左抓取 1/1 |
-| results/zu7_grasp_review9000_seed6/results.json | 完整任务 0/1 成功；左抓取 0/1 |
-| results/zu7_independent_expert_replay/seed_11/results.json | 完整任务 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_12/results.json | 完整任务 0/1 成功 |
-| results/zu7_independent_expert_replay/seed_6/results.json | 完整任务 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_7/results.json | 完整任务 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_8/results.json | 完整任务 1/1 成功 |
-| results/zu7_independent_expert_replay/seed_9/results.json | 完整任务 1/1 成功 |
-| results/zu7_learned_independent9000_seed3_5/results.json | 完整任务 0/3 成功 |
-| results/zu7_learned_seen3000/results.json | 完整任务 0/3 成功 |
-| results/zu7_learned_seen6000/results.json | 完整任务 0/3 成功 |
-| results/zu7_learned_seen6000_zero/results.json | 完整任务 0/3 成功 |
-| results/zu7_learned_seen9000_seed6_8/results.json | 完整任务 0/3 成功 |
-| results/zu7_learned_unseen6000_seed3_5/results.json | 完整任务 0/3 成功 |
-| results/zu7_learned_unseen6000_seed3_5_k1/results.json | 完整任务 0/3 成功 |
-| results/zu7_learned_unseen6000_seed3_5_k4/results.json | 完整任务 0/3 成功 |
-| results/zu7_matched_coverage3000_seed203_207/results.json | 抓取子任务 2/5；未测试完整交接 |
-| results/zu7_matched_recovery4000_seed203_207/results.json | 抓取子任务 2/5；未测试完整交接 |
-| results/zu7_matched_stable1500_seed203_207/results.json | 抓取子任务 0/5；未测试完整交接 |
-| results/zu7_multiview_expert_seed6/results.json | 完整任务 1/1 成功；左抓取 1/1 |
-| results/zu7_perturbed_collect_seed13/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_collect_seed14/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_collect_seed15/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_collect_seed16/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_collect_seed17/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_replay_seed13/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_replay_seed14/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_replay_seed15/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_replay_seed16/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_perturbed_replay_seed17/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_pi05_qualification_20261111/results.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_recovery4000_intervened_seed0_step50/results.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_recovery4000_intervened_seed101_step45/results.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_recovery4000_intervened_seed6_step35/results.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_recovery4000_new_seed200_202/results.json | 抓取子任务 1/3；未测试完整交接 |
-| results/zu7_recovery4000_seen_seed0_1/results.json | 抓取子任务 1/2；未测试完整交接 |
-| results/zu7_recovery4000_seen_seed6/results.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_recovery_collect_seed0_step40/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_collect_seed0_step50/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_collect_seed101_step35/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_collect_seed101_step45/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_collect_seed6_step25/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_collect_seed6_step35/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_replay_seed0_step40/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_replay_seed0_step50/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_replay_seed101_step35/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_replay_seed101_step45/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_replay_seed6_step25/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_recovery_replay_seed6_step35/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_shortgrasp1500_seed0_1/results.json | 抓取子任务 0/2；未测试完整交接 |
-| results/zu7_shortgrasp1500_seed6/results.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_shortpath_collect_seed0/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_shortpath_collect_seed1/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_shortpath_collect_seed6/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_shortpath_original_seed6/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_shortpath_replay_seed0/results.json | 完整任务 0/1 成功；左抓取 1/1 |
-| results/zu7_shortpath_replay_seed1/results.json | 完整任务 0/1 成功；左抓取 1/1 |
-| results/zu7_shortpath_replay_seed6/results.json | 完整任务 0/1 成功；左抓取 1/1 |
-| results/zu7_shortpath_v1_seed6/result.json | 抓取子任务 0/1；未测试完整交接 |
-| results/zu7_shortpath_v2_seed6/result.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_stable1500_seed0_1/results.json | 抓取子任务 1/2；未测试完整交接 |
-| results/zu7_stable1500_seed6/results.json | 抓取子任务 1/1；未测试完整交接 |
-| results/zu7_task_probe_v3/result.json | 完整任务 0/1 成功 |
-| results/zu7_task_probe_v4/result.json | 完整任务 0/1 成功 |
-| results/zu7_task_probe_v5/result.json | 完整任务 1/1 成功 |
-| results/zu7_task_probe_v6/result.json | 完整任务 0/1 成功 |
-| results/zu7_task_probe_v7/result.json | 完整任务 1/1 成功 |
-| data/raw/zu7_collision_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 3 条原始示教 |
-| data/raw/zu7_grasp_coverage/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 8 条原始示教 |
-| data/raw/zu7_grasp_recovery/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 14 条原始示教 |
-| data/raw/zu7_independent_accepted/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 5 条原始示教 |
-| data/raw/zu7_independent_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 6 条原始示教 |
-| data/raw/zu7_shortgrasp_accepted/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 3 条原始示教 |
-| data/raw/zu7_slow_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 0 条原始示教 |
-| data/raw/zu7_smoke/handover_block/jaka_zu7_proxy_jaka_zu7_proxy | 3 条原始示教 |
-| checkpoints/smolvla_zu7_coverage3000_seed42/resource_profile.json | completed=True |
-| checkpoints/smolvla_zu7_independent3000_seed42/resource_profile.json | completed=True |
-| checkpoints/smolvla_zu7_overfit3000_seed42/resource_profile.json | completed=True |
-| checkpoints/smolvla_zu7_recovery4000_seed42/resource_profile.json | completed=True |
-| checkpoints/smolvla_zu7_refine3000_seed42/resource_profile.json | completed=True |
-| checkpoints/smolvla_zu7_shortgrasp1500_seed42/resource_profile.json | completed=True |
-| checkpoints/smolvla_zu7_stable1500_seed42/resource_profile.json | completed=True |
-| train-zu7-coverage3000.log | 已观察到 3000/3000 步 |
-| train-zu7-independent3000.log | 已观察到 3000/3000 步 |
-| train-zu7-overfit3000.log | 已观察到 3000/3000 步 |
-| train-zu7-recovery4000.log | 已观察到 4000/4000 步 |
-| train-zu7-refine3000.log | 已观察到 3000/3000 步 |
-| train-zu7-shortgrasp1500.log | 已观察到 1500/1500 步 |
-| train-zu7-stable1500.log | 已观察到 1500/1500 步 |
-
-下面为已结束的 ALOHA 历史 pilot 快照。不能当作当前 Zu7 实验状态。
-
-# 当前运行状态（自动生成快照）
-
-采样时间：2026-11-20T11:01:54+08:00（北京时间）。
-
-此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
-阶段标记可能滞后，须结合进程和已落盘结果判断。
-
-| 项目 | 已观察到的状态 |
-| --- | --- |
-| 阶段标记 | 当前批次结束，待复核结果 |
-| 流水线 PID / 进程状态 | 16186 / None |
-| 匹配流水线且非僵尸进程 | False |
-| 原始示教已保存 / 规划种子 | 50 / 50 |
-| 训练进度（日志最近值） | 2000 / 2000 |
-| 最终检查点权重文件存在 | True |
-| 数据盘可用 | 30.37 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 15 MiB, 32760 MiB, 0 % |
-
-转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
-
-训练资源报告：completed=True；峰值分配 3.5749893188476562 GiB；包含加载/保存的用时 449.3256176880004 秒。
-
-## 已写入的固定 K 汇总
-
-| K | 成功/回合数 | 成功率 |
-| --- | --- | --- |
-| 4 | 0/3 | 0.0% |
-| 8 | 0/3 | 0.0% |
-| 16 | 0/3 | 0.0% |
-
-仅展示汇总文件中已完成的项目；逐回合证据在 `results/pilot_k*/results.json`，不得将部分结果当作完整批次。
-
-当前是同步、零模拟推理延迟评测；不是事件监测器、真实延迟或节卡真机实验。
-
-## 证据入口
-
-- `results/project_status.json`：本次机器可读快照。
-- `results/pilot_status.txt`、`results/pilot.pid`：流水线标记；必须交叉核实。
-- `logs/collect-pilot.log`、`logs/convert-pilot.log`、`logs/train-pilot.log`、`logs/eval-baselines.log`：各阶段日志。
-- `results/handover_pilot_validation.json`、`checkpoints/smolvla_pilot_seed42/resource_profile.json`、`results/pilot_baselines.json`：阶段结束后生成。
-- `docs/EXPERIMENT_LOG.md`：历史验证、实验参数和结论边界。
+优先在各训练布局补充多路径接近、夹爪闭合前对准，以及由学习策略诱发偏离后的人类重对齐/恢复示教；按轨迹内容哈希去重，再做固定 K=25/H=50 的同场景配对开发评测。另留新布局作最终盲测，避免在测试布局上选模型。
