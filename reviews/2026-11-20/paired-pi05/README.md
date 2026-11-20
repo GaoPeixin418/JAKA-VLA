@@ -24,6 +24,31 @@
 
 完整回合数据、失败原因、接触审计和所有成败视频见[配对查看器](index.html)与[JSON汇总](paired_summary.json)。36/36段视频均通过ffprobe元数据检查和完整解码；帧率、分辨率、帧数及时长符合记录，SHA256清单见[video_validation.json](video_validation.json)。独立逐物理步审计：[新模型](../../../docs/reports/20261120_pi05_expert30_audit_new.json)、[旧基线](../../../docs/reports/20261120_pi05_expert30_audit_baseline.json)。训练与采样记录见[training_record.json](training_record.json)。
 
+## 逐回合视频
+
+新模型与 5744 步基线使用相同布局、目标和随机种子。点击链接可查看对应回合视频。
+
+| 布局 | 目标 | Seed | 新模型（合格结果） | 基线（合格结果） |
+|---:|---:|---:|---|---|
+| 5030 | 0 | 75090 | [失败](media/new/layout_5030_target_0_seed_75090.mp4) | [成功](media/baseline/layout_5030_target_0_seed_75090.mp4) |
+| 5030 | 1 | 75091 | [成功](media/new/layout_5030_target_1_seed_75091.mp4) | [失败](media/baseline/layout_5030_target_1_seed_75091.mp4) |
+| 5030 | 2 | 75092 | [失败](media/new/layout_5030_target_2_seed_75092.mp4) | [失败](media/baseline/layout_5030_target_2_seed_75092.mp4) |
+| 5031 | 0 | 75093 | [成功](media/new/layout_5031_target_0_seed_75093.mp4) | [成功](media/baseline/layout_5031_target_0_seed_75093.mp4) |
+| 5031 | 1 | 75094 | [成功](media/new/layout_5031_target_1_seed_75094.mp4) | [失败](media/baseline/layout_5031_target_1_seed_75094.mp4) |
+| 5031 | 2 | 75095 | [失败](media/new/layout_5031_target_2_seed_75095.mp4) | [失败](media/baseline/layout_5031_target_2_seed_75095.mp4) |
+| 5032 | 0 | 75096 | [失败](media/new/layout_5032_target_0_seed_75096.mp4) | [成功](media/baseline/layout_5032_target_0_seed_75096.mp4) |
+| 5032 | 1 | 75097 | [失败](media/new/layout_5032_target_1_seed_75097.mp4) | [失败](media/baseline/layout_5032_target_1_seed_75097.mp4) |
+| 5032 | 2 | 75098 | [失败](media/new/layout_5032_target_2_seed_75098.mp4) | [失败](media/baseline/layout_5032_target_2_seed_75098.mp4) |
+| 5033 | 0 | 75099 | [失败](media/new/layout_5033_target_0_seed_75099.mp4) | [失败](media/baseline/layout_5033_target_0_seed_75099.mp4) |
+| 5033 | 1 | 75100 | [失败](media/new/layout_5033_target_1_seed_75100.mp4) | [失败](media/baseline/layout_5033_target_1_seed_75100.mp4) |
+| 5033 | 2 | 75101 | [成功](media/new/layout_5033_target_2_seed_75101.mp4) | [失败](media/baseline/layout_5033_target_2_seed_75101.mp4) |
+| 5034 | 0 | 75102 | [成功](media/new/layout_5034_target_0_seed_75102.mp4) | [成功](media/baseline/layout_5034_target_0_seed_75102.mp4) |
+| 5034 | 1 | 75103 | [失败](media/new/layout_5034_target_1_seed_75103.mp4) | [成功](media/baseline/layout_5034_target_1_seed_75103.mp4) |
+| 5034 | 2 | 75104 | [失败](media/new/layout_5034_target_2_seed_75104.mp4) | [失败](media/baseline/layout_5034_target_2_seed_75104.mp4) |
+| 5035 | 0 | 75105 | [失败](media/new/layout_5035_target_0_seed_75105.mp4) | [成功](media/baseline/layout_5035_target_0_seed_75105.mp4) |
+| 5035 | 1 | 75106 | [失败](media/new/layout_5035_target_1_seed_75106.mp4) | [失败](media/baseline/layout_5035_target_1_seed_75106.mp4) |
+| 5035 | 2 | 75107 | [失败](media/new/layout_5035_target_2_seed_75107.mp4) | [失败](media/baseline/layout_5035_target_2_seed_75107.mp4) |
+
 ## 解释边界
 
 这些数据还不能证明新增轨迹训练改善了泛化。样本只有18对，且使用的是开发布局，不是最终盲测；95% Wilson区间新模型约为12.5%–50.9%，基线约为16.3%–56.2%。任务只测左臂抓取、抬升和连续持物0.6秒；未测交接、放置、复位、双臂协作或真机。
