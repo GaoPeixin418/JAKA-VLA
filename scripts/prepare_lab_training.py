@@ -42,6 +42,10 @@ def main():
         coverage=json.loads((raw/'coverage.json').read_text());profile['coverage']=coverage
         if coverage['episodes']<9 or coverage['distinct_layouts']<3 or set(coverage['color_counts'])!={'red','blue','yellow'}:
             raise ValueError('Minimum new-rig training coverage not reached')
+        grid=coverage.get('color_position_counts',{})
+        if any(grid.get(color,{}).get(str(target),0)<1 for color in ('red','blue','yellow') for target in range(3)):
+            raise ValueError('Every target color must be demonstrated in every target position')
+        coverage['all_color_target_positions_covered']=True
         execute('observation_controls',ROOT/'envs/robotwin/bin/python',['scripts/audit_lab_observation_controls.py',
             '--raw',raw,'--output',run/'initial_observation_controls.json'])
         execute('lerobot3',ROOT/'envs/vla/bin/python',['scripts/convert_dataset_v2.py','--source',raw/'data','--output',v3,'--repo-id',f'local/{args.name}'])

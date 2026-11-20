@@ -23,16 +23,16 @@ def sha256(path):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--run', type=Path, required=True)
+    p.add_argument('--run', type=Path, nargs='+', required=True)
     p.add_argument('--raw', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     if a.output.exists():
         raise FileExistsError(a.output)
-    progress = json.loads((a.run / 'progress.json').read_text())
-    if not progress.get('completed'):
+    progress = [json.loads((run / 'progress.json').read_text()) for run in a.run]
+    if any(not item.get('completed') for item in progress):
         raise ValueError('Collection batch is incomplete')
-    attempts = progress['attempts']
+    attempts = [row for item in progress for row in item['attempts']]
     accepted = [row for row in attempts if row.get('accepted')]
     manifest = json.loads((a.raw / 'acceptance.json').read_text())
     if len(accepted) != len(manifest):
