@@ -25,6 +25,7 @@ import optax
 from openpi.training import data_loader, checkpoints, sharding, weight_loaders
 from jaka_vla.pi05_config import build_config
 from jaka_vla.identity import rig_urdf_hash
+from jaka_vla.training_order import sample_plan
 
 
 def flat(state):
@@ -70,6 +71,7 @@ def main():
     p.add_argument('--initial-checkpoint',type=Path,help='Initialize weights from this checkpoint; optimizer and schedule start fresh')
     p.add_argument('--allow-dataset-transfer',action='store_true',help='Allow a new dataset ID only after strict π0.5/horizon/14D/robot/URDF/rig compatibility checks')
     p.add_argument('--seed',type=int,default=42)
+    p.add_argument('--sample-offset',type=int,default=None,help='Position in a reproducible shuffled frame stream; inferred from compatible source audit')
     args=p.parse_args()
     if args.steps<1 or not all(c.isalnum() or c in '_-' for c in args.name):raise ValueError('Invalid run')
     cfg=dataclasses.replace(build_config(args.dataset,args.name,steps=args.steps,batch_size=args.batch_size,horizon=args.horizon),seed=args.seed)
@@ -123,37 +125,46 @@ def main():
     manager=None
     try:
         jax.config.update('jax_compilation_cache_dir',str(ROOT/'cache/jax-pi05'))
+        if jax.default_backend() != 'gpu':
+            raise RuntimeError('Training requires a GPU backend; set JAX_PLATFORMS=cuda explicitly')
         mesh=sharding.make_mesh(1)
         ds=jax.sharding.NamedSharding(mesh,jax.sharding.PartitionSpec(sharding.DATA_AXIS))
         rep=jax.sharding.NamedSharding(mesh,jax.sharding.PartitionSpec())
-        sample_order=None
-        if args.episodes is None:
-            loader=data_loader.create_data_loader(cfg,sharding=ds,shuffle=True)
-        else:
-            episodes=[json.loads(line) for line in (ROOT/'data/openpi'/args.dataset/'meta/episodes.jsonl').read_text().splitlines()]
-            requested=set(args.episodes);selected=[];offset=0;chosen=[]
-            for episode in episodes:
-                if episode['episode_index'] in requested:
-                    selected.extend(range(offset,offset+episode['length']));chosen.append(episode)
-                offset+=episode['length']
-            if len(chosen)!=len(requested) or not selected:
-                raise ValueError('Requested episode subset is missing or empty')
-            dc=cfg.data.create(cfg.assets_dirs,cfg.model)
-            raw=data_loader.create_torch_dataset(dc,args.horizon,cfg.model)
-            if len(raw)!=offset:raise ValueError('Episode metadata and dataset length disagree')
-            transformed=data_loader.transform_dataset(raw,dc)
-            generator=np.random.default_rng(args.seed);order=[]
-            # Record exact anchors, with complete shuffled passes before any repeat.
-            while len(order)<(args.steps+1)*args.batch_size:
-                order.extend(generator.permutation(selected).tolist())
-            sample_order=np.asarray(order[:(args.steps+1)*args.batch_size],dtype=np.int64)
-            np.save(output/'planned_sample_indices.npy',sample_order)
-            loader=data_loader.DataLoaderImpl(dc,data_loader.TorchDataLoader(transformed,
-                local_batch_size=args.batch_size,sharding=ds,shuffle=False,sampler=sample_order.tolist(),
-                num_workers=0,seed=args.seed))
-            report['training_selection']={'episodes':chosen,'eligible_frames':len(selected),'seed':args.seed,
-                'scope':'same-scene fit diagnostic; no generalization claim',
-                'sample_order_sha256':hashlib.sha256(sample_order.tobytes()).hexdigest()}
+        episodes=[json.loads(line) for line in (ROOT/'data/openpi'/args.dataset/'meta/episodes.jsonl').read_text().splitlines()]
+        requested=None if args.episodes is None else set(args.episodes)
+        selected=[];offset=0;chosen=[]
+        for episode in episodes:
+            if requested is None or episode['episode_index'] in requested:
+                selected.extend(range(offset,offset+episode['length']));chosen.append(episode)
+            offset+=episode['length']
+        if not selected or (requested is not None and len(chosen)!=len(requested)):
+            raise ValueError('Requested episode subset is missing or empty')
+        selected_ids=[e['episode_index'] for e in chosen]
+        sample_offset=args.sample_offset
+        if sample_offset is None:
+            sample_offset=0
+            if source_identity and source_identity['dataset']==args.dataset:
+                prior=source_identity.get('training_selection',{})
+                if prior.get('sampler')=='numpy_permutation_v1' and prior.get('seed')==args.seed and prior.get('episode_ids')==selected_ids:
+                    sample_offset=prior['sample_offset']+prior['consumed_frames']
+                elif not prior:
+                    source_audit=ROOT/'results'/source_identity['experiment']/'audit.json'
+                    old=json.loads(source_audit.read_text()) if source_audit.exists() else {}
+                    if old.get('arguments',{}).get('seed')==args.seed:
+                        raise ValueError('Legacy source uses the same data seed; choose a new seed or explicitly specify sample-offset')
+        sample_order=sample_plan(selected,(args.steps+1)*args.batch_size,args.seed,sample_offset)
+        np.save(output/'planned_sample_indices.npy',sample_order)
+        dc=cfg.data.create(cfg.assets_dirs,cfg.model)
+        raw=data_loader.create_torch_dataset(dc,args.horizon,cfg.model)
+        if len(raw)!=offset:raise ValueError('Episode metadata and dataset length disagree')
+        transformed=data_loader.transform_dataset(raw,dc)
+        loader=data_loader.DataLoaderImpl(dc,data_loader.TorchDataLoader(transformed,
+            local_batch_size=args.batch_size,sharding=ds,shuffle=False,sampler=sample_order.tolist(),
+            num_workers=0,seed=args.seed))
+        report['training_selection']={'episodes':chosen,'episode_ids':selected_ids,'eligible_frames':len(selected),
+            'seed':args.seed,'sampler':'numpy_permutation_v1','sample_offset':sample_offset,
+            'scope':'full training dataset' if requested is None else 'explicit episode subset; no generalization claim',
+            'sample_order_sha256':hashlib.sha256(sample_order.tobytes()).hexdigest()}
         report['optimizer_initialization']='fresh optimizer and LR schedule'
         iterator=iter(loader);batch=next(iterator)
         spec=importlib.util.spec_from_file_location('pinned_openpi_train',ROOT/'repos/openpi/scripts/train.py')
@@ -205,6 +216,8 @@ def main():
             consumed=sample_order[:completed_steps*args.batch_size]
             np.save(output/'consumed_sample_indices.npy',consumed)
             report['training_selection'].update(consumed_frames=len(consumed),unique_anchors=int(len(np.unique(consumed))))
+            boundaries=np.cumsum([0]+[e['length'] for e in episodes])
+            report['training_selection']['sampled_frames_by_episode']={str(e['episode_index']):int(np.sum((consumed>=boundaries[j]) & (consumed<boundaries[j+1]))) for j,e in enumerate(episodes)}
         checkpoints.save_state(manager,state,loader,completed_steps);manager.wait_until_finished()
         report['checkpoint']=str(cfg.checkpoint_dir/str(completed_steps));report['completed_steps']=completed_steps
         dataset_identity=ROOT/'data/openpi'/args.dataset/'meta/project_identity.json'

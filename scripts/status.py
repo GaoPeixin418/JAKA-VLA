@@ -209,8 +209,13 @@ def render_markdown(report):
         recent.append(f"| 新硬件合并训练集 | {data['episodes']} 条 / {data['frames']} 帧 / {data['distinct_layouts']} 布局；数据充分性未确立 |")
     for name,data in active.get('pi05_evaluations',{}).items():
         groups=data.get('groups') or {}
-        text='；'.join(f"{key} 合格抓取 {value['successes']}/{value['episodes']}" for key,value in groups.items())
-        recent.append(f"| {name} | {text}；completed={data['completed']}；小样本开发诊断 |")
+        counted=[]
+        if isinstance(groups, dict):
+            for key, value in groups.items():
+                if isinstance(value, dict) and "successes" in value and "episodes" in value:
+                    counted.append("{} 合格抓取 {}/{}".format(key, value["successes"], value["episodes"]))
+        text="；".join(counted) or "未提供可汇总分组计数"
+        recent.append("| {} | {}；completed={}；小样本开发诊断 |".format(name, text, data.get("completed")))
     return '\n'.join(recent+['','以下为旧硬件及 ALOHA 历史记录。','']+lines)
 
 

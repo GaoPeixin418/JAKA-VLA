@@ -1,22 +1,6 @@
-# 2026-11-19 当前接续状态
-
-服务器已开机，11月18日新增29条专家轨迹已完成29/29完整数据检查及同场景控制器回放验收（12559帧），派生训练raw数据集已生成；LeRobot/OpenPI转换及入训尚未开始。原97条数据续训的3500步检查点仍未在新布局评测。恢复target1重对齐示教的控制器回放未完成，target0候选失败。当前优先完成项目代码/记录GitHub同步、独立数据与权重备份、97+29数据集版本化合并，再分阶段微调并固定未见布局评测。
-
-最新接续细节见 [ITERATION_20261119.md](ITERATION_20261119.md)。以下保留此前状态快照作为历史记录，不代表当前实时进程状态。
-
----
-
-# 2026-11-16 固定模型评测最终状态
-
-本轮固定π0.5 three_targets/5744、K25/H50/noise42，共完成333/333回合；训练布局复现1/3（33.3%），开发集6/30（20.0%），原定留出15/60（25.0%），追加留出56/240（23.3%），全部独立留出71/300（23.7%）。完整独立留出布局100个，布局聚类bootstrap 95%区间19.3% - 28.0%。运行异常0，未完成0。
-
-仅验证归档硬件仿真中的左臂抓取、抬升和0.6秒持物；同步推理暂停仿真，不代表长期持物、双臂交接、语言作用消融、抗推理延迟或真机结果。此次未训练、未调整控制器或成功判据。
-
-本轮评测已结束，后续运行状态应另查实际进程；下方为旧状态工具的历史阶段快照。报告见BENCHMARK_20261116_RESULTS.md。
-
 # 实验室归档硬件与 π0.5 当前状态
 
-采样时间：2026-11-16T20:12:06+08:00（北京时间）。
+采样时间：2026-11-20T11:01:54+08:00（北京时间）。
 
 按归档建模，尚未实机核对；夹爪行程、腕相机和光学坐标轴仍有假设。
 硬件与规划证据见 `docs/LAB_ARCHIVE_20261111.md`；π0.5工程验收见 `docs/PI05_QUALIFICATION_20261111.md`。
@@ -31,14 +15,25 @@
 | results/lab_multitarget_20261111_c/progress.json | 30 条验收通过 / 30 次尝试；completed=True；attempt_budget |
 | results/lab_multitarget_20261111_d/progress.json | 30 条验收通过 / 30 次尝试；completed=True；attempt_budget |
 | results/lab_multitarget_20261111_e/progress.json | 22 条验收通过 / 22 次尝试；completed=True；deadline |
+| results/lab_recovery_20261118/progress.json | None 条验收通过 / 1 次尝试；completed=False；None |
 | results/lab_pi05_finetune_20261111/audit.json | 更新 4854 步；completed=True；仅说明训练工程状态 |
 | results/lab_pi05_finetune_stage2_20261112/audit.json | 更新 9854 步；completed=True；仅说明训练工程状态 |
 | results/lab_pi05_finetune_stage3_20261112/audit.json | 更新 14854 步；completed=True；仅说明训练工程状态 |
+| results/lab_pi05_multilayout_20261118/audit.json | 更新 3500 步；completed=True；仅说明训练工程状态 |
+| results/lab_pi05_multilayout_20261119_97plus29_1000steps/audit.json | 更新 None 步；completed=False；仅说明训练工程状态 |
+| results/lab_pi05_multilayout_20261119_97plus29_gpu_cumulative4000/audit.json | 更新 3000 步；completed=True；仅说明训练工程状态 |
+| results/lab_pi05_multilayout_20261119_97plus29_gpu_retry1000/audit.json | 更新 1000 步；completed=True；仅说明训练工程状态 |
 | results/lab_pi05_single_scene_20261112/audit.json | 更新 2000 步；completed=True；仅说明训练工程状态 |
 | results/lab_pi05_three_targets_20261112/audit.json | 更新 5744 步；completed=True；仅说明训练工程状态 |
 | results/pi05_qualification_20261111/audit.json | 更新 3 步；completed=True；仅说明训练工程状态 |
 | 新硬件合并训练集 | 97 条 / 41206 帧 / 33 布局；数据充分性未确立 |
 | results/lab_pi05_eval_20261111/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_baseline5744_k25_20261119/summary.json | development_unseen_layouts 合格抓取 0/3；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_baseline5744_k25_b_20261119/summary.json | development_unseen_layouts 合格抓取 1/6；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_c4000_k25_20261119_retry/summary.json | development_unseen_layouts 合格抓取 0/3；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_c4000_k25_b_20261119/summary.json | development_unseen_layouts 合格抓取 3/6；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_posttrain_20261119_97plus29_gpu_retry1000/summary.json | development_unseen_layouts 合格抓取 0/9；completed=True；小样本开发诊断 |
+| results/lab_pi05_eval_pretrain_20261119_retry1/summary.json | development_unseen_layouts 合格抓取 0/9；completed=True；小样本开发诊断 |
 | results/lab_pi05_eval_single_scene_20261112/summary.json | seen 合格抓取 0/1；development 合格抓取 0/0；completed=True；小样本开发诊断 |
 | results/lab_pi05_eval_single_scene_k50_20261112/summary.json | seen 合格抓取 1/1；development 合格抓取 0/0；completed=True；小样本开发诊断 |
 | results/lab_pi05_eval_stage2b_20261112/summary.json | seen 合格抓取 0/3；development 合格抓取 0/3；completed=True；小样本开发诊断 |
@@ -52,7 +47,7 @@
 
 # 历史 Zu7 临时夹爪实验
 
-采样时间：2026-11-16T20:12:06+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
+采样时间：2026-11-20T11:01:54+08:00。已确认两台 Zu7；夹爪/安装为暂定仿真配置，未接真机。
 
 活跃项目脚本：[]
 
@@ -160,7 +155,7 @@
 
 # 当前运行状态（自动生成快照）
 
-采样时间：2026-11-16T20:12:06+08:00（北京时间）。
+采样时间：2026-11-20T11:01:54+08:00（北京时间）。
 
 此文件不是实时监控；刷新命令 `python3 /data/jaka-vla/scripts/status.py --write-doc`。
 阶段标记可能滞后，须结合进程和已落盘结果判断。
@@ -173,8 +168,8 @@
 | 原始示教已保存 / 规划种子 | 50 / 50 |
 | 训练进度（日志最近值） | 2000 / 2000 |
 | 最终检查点权重文件存在 | True |
-| 数据盘可用 | 11.39 GiB |
-| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 16 MiB, 32760 MiB, 0 % |
+| 数据盘可用 | 30.37 GiB |
+| GPU 快照 | NVIDIA GeForce RTX 4080 SUPER, 15 MiB, 32760 MiB, 0 % |
 
 转换验证报告：50 条、18744 帧，频率 [25] Hz，状态语义 ['measured_qpos']。
 
