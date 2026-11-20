@@ -1,0 +1,371 @@
+{
+  "verified_at_local": "2026-11-20T13:19:01.435113+08:00",
+  "source_host": "jq1.9gpu.com",
+  "method": "rsync followed by per-file SHA256 comparison against the server",
+  "datasets": {
+    "raw": {
+      "file_count": 34,
+      "bytes": 402522151,
+      "tree_sha256": "9dc335df74752ba8325b68b07af6d788db8d194fe0e9c437ac542d55f0c8c1c6",
+      "files": [
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/acceptance.json",
+          "bytes": 65251,
+          "sha256": "a3521b69d33689d6173d5222f3b09da5f2c0041e5cd05e275e640edb59521e78"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/coverage.json",
+          "bytes": 1829,
+          "sha256": "463e81b9e2b69927022e6afee9fbbfe635b544326a6c2068fedcb46f625497ec"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000000.hdf5",
+          "bytes": 14060830,
+          "sha256": "ea0dc79a2f67b7aecf0b689b6cb5e684038025a4708d5570deb457a202e48011"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000001.hdf5",
+          "bytes": 14044883,
+          "sha256": "1b38d5ecdfadbefc239cdb441d59a69c11e451df130ab3b123b6c8437b60028f"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000002.hdf5",
+          "bytes": 14052860,
+          "sha256": "acf5d1e75713e8a049a7820703d0400c42e0dd38a79d3ad7147b866ad45c348b"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000003.hdf5",
+          "bytes": 14160252,
+          "sha256": "5f9efacb728aad7e6f47b74b2e971ade9de6b751cf780cefd46c35108c09d5c4"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000004.hdf5",
+          "bytes": 12508304,
+          "sha256": "5d94c88254f5a36cd32d8909c108dca718d1fc9b88852b674a81a09303062c29"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000005.hdf5",
+          "bytes": 12486294,
+          "sha256": "c3c6231af48bb7e2a7eccf6f6293fd54c39c1e92a76f3ae87bbe59c0b42618d1"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000006.hdf5",
+          "bytes": 14082576,
+          "sha256": "558e7a0843399e1fbfc9ae06af3cd5622f300f413ace024da76d20876c462c39"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000007.hdf5",
+          "bytes": 14633314,
+          "sha256": "dc0260e467f7e2cbde68b5fd9c99cef29067cba2c3d1bfb57a63f2620472ee88"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000008.hdf5",
+          "bytes": 15469275,
+          "sha256": "5ad55d5ad60741949079e59a91fd21e1d3ce6cefb1243f2003e8322f5ff5097c"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000009.hdf5",
+          "bytes": 15857325,
+          "sha256": "aa31afa38cc922834c20ef74f9f0d22d68f72198cd078948f1f2f228179e1c67"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000010.hdf5",
+          "bytes": 13205124,
+          "sha256": "dc0dd79c2a3b26ebcde68a5bcf9eda73fbb9c75bcf053bc9407376c6313b3a2d"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000011.hdf5",
+          "bytes": 13280928,
+          "sha256": "375a0e22e884ee4b3eef2642f3f1dad013e8f93c391e55e532d3767dd159a9f3"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000012.hdf5",
+          "bytes": 10243424,
+          "sha256": "3a051550cf50e13da386755853231cf2864843fa5154bc3d74b2cf012f5a6f69"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000013.hdf5",
+          "bytes": 10230859,
+          "sha256": "b46fa4914acc089e6b46b7f68886834f0ecb053a6e9a765155083db7b4863c57"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000014.hdf5",
+          "bytes": 13378504,
+          "sha256": "5bababa7510e9c008466f5ef6e350d69b0b9e7b78b2c31806bc4520bd9d7cb2b"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000015.hdf5",
+          "bytes": 13711920,
+          "sha256": "fd2616d8e50f09bac5ee61a30ab27365a61f8517e8bba683a1685e12730718ae"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000016.hdf5",
+          "bytes": 12178474,
+          "sha256": "fe600bab04ac2a35a001675d3337fbd72e495f9ad59da58ada658425267a6d95"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000017.hdf5",
+          "bytes": 12158574,
+          "sha256": "a3dc40827007837b70b11e82283ca439070e12100db52582f29f8396280092e8"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000018.hdf5",
+          "bytes": 15266624,
+          "sha256": "fe99db58d8522f1b967eeaa1e768392fd1c48a6b76d3287a5e63aaf64d4af582"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000019.hdf5",
+          "bytes": 15474468,
+          "sha256": "ad8dc67517029021aa4316d3b0ca0730f5e7ece8116cce88768ae4cff0d07a9c"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000020.hdf5",
+          "bytes": 13890646,
+          "sha256": "e855c262d6cc14c3fe1101b59615233e86caca2774ac8c75c3414a87fb67fb5d"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000021.hdf5",
+          "bytes": 13899867,
+          "sha256": "cbab64831139cba622c6162de2c5d4bae5b528e38a636caa26fa35a40a0b01f7"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000022.hdf5",
+          "bytes": 12710814,
+          "sha256": "419c1f8b5e95079536c52ee154ee034722442f85c99a7d32c48d2246b53dfa95"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000023.hdf5",
+          "bytes": 12643038,
+          "sha256": "35c35e99cdcfdf3cb00198485b44da3a8b0096f10b41b6edc689b555a3c54350"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000024.hdf5",
+          "bytes": 11032359,
+          "sha256": "a9e4c67cfc68605d079e4daa3ccee521122daea8566962d2ba40ed243e3cc3e1"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000025.hdf5",
+          "bytes": 11124870,
+          "sha256": "688eb90d8735f1ac968992f6efdb26b31dd4dacf82e05ba4593853a4618391e9"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000026.hdf5",
+          "bytes": 15538464,
+          "sha256": "77389e05bf9ec1872fd1b4a314827eada2a1bc34711adc9f19ea0124d6c1e208"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000027.hdf5",
+          "bytes": 15555855,
+          "sha256": "2a8ad7b99a9de31c4856f79b0d05ec123537448f0973db4a60e0a480b60baee8"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000028.hdf5",
+          "bytes": 12847218,
+          "sha256": "a35ba5e09cd3f6d1f08ddce170fa791916ef58ffa2b34c0d5ec7ba70d8e5711a"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/data/episode_0000029.hdf5",
+          "bytes": 12658074,
+          "sha256": "db910b5f4ae6ec5cd8386208035a907b7e3c38848639a5ab92568e59a2dcf0d5"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/robot_identity.json",
+          "bytes": 68844,
+          "sha256": "caedf4c86a71a5317e75a5671ee85737529e5bcef5a895732897c22c38bc3417"
+        },
+        {
+          "path": "raw/lab_expert_expansion_20261120_colorbalanced/seed.txt",
+          "bytes": 210,
+          "sha256": "5f9e3680bc02e822495a32d162582461b157e7e35c0cc25c983a80206781ae38"
+        }
+      ]
+    },
+    "openpi": {
+      "file_count": 36,
+      "bytes": 613375234,
+      "tree_sha256": "9bc2d07c1f0c41b499b6d6c5a48740a5bfbb029ac76a648a437abc10e18af0f5",
+      "files": [
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000000.parquet",
+          "bytes": 20623252,
+          "sha256": "97f0dec950b63d4bf082ba33d161819cd586e0fe8560e7d5b44790fb6f45f21b"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000001.parquet",
+          "bytes": 20674177,
+          "sha256": "9db4670319de777d413a85364afd3a329d81fcd95086bcd41a1011ba1cd314c7"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000002.parquet",
+          "bytes": 21296868,
+          "sha256": "5c66533d6b587c166bf2efa463c742388109b3e2d598aedcaedcab84031c5b44"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000003.parquet",
+          "bytes": 21345415,
+          "sha256": "222c439136e6e49ff91161314922c17f74355f73338ea395478c7ec0c60eca21"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000004.parquet",
+          "bytes": 19631482,
+          "sha256": "38d84052793fedd66ac5b4c42ac6880330cbe606df7816b07e8a2eff2470e867"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000005.parquet",
+          "bytes": 19326166,
+          "sha256": "20e89071c80151fa1d52ce9d01d46054ac5cdb8b18ebeacb1df5fbe6d596267c"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000006.parquet",
+          "bytes": 21115465,
+          "sha256": "7c3e1090d5686fe679e3a6ed0212a3a3e693baf5f8be60f0795fa801a64148ec"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000007.parquet",
+          "bytes": 21777215,
+          "sha256": "0fd0f793e316a8e9fc574e431c88b1eb4d87012cc1e259d160f328b0452e2157"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000008.parquet",
+          "bytes": 23610517,
+          "sha256": "b4770e2f94660228f806ac65d753cdb1db59ae7db3638dff5884efc64f3369c4"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000009.parquet",
+          "bytes": 24151122,
+          "sha256": "e9ccfc614e4044d029820c3003dee95030ff0e4fd03ba798730a592027d299c3"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000010.parquet",
+          "bytes": 20711376,
+          "sha256": "90e19defb58d11b9c9084dde858a04bd39bbc33ee5252749f966a68ba96291c7"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000011.parquet",
+          "bytes": 20840881,
+          "sha256": "57c392c2108b91fef386ac1881406e87c1c0a53e507a306c787878d98f538ce7"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000012.parquet",
+          "bytes": 15210723,
+          "sha256": "e7196ad730a6778077ce704619532a33ba3b076396d4d428c5f01c2ff049871e"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000013.parquet",
+          "bytes": 15256496,
+          "sha256": "c651a18db29e67a0a1970b130a56bacfc13a6479661fa297df633223884b00a3"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000014.parquet",
+          "bytes": 20146322,
+          "sha256": "0c6efd9051e52836b41ebab1761bf095073a92ee8ed478d8fad2825e7e1fbfcb"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000015.parquet",
+          "bytes": 20620557,
+          "sha256": "e631734f376d1251781bfc623516e90190eb24c0b3c182371fa4ac73433ba9bf"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000016.parquet",
+          "bytes": 19127864,
+          "sha256": "6fb1f5f7c9aee9a3aad5c50567c2c8f0814cda640660b331d06998a16f55633d"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000017.parquet",
+          "bytes": 19069872,
+          "sha256": "aca9381070355e3f5b5c126b204312304d5a397c627ca36b7bc878bb3aafb289"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000018.parquet",
+          "bytes": 22934551,
+          "sha256": "fac00cf0e1ca7a0ea867e78a2ba6d4f639392627877e042d2507311b7abeabe5"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000019.parquet",
+          "bytes": 23228332,
+          "sha256": "6eccfb71046061d6837cdf3649f395cc7cba3783af8b7c57474a80cce9177d40"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000020.parquet",
+          "bytes": 21282932,
+          "sha256": "01e0fd8b3f5c6b8a5c6ee8e500826fe7c1c7c2c3b01d2c5a2a006cee7a81aa19"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000021.parquet",
+          "bytes": 21215443,
+          "sha256": "5d15c2c41b535275458d115d5efbc32bfebf10bcb15cb7e4a4ef54f317d23127"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000022.parquet",
+          "bytes": 20227677,
+          "sha256": "b7adff0b565e53f2286f67b76816372566518463cb32a24d527970e5883b42ed"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000023.parquet",
+          "bytes": 19897500,
+          "sha256": "a8e51aa6805539b947a10edb4c47a3743b4d24b21211d9a62347e9b2198df64a"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000024.parquet",
+          "bytes": 16618930,
+          "sha256": "21262ee49525228e2770a70405545cfab6719185d9eb75a5a0ebe247e3de934e"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000025.parquet",
+          "bytes": 16696286,
+          "sha256": "80cea11e2ccd68ab8b631c4954917464cd15c9c5c9b4e1be6f453578a31dd393"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000026.parquet",
+          "bytes": 23590010,
+          "sha256": "5e43a384d98d32c0bb1bf3b9fbef7438aa3b7eea0583e61797f8b1bf43a8cf4b"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000027.parquet",
+          "bytes": 23411186,
+          "sha256": "9c2727177875b89a5136a89912150e5352df75490e18054f04da9130b384aac2"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000028.parquet",
+          "bytes": 19831564,
+          "sha256": "7981329b2b3ac101c4fb72f170c7c78809ca33d3589f5e3311a48727fa6eec1d"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/data/chunk-000/episode_000029.parquet",
+          "bytes": 19657278,
+          "sha256": "bf0baf70824d173003c604d2547aa45943edb93bbcdc9ce530d56a4be2684ca3"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/jaka_conversion_manifest.json",
+          "bytes": 56874,
+          "sha256": "a7b96d90836bad904207ceb9f01ab48fe9b4726c1ece8602ca2ba613203ffe11"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/meta/episodes.jsonl",
+          "bytes": 3450,
+          "sha256": "02eba8d028900befd5549594e09fa216077d6c4b4dbebf84a67a845c55f7c4e6"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/meta/episodes_stats.jsonl",
+          "bytes": 115788,
+          "sha256": "0e8b243bedf1f3f17c3691ff560b999039fdd7adfe8ad6c4d86b01f05b4d8332"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/meta/info.json",
+          "bytes": 2362,
+          "sha256": "e7ece784509f940a49394b28838db20208606e28938fb06cfee5093d6d84591d"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/meta/project_identity.json",
+          "bytes": 69021,
+          "sha256": "076dc41c57811f31b268149b9cc6e13cd41c699f7c3858c93d66fbc58286e025"
+        },
+        {
+          "path": "openpi/lab_expert_expansion_20261120_colorbalanced/meta/tasks.jsonl",
+          "bytes": 280,
+          "sha256": "bf8f8dd68eaa10e6a5fb394958f888fed3b339ca1601bf951b061b52e31ea4f0"
+        }
+      ]
+    }
+  }
+}

@@ -117,7 +117,7 @@ def collect_status():
         data=json.loads(path.read_text())
         current['pi05'][str(path.relative_to(ROOT))]={k:data.get(k) for k in ('completed','stage','completed_steps','checkpoint','error','gpu_observed_peak_mib')}
     current['pi05_evaluations']={}
-    for path in sorted((ROOT/'results').glob('lab_pi05_eval_*/summary.json')):
+    for path in sorted((ROOT/'results').glob('lab_pi05_*eval*/summary.json')):
         data=json.loads(path.read_text())
         current['pi05_evaluations'][str(path.relative_to(ROOT))]={k:data.get(k) for k in ('completed','groups','checkpoint','scope')}
     coverage=ROOT/'data/raw/lab_multitarget_20261111_merged/coverage.json'

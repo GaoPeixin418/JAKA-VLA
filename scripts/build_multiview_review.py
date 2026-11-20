@@ -16,6 +16,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--archive', type=Path, required=True)
     parser.add_argument('--experiments', nargs='+', required=True)
+    parser.add_argument('--policy-label', default='学习策略', help='Label for learned-policy videos')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     if args.archive.exists():
@@ -41,7 +42,7 @@ def main():
             assert abs(float(info['duration']) - meta['duration_s']) < .05
             checks.append({'file': str(video.relative_to(ROOT)), 'sha256': hashlib.sha256(video.read_bytes()).hexdigest(), 'probe': info})
             learned = row['mode'] != 'expert_replay'
-            kind = 'SmolVLA 学习策略' if learned else '专家动作回放（仅参考）'
+            kind = f'{args.policy_label} 学习策略' if learned else '专家动作回放（仅参考）'
             grasp = '抓取通过' if row.get('grasp_success') else '抓取未通过'
             full = '完整任务通过' if row['success'] else '完整任务未通过'
             failure = row.get('failure_reason') or {}

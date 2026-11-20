@@ -19,6 +19,24 @@ def sha256(path):
     return result.hexdigest()
 
 
+def checkpoint_sha256(path):
+    """Hash either a safetensors export or the native OpenPI params tree."""
+    path = Path(path)
+    model_file = path / 'model.safetensors'
+    if model_file.is_file():
+        return sha256(model_file)
+    params = path / 'params'
+    if not params.is_dir():
+        raise FileNotFoundError(f'No model.safetensors or params/ in {path}')
+    digest = hashlib.sha256()
+    for item in sorted(p for p in params.rglob('*') if p.is_file()):
+        digest.update(item.relative_to(params).as_posix().encode() + b'\0')
+        with item.open('rb') as stream:
+            for block in iter(lambda: stream.read(8 * 1024 * 1024), b''):
+                digest.update(block)
+    return digest.hexdigest()
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--manifest', required=True, type=Path)
@@ -63,12 +81,18 @@ def main():
                 measured_v = physics[:, 43:57][:, joint_indices]
                 tracking = abs(physics[:, 1:15][:, joint_indices] - physics[:, 29:43][:, joint_indices])
                 condition = report['initial_condition']
+                offset = any(abs(float(x)) > 1e-8
+                             for x in condition.get('left_joint_offset_rad', []))
+                new_scene = (int(report.get('scene_spec', {}).get('layout_id', 0)) >= 5000
+                             or 'new_seed200_202' in name or '_matched_' in name)
                 if condition.get('scope') == 'intervened_recovery_start_not_executed_prefix':
                     group = 'intervened_recovery_start'
-                elif ('new_seed200_202' in name or '_matched_' in name
-                      or any(abs(float(x)) > 1e-8
-                             for x in condition.get('left_joint_offset_rad', []))):
+                elif new_scene and offset:
                     group = 'new_scenes_with_initial_offset'
+                elif new_scene:
+                    group = 'new_scenes_nominal_start'
+                elif offset:
+                    group = 'seen_scenes_with_initial_offset'
                 else:
                     group = 'seen_scenes_nominal_start'
                 row = {
@@ -89,7 +113,7 @@ def main():
                 groups.setdefault(group, []).append(row)
     result = {
         'scope': 'Offline verification; frozen video frames excluded; no full handover tested',
-        'checkpoint': str(args.checkpoint), 'checkpoint_sha256': sha256(args.checkpoint / 'model.safetensors'),
+        'checkpoint': str(args.checkpoint), 'checkpoint_sha256': checkpoint_sha256(args.checkpoint),
         'groups': {key: {'successes': sum(r['grasp_success'] for r in rows),
                          'episodes': len(rows), 'rows': rows} for key, rows in groups.items()},
     }

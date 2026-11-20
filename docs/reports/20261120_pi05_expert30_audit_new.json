@@ -1,0 +1,601 @@
+{
+  "scope": "Offline verification; frozen video frames excluded; no full handover tested",
+  "checkpoint": "checkpoints/openpi/pi05_zu7_lora_h50/lab_pi05_expert30_20261120_stage4000_retry1/4000",
+  "checkpoint_sha256": "930a11b38a262d8f4ccc97c362f6bf9c0b05f758087bf7df7941177bd4a8e41b",
+  "groups": {
+    "new_scenes_nominal_start": {
+      "successes": 6,
+      "episodes": 18,
+      "rows": [
+        {
+          "experiment": "new_layout_5030_target_0",
+          "seed": 75090,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.007218837738037109,
+          "max_command_speed_rad_s": 0.5876359314932807,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.580423891544342,
+          "max_tracking_error_rad": 0.007277503858166057,
+          "p99_measured_speed_rad_s": 0.5087604904174804,
+          "normalized_state_abs_max": 1.277537813952486,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 310,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "6395bb9981c3c75c701f9f4a05348c143d28d9cfd11751ac57d9757bf5904474",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5030_target_0/seed_75090_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5030_target_1",
+          "seed": 75091,
+          "grasp_success": true,
+          "verified_hold_s": 0.6320000300183892,
+          "first_success_time_s": 13.328000633046031,
+          "max_lift_m_per_physics_step": 0.06827670335769653,
+          "max_command_speed_rad_s": 0.6257762074000284,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.6231727600097656,
+          "max_tracking_error_rad": 0.0013571704210662006,
+          "p99_measured_speed_rad_s": 0.5044786339998244,
+          "normalized_state_abs_max": 1.3157594815211053,
+          "failure_reason": null,
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "ba871510babe812ae2c244d8bc50413663d68a94fba4793ce11125834cc83262",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5030_target_1/seed_75091_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5030_target_2",
+          "seed": 75092,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.0028280019760131836,
+          "max_command_speed_rad_s": 0.5979444615257761,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5914619565010071,
+          "max_tracking_error_rad": 0.0013465125826670477,
+          "p99_measured_speed_rad_s": 0.4841361463069915,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 212,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "f01373dbc0067b29cf312a93dd4f21c686a2760808896706c613abcdea279e25",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5030_target_2/seed_75092_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5031_target_0",
+          "seed": 75093,
+          "grasp_success": true,
+          "verified_hold_s": 0.6280000298283994,
+          "first_success_time_s": 14.012000665534288,
+          "max_lift_m_per_physics_step": 0.06073331832885742,
+          "max_command_speed_rad_s": 0.5826628388460906,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5754654407501221,
+          "max_tracking_error_rad": 0.0014512068765613062,
+          "p99_measured_speed_rad_s": 0.5053860533237452,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": null,
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "45db497b9bbd7ebb2f7a53e64501fcf1921bed6083062c1f9f897f1c9ea83975",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5031_target_0/seed_75093_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5031_target_1",
+          "seed": 75094,
+          "grasp_success": true,
+          "verified_hold_s": 0.6280000298283994,
+          "first_success_time_s": 12.972000616136938,
+          "max_lift_m_per_physics_step": 0.06769448518753052,
+          "max_command_speed_rad_s": 0.6243499836643063,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.6193322539329529,
+          "max_tracking_error_rad": 0.0013946717649333529,
+          "p99_measured_speed_rad_s": 0.49843622803688165,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": null,
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "5efdddacc4f602c8471081e6886ab962f4ea4432b9ce13231b8353addf4ea4ea",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5031_target_1/seed_75094_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5031_target_2",
+          "seed": 75095,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.0018540620803833008,
+          "max_command_speed_rad_s": 0.5966876987283425,
+          "max_command_acceleration_rad_s2": 3.000000000000007,
+          "max_measured_speed_rad_s": 0.5893019437789917,
+          "max_tracking_error_rad": 0.0013183893094876886,
+          "p99_measured_speed_rad_s": 0.4721514919400215,
+          "normalized_state_abs_max": 1.685573426599961,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 227,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "d2a98abc2c758ddc3909da2f46ce89f37f4288f61e43c39700f916710e4ae0c4",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5031_target_2/seed_75095_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5032_target_0",
+          "seed": 75096,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.0073719024658203125,
+          "max_command_speed_rad_s": 0.6051314016631176,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5977486968040466,
+          "max_tracking_error_rad": 0.027142365087655218,
+          "p99_measured_speed_rad_s": 0.5177077674865723,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 265,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "8690d79c3739b0893c95bf62d223d64ccb24333a24eaa4748c171730e46ad6b3",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5032_target_0/seed_75096_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5032_target_1",
+          "seed": 75097,
+          "grasp_success": true,
+          "verified_hold_s": 0.61600002925843,
+          "first_success_time_s": 12.74400060530752,
+          "max_lift_m_per_physics_step": 0.06105870008468628,
+          "max_command_speed_rad_s": 0.6296361206940188,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.6274529695510864,
+          "max_tracking_error_rad": 0.0013205810123859685,
+          "p99_measured_speed_rad_s": 0.5079112178087234,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": null,
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "3345238925dab4b95cd7b9155465f0a2d16fb4b3bf921419b1845e33fc408fea",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5032_target_1/seed_75097_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5032_target_2",
+          "seed": 75098,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.008221745491027832,
+          "max_command_speed_rad_s": 0.5938253510240838,
+          "max_command_acceleration_rad_s2": 3.000000000000007,
+          "max_measured_speed_rad_s": 0.5897411108016968,
+          "max_tracking_error_rad": 0.010575279275176097,
+          "p99_measured_speed_rad_s": 0.4914696896076207,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 221,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "ab4f41e276a0baf210c90e7eb3c21874aae5555ade4494b9f243b64a8c743725",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5032_target_2/seed_75098_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5033_target_0",
+          "seed": 75099,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 5.960464477539062e-07,
+          "max_command_speed_rad_s": 0.586279699798061,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5785380601882935,
+          "max_tracking_error_rad": 0.0014744556106549567,
+          "p99_measured_speed_rad_s": 0.5171775406599044,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 285,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "65e788296fdd560c12dd5b714cac45582dfa21c115f64c587ab5e0bd13a1f284",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5033_target_0/seed_75099_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5033_target_1",
+          "seed": 75100,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.014622747898101807,
+          "max_command_speed_rad_s": 0.6150411893753213,
+          "max_command_acceleration_rad_s2": 3.000000000000007,
+          "max_measured_speed_rad_s": 0.610856831073761,
+          "max_tracking_error_rad": 0.016008618007887554,
+          "p99_measured_speed_rad_s": 0.5126645612716675,
+          "normalized_state_abs_max": 1.0763831082726156,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 274,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "db7c755b9119d7ccd1d221e89e5b3b57b1aeb63cb8c3f6ebb4fcb81a2c40ce77",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5033_target_1/seed_75100_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5033_target_2",
+          "seed": 75101,
+          "grasp_success": true,
+          "verified_hold_s": 0.6080000288784504,
+          "first_success_time_s": 12.832000609487295,
+          "max_lift_m_per_physics_step": 0.061827659606933594,
+          "max_command_speed_rad_s": 0.5890892266097874,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.7731371521949768,
+          "max_tracking_error_rad": 0.036265623883162235,
+          "p99_measured_speed_rad_s": 0.4455042180418963,
+          "normalized_state_abs_max": 1.1472330412081324,
+          "failure_reason": null,
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "264a17f9f664b880782bedfca31270a5a964d2822a7bcd4cb3eed23cc33b0958",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5033_target_2/seed_75101_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5034_target_0",
+          "seed": 75102,
+          "grasp_success": true,
+          "verified_hold_s": 0.61600002925843,
+          "first_success_time_s": 15.38400073070079,
+          "max_lift_m_per_physics_step": 0.06304806470870972,
+          "max_command_speed_rad_s": 0.5834368182715667,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5754894018173218,
+          "max_tracking_error_rad": 0.001438854652254573,
+          "p99_measured_speed_rad_s": 0.5006623268127444,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": null,
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "8e2437ac18e22b24a92dda44256ba419b47866b71d873a14e05ef74662660039",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5034_target_0/seed_75102_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5034_target_1",
+          "seed": 75103,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.008887052536010742,
+          "max_command_speed_rad_s": 0.6073819900410384,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5987076759338379,
+          "max_tracking_error_rad": 0.013159043300406736,
+          "p99_measured_speed_rad_s": 0.5219171512126921,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 243,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "fe00dc14529ba39fcd142a66504c24bb0d8d2dc5f3ed6d937033ef776f8ca115",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5034_target_1/seed_75103_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5034_target_2",
+          "seed": 75104,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.00609666109085083,
+          "max_command_speed_rad_s": 0.587795487666146,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5811894536018372,
+          "max_tracking_error_rad": 0.0014123447813181311,
+          "p99_measured_speed_rad_s": 0.4698155733942986,
+          "normalized_state_abs_max": 1.7850723959130927,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 225,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "3930dba9de61d0fa3e6d4a4f7acdefdcf4f9c5152fc602955eb029623566ac7f",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5034_target_2/seed_75104_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5035_target_0",
+          "seed": 75105,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 4.279613494873047e-05,
+          "max_command_speed_rad_s": 0.590056859247224,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.5817228555679321,
+          "max_tracking_error_rad": 0.0014697326191295268,
+          "p99_measured_speed_rad_s": 0.5150392866134647,
+          "normalized_state_abs_max": 1.0005867232413856,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 299,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "eb2750f223a8c82c1d8ebdd7bc81689521779ee22b049a2e8d9b4ef278584923",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5035_target_0/seed_75105_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5035_target_1",
+          "seed": 75106,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 0.004162430763244629,
+          "max_command_speed_rad_s": 0.627982373418174,
+          "max_command_acceleration_rad_s2": 3.0000000000000138,
+          "max_measured_speed_rad_s": 0.6250132322311401,
+          "max_tracking_error_rad": 0.0013340585135803718,
+          "p99_measured_speed_rad_s": 0.5181601572036743,
+          "normalized_state_abs_max": 1.1248610636814345,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 232,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "5a7c166b11ccc891b8ec0f9df1b7ddaffa277702a41161286a3b07c933595d77",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5035_target_1/seed_75106_multiview.mp4"
+        },
+        {
+          "experiment": "new_layout_5035_target_2",
+          "seed": 75107,
+          "grasp_success": false,
+          "verified_hold_s": 0.0,
+          "first_success_time_s": null,
+          "max_lift_m_per_physics_step": 1.0728836059570312e-06,
+          "max_command_speed_rad_s": 0.5937974602381687,
+          "max_command_acceleration_rad_s2": 3.000000000000007,
+          "max_measured_speed_rad_s": 0.5883983969688416,
+          "max_tracking_error_rad": 0.0012760067213863913,
+          "p99_measured_speed_rad_s": 0.4675736784934995,
+          "normalized_state_abs_max": 1.6655569532753072,
+          "failure_reason": {
+            "type": "empty_grasp",
+            "arms": [
+              0
+            ],
+            "step": 227,
+            "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+          },
+          "initial_condition": {
+            "left_joint_offset_rad": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "settle_s": 0.0
+          },
+          "trace_sha256": "bc576dbf42ab8523a0cac118371af54294c63fb96ec3d28c19173a8c04aa7520",
+          "video": "/tmp/jaka_pi05_audit/new/new_layout_5035_target_2/seed_75107_multiview.mp4"
+        }
+      ]
+    }
+  }
+}

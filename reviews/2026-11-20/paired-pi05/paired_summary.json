@@ -1,0 +1,1502 @@
+{
+  "title": "2026-11-20 pi0.5 fine-tuning paired evaluation",
+  "protocol": {
+    "K": 25,
+    "H": 50,
+    "noise_seed": 42,
+    "max_steps": 650,
+    "control_hz": 25,
+    "inference": "synchronous; simulation paused during inference",
+    "paired_cases": 18,
+    "layouts": [
+      5030,
+      5031,
+      5032,
+      5033,
+      5034,
+      5035
+    ],
+    "final_blind_test": false,
+    "task": "left-arm grasp, lift >5 cm, and hold continuously >=0.6 s; no handover attempted"
+  },
+  "training": {
+    "new_episodes": 30,
+    "new_frames": 12639,
+    "new_layouts": [
+      4010,
+      4011,
+      4012,
+      4020,
+      4026
+    ],
+    "colors": {
+      "blue": 10,
+      "yellow": 10,
+      "red": 10
+    },
+    "sampling": "4000 unique anchors sampled without replacement from the new 30-episode dataset",
+    "updates": 4000,
+    "horizon": 50,
+    "batch_size": 1,
+    "optimizer": "reset at this stage",
+    "initial_checkpoint": "lab_pi05_multilayout_20261119_97plus29_gpu_cumulative4000/3000",
+    "current_stage_dataset": "only the 30 newly collected trajectories; prior 97+29 demonstrations are represented in initialization weights but were not mixed into this stage data loader"
+  },
+  "scores": {
+    "new": {
+      "raw_successes": 6,
+      "qualified_successes": 5,
+      "episodes": 18,
+      "qualified_rate": 0.2778,
+      "wilson_95": [
+        0.125,
+        0.5087
+      ]
+    },
+    "baseline_5744": {
+      "raw_successes": 6,
+      "qualified_successes": 6,
+      "episodes": 18,
+      "qualified_rate": 0.3333,
+      "wilson_95": [
+        0.1628,
+        0.5625
+      ]
+    },
+    "paired_qualified_outcomes": {
+      "both_success": 2,
+      "new_only": 3,
+      "baseline_only": 4,
+      "neither": 9
+    }
+  },
+  "conclusion": "The new 30-trajectory stage did not improve paired qualified grasp success: 5/18 versus 6/18 for the previous 5744-step checkpoint. Raw grasp success was 6/18 for each. This small development set is not a final generalization claim.",
+  "qualification": "qualified success = physics-verified grasp success with no unintended contacts; audit_grasp_evaluations.py independently verifies the per-physics-step grasp evidence, but qualification also uses the saved contact audit.",
+  "limitations": [
+    "All six evaluation layouts are development layouts; no final blind split was used.",
+    "No full handover, placement, reset, bimanual collaboration, or real-robot evaluation was run.",
+    "The 0.035 rad initial-offset demonstrations are not strict DAgger data collected from learner-induced deviations.",
+    "Synchronous evaluation pauses simulation during inference; wall-clock inference delay robustness was not measured.",
+    "Only 18 paired episodes; confidence intervals are broad and do not establish a meaningful model difference."
+  ],
+  "episodes": [
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5030,
+      "target": 0,
+      "color": "yellow",
+      "seed": 75090,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 310,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [
+        [
+          "left:finger_right",
+          "left:finger_third"
+        ],
+        [
+          "left:finger_left",
+          "left:finger_third"
+        ]
+      ],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5030_target_0/results.json",
+      "video": "media/new/layout_5030_target_0_seed_75090.mp4",
+      "video_sha256": "5794ba9991ee8da05de06da543f89ca117de4ec89be1f598f9736bb6aee98588",
+      "sim_seconds": 12.440000590868294,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.006981372833251953,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5030,
+      "target": 0,
+      "color": "yellow",
+      "seed": 75090,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5030_target_0/results.json",
+      "video": "media/baseline/layout_5030_target_0_seed_75090.mp4",
+      "video_sha256": "4abcbcb77eea781a972292795f89031ea00d60dfbf45f6b7f9747aa972176332",
+      "sim_seconds": 16.20000076945871,
+      "grasp_success_time_s": 16.184000768698752,
+      "max_lift_m_evaluation_only": 0.053094446659088135,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5030,
+      "target": 1,
+      "color": "red",
+      "seed": 75091,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5030_target_1/results.json",
+      "video": "media/new/layout_5030_target_1_seed_75091.mp4",
+      "video_sha256": "81c5e5409b5efd8fb2615f95e684cf6d847e10cc7a908dc43f2ea2eb8c7052ce",
+      "sim_seconds": 13.36000063456595,
+      "grasp_success_time_s": 13.328000633046031,
+      "max_lift_m_evaluation_only": 0.06827670335769653,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5030,
+      "target": 1,
+      "color": "red",
+      "seed": 75091,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 261,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5030_target_1/results.json",
+      "video": "media/baseline/layout_5030_target_1_seed_75091.mp4",
+      "video_sha256": "96242a81618282bbf50dc1111b0c186f655b6c18fd830cb3d30fdf1060ee0fff",
+      "sim_seconds": 10.48000049777329,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.006636321544647217,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5030,
+      "target": 2,
+      "color": "blue",
+      "seed": 75092,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 212,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5030_target_2/results.json",
+      "video": "media/new/layout_5030_target_2_seed_75092.mp4",
+      "video_sha256": "0a293bd9ebd754cc7c17bd7e8b09cc37f2c2b93f47b20f6d3abfe3b9f86af326",
+      "sim_seconds": 8.520000404678285,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0028280019760131836,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5030,
+      "target": 2,
+      "color": "blue",
+      "seed": 75092,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 565,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [
+        [
+          "left:finger_right",
+          "scene:distractor_1"
+        ]
+      ],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5030_target_2/results.json",
+      "video": "media/baseline/layout_5030_target_2_seed_75092.mp4",
+      "video_sha256": "8af528955761aeba4953f857ef9d40db36fefd2594316489c2ac01389dccae41",
+      "sim_seconds": 22.640001075342298,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5031,
+      "target": 0,
+      "color": "red",
+      "seed": 75093,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5031_target_0/results.json",
+      "video": "media/new/layout_5031_target_0_seed_75093.mp4",
+      "video_sha256": "dcfd7ad9f8611e4c74452392c59ba372e3b3e47f44cc102dff7dff6a88ebc24f",
+      "sim_seconds": 14.040000666864216,
+      "grasp_success_time_s": 14.012000665534288,
+      "max_lift_m_evaluation_only": 0.06073331832885742,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5031,
+      "target": 0,
+      "color": "red",
+      "seed": 75093,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5031_target_0/results.json",
+      "video": "media/baseline/layout_5031_target_0_seed_75093.mp4",
+      "video_sha256": "b11b490b2c07cb0703a0bc7003dfad673c341babfed98c02c1dc5e1e9f9fb574",
+      "sim_seconds": 14.480000687763095,
+      "grasp_success_time_s": 14.464000687003136,
+      "max_lift_m_evaluation_only": 0.05819481611251831,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5031,
+      "target": 1,
+      "color": "yellow",
+      "seed": 75094,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5031_target_1/results.json",
+      "video": "media/new/layout_5031_target_1_seed_75094.mp4",
+      "video_sha256": "34e24b3d6421877bc20684864ea18583f281f7211144eac353d90c80f6f101fe",
+      "sim_seconds": 13.000000617466867,
+      "grasp_success_time_s": 12.972000616136938,
+      "max_lift_m_evaluation_only": 0.06769448518753052,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5031,
+      "target": 1,
+      "color": "yellow",
+      "seed": 75094,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 267,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5031_target_1/results.json",
+      "video": "media/baseline/layout_5031_target_1_seed_75094.mp4",
+      "video_sha256": "cd1aabcba4cfda0af8724d674990d9a52d151d03528b6f99d1e9cc618dfdeecd",
+      "sim_seconds": 10.720000509172678,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0007164478302001953,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5031,
+      "target": 2,
+      "color": "blue",
+      "seed": 75095,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 227,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5031_target_2/results.json",
+      "video": "media/new/layout_5031_target_2_seed_75095.mp4",
+      "video_sha256": "f0a82da2cc4b8b9c2759d3aee079f2108297c5172dc68359a0db3c9cfca426ce",
+      "sim_seconds": 9.120000433176756,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0018530488014221191,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5031,
+      "target": 2,
+      "color": "blue",
+      "seed": 75095,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "step_budget_exhausted",
+        "budget": 650
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5031_target_2/results.json",
+      "video": "media/baseline/layout_5031_target_2_seed_75095.mp4",
+      "video_sha256": "3b846652940e42d3effc8dc14bfab9efadc613c7274bae6407aa1768867100ff",
+      "sim_seconds": 26.000001234933734,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5032,
+      "target": 0,
+      "color": "yellow",
+      "seed": 75096,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 265,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5032_target_0/results.json",
+      "video": "media/new/layout_5032_target_0_seed_75096.mp4",
+      "video_sha256": "dae32587703de743bd1957c956bf82f4d41a25312e39efab7af86279e2578b24",
+      "sim_seconds": 10.640000505372882,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.007363677024841309,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5032,
+      "target": 0,
+      "color": "yellow",
+      "seed": 75096,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5032_target_0/results.json",
+      "video": "media/baseline/layout_5032_target_0_seed_75096.mp4",
+      "video_sha256": "4384dd2cf6b4299c0d691b2aada157dab17771b8a019a1eac3a167fcbf324552",
+      "sim_seconds": 16.880000801756978,
+      "grasp_success_time_s": 16.85600080061704,
+      "max_lift_m_evaluation_only": 0.05555838346481323,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5032,
+      "target": 1,
+      "color": "blue",
+      "seed": 75097,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": false,
+      "failure_reason": null,
+      "unintended_contacts": [
+        [
+          "left:finger_third",
+          "scene:distractor_2"
+        ]
+      ],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5032_target_1/results.json",
+      "video": "media/new/layout_5032_target_1_seed_75097.mp4",
+      "video_sha256": "48e42c06e957a339e6ad419075db6e29d01a23d9ef676dd481006e620b9c4be9",
+      "sim_seconds": 12.760000606067479,
+      "grasp_success_time_s": 12.74400060530752,
+      "max_lift_m_evaluation_only": 0.06104278564453125,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5032,
+      "target": 1,
+      "color": "blue",
+      "seed": 75097,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 262,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5032_target_1/results.json",
+      "video": "media/baseline/layout_5032_target_1_seed_75097.mp4",
+      "video_sha256": "abac1695ad946f98fa19c06c552f76eea4394cc8a6d4b7eeecc64a7e200b10b5",
+      "sim_seconds": 10.520000499673188,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0007135868072509766,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25",
+      "layout": 5032,
+      "target": 2,
+      "color": "red",
+      "seed": 75098,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 221,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5032_target_2/results.json",
+      "video": "media/new/layout_5032_target_2_seed_75098.mp4",
+      "video_sha256": "240d1edd9339e9e0a86759a08ff9dcd3daf01dfcd1cc1738600b7a1fcfcae3d5",
+      "sim_seconds": 8.880000421777368,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.00819331407546997,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25",
+      "layout": 5032,
+      "target": 2,
+      "color": "red",
+      "seed": 75098,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "step_budget_exhausted",
+        "budget": 650
+      },
+      "unintended_contacts": [
+        [
+          "left:finger_right",
+          "scene:distractor_1"
+        ]
+      ],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5032_target_2/results.json",
+      "video": "media/baseline/layout_5032_target_2_seed_75098.mp4",
+      "video_sha256": "06c92256f25e14ccc4d45a25d6d1032117cf6f720ac383754ff01574de83844f",
+      "sim_seconds": 26.000001234933734,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5033,
+      "target": 0,
+      "color": "blue",
+      "seed": 75099,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 285,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5033_target_0/results.json",
+      "video": "media/new/layout_5033_target_0_seed_75099.mp4",
+      "video_sha256": "92e4245aa7dfced464fdacff5b830e28e044d70410834130ffa26d091a3a883b",
+      "sim_seconds": 11.440000543370843,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 5.960464477539062e-07,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5033,
+      "target": 0,
+      "color": "blue",
+      "seed": 75099,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 297,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5033_target_0/results.json",
+      "video": "media/baseline/layout_5033_target_0_seed_75099.mp4",
+      "video_sha256": "d03061033d4e276a7deca6028f39d822537b31fe7974bd0cfbecf3c51e0772fa",
+      "sim_seconds": 11.92000056616962,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.002413928508758545,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5033,
+      "target": 1,
+      "color": "yellow",
+      "seed": 75100,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 274,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [
+        [
+          "left:finger_right",
+          "left:finger_third"
+        ]
+      ],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5033_target_1/results.json",
+      "video": "media/new/layout_5033_target_1_seed_75100.mp4",
+      "video_sha256": "50cbd5cc649b9759aba3ffe194cd987719993f2c8f79ec76a740976dac52889d",
+      "sim_seconds": 11.000000522471964,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.011213362216949463,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5033,
+      "target": 1,
+      "color": "yellow",
+      "seed": 75100,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 266,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5033_target_1/results.json",
+      "video": "media/baseline/layout_5033_target_1_seed_75100.mp4",
+      "video_sha256": "c5b6225b34de01b81b0908ad1c52ff8300f2dba067ccb29a8d02f81690d89afb",
+      "sim_seconds": 10.68000050727278,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.006231427192687988,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5033,
+      "target": 2,
+      "color": "red",
+      "seed": 75101,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5033_target_2/results.json",
+      "video": "media/new/layout_5033_target_2_seed_75101.mp4",
+      "video_sha256": "31dbd6739b546ef4ba4c0e1df433ffcef35ba6b9b0c25cd7cd2e856b1e9d7ead",
+      "sim_seconds": 12.840000609867275,
+      "grasp_success_time_s": 12.832000609487295,
+      "max_lift_m_evaluation_only": 0.061827659606933594,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5033,
+      "target": 2,
+      "color": "red",
+      "seed": 75101,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 254,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5033_target_2/results.json",
+      "video": "media/baseline/layout_5033_target_2_seed_75101.mp4",
+      "video_sha256": "5a8d78c6f90a783a60f10419d93f07916ae7a4d917a5f2674d70e45792b0f216",
+      "sim_seconds": 10.200000484474003,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.003960251808166504,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5034,
+      "target": 0,
+      "color": "red",
+      "seed": 75102,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5034_target_0/results.json",
+      "video": "media/new/layout_5034_target_0_seed_75102.mp4",
+      "video_sha256": "75a217d88a3a03333dc21ceb29ccb6ccf3c9f329ea0745b8d85e9dea9e781c78",
+      "sim_seconds": 15.40000073146075,
+      "grasp_success_time_s": 15.38400073070079,
+      "max_lift_m_evaluation_only": 0.06304806470870972,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5034,
+      "target": 0,
+      "color": "red",
+      "seed": 75102,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5034_target_0/results.json",
+      "video": "media/baseline/layout_5034_target_0_seed_75102.mp4",
+      "video_sha256": "0966f00fa932facc59975793e66a1c2e113fe80e10624374bb85b1a1c8f0e6df",
+      "sim_seconds": 16.20000076945871,
+      "grasp_success_time_s": 16.18800076888874,
+      "max_lift_m_evaluation_only": 0.0539402961730957,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5034,
+      "target": 1,
+      "color": "yellow",
+      "seed": 75103,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 243,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5034_target_1/results.json",
+      "video": "media/new/layout_5034_target_1_seed_75103.mp4",
+      "video_sha256": "e01b5f772dd1e5ca469e9f2d23f06746e0b5950a031bb071afbaeea52304b6b5",
+      "sim_seconds": 9.760000463575125,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.008858144283294678,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5034,
+      "target": 1,
+      "color": "yellow",
+      "seed": 75103,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5034_target_1/results.json",
+      "video": "media/baseline/layout_5034_target_1_seed_75103.mp4",
+      "video_sha256": "9db6c6551b677e76e5ada641400162e7b3ef7f5404479ad8ea7261ba5acd978f",
+      "sim_seconds": 15.280000725761056,
+      "grasp_success_time_s": 15.276000725571066,
+      "max_lift_m_evaluation_only": 0.055415570735931396,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5034,
+      "target": 2,
+      "color": "blue",
+      "seed": 75104,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 225,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [
+        [
+          "left:finger_left",
+          "left:finger_third"
+        ]
+      ],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5034_target_2/results.json",
+      "video": "media/new/layout_5034_target_2_seed_75104.mp4",
+      "video_sha256": "7addfcb81ca84034e3506f8c7028af49e040ed4796ba79ef3a6b21f39c38b515",
+      "sim_seconds": 9.04000042937696,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.006093859672546387,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5034,
+      "target": 2,
+      "color": "blue",
+      "seed": 75104,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 366,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5034_target_2/results.json",
+      "video": "media/baseline/layout_5034_target_2_seed_75104.mp4",
+      "video_sha256": "e572560d43327ef951d898e75b8aaaf7f9437021a358675c86ec64a3493db2b9",
+      "sim_seconds": 14.680000697262585,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5035,
+      "target": 0,
+      "color": "yellow",
+      "seed": 75105,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 299,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5035_target_0/results.json",
+      "video": "media/new/layout_5035_target_0_seed_75105.mp4",
+      "video_sha256": "6ae078218f4d84e16e7d59f6a4818dd145dcabd6856ca8a3411051ae3a6ad09a",
+      "sim_seconds": 12.000000569969416,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 3.695487976074219e-05,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5035,
+      "target": 0,
+      "color": "yellow",
+      "seed": 75105,
+      "raw_grasp_success": true,
+      "qualified_grasp_success": true,
+      "failure_reason": null,
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5035_target_0/results.json",
+      "video": "media/baseline/layout_5035_target_0_seed_75105.mp4",
+      "video_sha256": "004764b87ab0f65caaa9d5213b15e3f2175c6363a639f0c163eb1c3c43172961",
+      "sim_seconds": 14.840000704862177,
+      "grasp_success_time_s": 14.840000704862177,
+      "max_lift_m_evaluation_only": 0.06168782711029053,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5035,
+      "target": 1,
+      "color": "blue",
+      "seed": 75106,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 232,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5035_target_1/results.json",
+      "video": "media/new/layout_5035_target_1_seed_75106.mp4",
+      "video_sha256": "1e628da39fb1a79a3cf832c93f3af2c96c1ee3a187d056ac63a5186dc93f7043",
+      "sim_seconds": 9.320000442676246,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.004162430763244629,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5035,
+      "target": 1,
+      "color": "blue",
+      "seed": 75106,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 260,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5035_target_1/results.json",
+      "video": "media/baseline/layout_5035_target_1_seed_75106.mp4",
+      "video_sha256": "b3a9dcadeb2b16901c48da70a8b3a2f77392b434a31b28c626853e0eb79a38bd",
+      "sim_seconds": 10.440000495873392,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0058501362800598145,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "new",
+      "experiment": "lab_pi05_expert30_20261120_eval_k25_ext",
+      "layout": 5035,
+      "target": 2,
+      "color": "red",
+      "seed": 75107,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "empty_grasp",
+        "arms": [
+          0
+        ],
+        "step": 227,
+        "evidence": "Commanded closed and measured aperture <8% for 0.16 s; proxy/block-specific threshold."
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5035_target_2/results.json",
+      "video": "media/new/layout_5035_target_2_seed_75107.mp4",
+      "video_sha256": "e4c2311e150a99c046abddc8806c33dcb4a979c19c1cd11fbc10bfcf2b099e0f",
+      "sim_seconds": 9.120000433176756,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 8.940696716308594e-07,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    },
+    {
+      "model": "baseline",
+      "experiment": "lab_pi05_expert30_20261120_eval_base5744_k25_ext",
+      "layout": 5035,
+      "target": 2,
+      "color": "red",
+      "seed": 75107,
+      "raw_grasp_success": false,
+      "qualified_grasp_success": false,
+      "failure_reason": {
+        "type": "step_budget_exhausted",
+        "budget": 650
+      },
+      "unintended_contacts": [],
+      "results_path": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5035_target_2/results.json",
+      "video": "media/baseline/layout_5035_target_2_seed_75107.mp4",
+      "video_sha256": "006b1f68e7387933f3a9dcd0a45957b65a45431216d9c4399ca35513a1e8b030",
+      "sim_seconds": 26.000001234933734,
+      "grasp_success_time_s": null,
+      "max_lift_m_evaluation_only": 0.0,
+      "grasp_definition": "Lift >5cm, simulated aperture 8-90%, at least 2 of 3 fingers contact target with impulse >1e-5Ns, no right-arm target contact, continuous 0.6s; evaluation only",
+      "scene_split": "development"
+    }
+  ],
+  "video_validation": [
+    {
+      "file": "media/new/layout_5030_target_0_seed_75090.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5030_target_0/seed_75090_multiview.mp4",
+      "bytes": 680728,
+      "sha256": "5794ba9991ee8da05de06da543f89ca117de4ec89be1f598f9736bb6aee98588",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "17.480000",
+        "nb_frames": "437"
+      }
+    },
+    {
+      "file": "media/new/layout_5030_target_1_seed_75091.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5030_target_1/seed_75091_multiview.mp4",
+      "bytes": 704182,
+      "sha256": "81c5e5409b5efd8fb2615f95e684cf6d847e10cc7a908dc43f2ea2eb8c7052ce",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "18.400000",
+        "nb_frames": "460"
+      }
+    },
+    {
+      "file": "media/new/layout_5030_target_2_seed_75092.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5030_target_2/seed_75092_multiview.mp4",
+      "bytes": 502953,
+      "sha256": "0a293bd9ebd754cc7c17bd7e8b09cc37f2c2b93f47b20f6d3abfe3b9f86af326",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "13.560000",
+        "nb_frames": "339"
+      }
+    },
+    {
+      "file": "media/new/layout_5031_target_0_seed_75093.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5031_target_0/seed_75093_multiview.mp4",
+      "bytes": 708840,
+      "sha256": "dcfd7ad9f8611e4c74452392c59ba372e3b3e47f44cc102dff7dff6a88ebc24f",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "19.080000",
+        "nb_frames": "477"
+      }
+    },
+    {
+      "file": "media/new/layout_5031_target_1_seed_75094.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5031_target_1/seed_75094_multiview.mp4",
+      "bytes": 711228,
+      "sha256": "34e24b3d6421877bc20684864ea18583f281f7211144eac353d90c80f6f101fe",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "18.040000",
+        "nb_frames": "451"
+      }
+    },
+    {
+      "file": "media/new/layout_5031_target_2_seed_75095.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5031_target_2/seed_75095_multiview.mp4",
+      "bytes": 528760,
+      "sha256": "f0a82da2cc4b8b9c2759d3aee079f2108297c5172dc68359a0db3c9cfca426ce",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "14.160000",
+        "nb_frames": "354"
+      }
+    },
+    {
+      "file": "media/new/layout_5032_target_0_seed_75096.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5032_target_0/seed_75096_multiview.mp4",
+      "bytes": 621082,
+      "sha256": "dae32587703de743bd1957c956bf82f4d41a25312e39efab7af86279e2578b24",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "15.680000",
+        "nb_frames": "392"
+      }
+    },
+    {
+      "file": "media/new/layout_5032_target_1_seed_75097.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5032_target_1/seed_75097_multiview.mp4",
+      "bytes": 707872,
+      "sha256": "48e42c06e957a339e6ad419075db6e29d01a23d9ef676dd481006e620b9c4be9",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "17.800000",
+        "nb_frames": "445"
+      }
+    },
+    {
+      "file": "media/new/layout_5032_target_2_seed_75098.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25/layout_5032_target_2/seed_75098_multiview.mp4",
+      "bytes": 535950,
+      "sha256": "240d1edd9339e9e0a86759a08ff9dcd3daf01dfcd1cc1738600b7a1fcfcae3d5",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "13.920000",
+        "nb_frames": "348"
+      }
+    },
+    {
+      "file": "media/new/layout_5033_target_0_seed_75099.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5033_target_0/seed_75099_multiview.mp4",
+      "bytes": 643224,
+      "sha256": "92e4245aa7dfced464fdacff5b830e28e044d70410834130ffa26d091a3a883b",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "16.480000",
+        "nb_frames": "412"
+      }
+    },
+    {
+      "file": "media/new/layout_5033_target_1_seed_75100.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5033_target_1/seed_75100_multiview.mp4",
+      "bytes": 627482,
+      "sha256": "50cbd5cc649b9759aba3ffe194cd987719993f2c8f79ec76a740976dac52889d",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "16.040000",
+        "nb_frames": "401"
+      }
+    },
+    {
+      "file": "media/new/layout_5033_target_2_seed_75101.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5033_target_2/seed_75101_multiview.mp4",
+      "bytes": 660420,
+      "sha256": "31dbd6739b546ef4ba4c0e1df433ffcef35ba6b9b0c25cd7cd2e856b1e9d7ead",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "17.880000",
+        "nb_frames": "447"
+      }
+    },
+    {
+      "file": "media/new/layout_5034_target_0_seed_75102.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5034_target_0/seed_75102_multiview.mp4",
+      "bytes": 786746,
+      "sha256": "75a217d88a3a03333dc21ceb29ccb6ccf3c9f329ea0745b8d85e9dea9e781c78",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "20.440000",
+        "nb_frames": "511"
+      }
+    },
+    {
+      "file": "media/new/layout_5034_target_1_seed_75103.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5034_target_1/seed_75103_multiview.mp4",
+      "bytes": 594284,
+      "sha256": "e01b5f772dd1e5ca469e9f2d23f06746e0b5950a031bb071afbaeea52304b6b5",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "14.800000",
+        "nb_frames": "370"
+      }
+    },
+    {
+      "file": "media/new/layout_5034_target_2_seed_75104.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5034_target_2/seed_75104_multiview.mp4",
+      "bytes": 528524,
+      "sha256": "7addfcb81ca84034e3506f8c7028af49e040ed4796ba79ef3a6b21f39c38b515",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "14.080000",
+        "nb_frames": "352"
+      }
+    },
+    {
+      "file": "media/new/layout_5035_target_0_seed_75105.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5035_target_0/seed_75105_multiview.mp4",
+      "bytes": 653187,
+      "sha256": "6ae078218f4d84e16e7d59f6a4818dd145dcabd6856ca8a3411051ae3a6ad09a",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "17.040000",
+        "nb_frames": "426"
+      }
+    },
+    {
+      "file": "media/new/layout_5035_target_1_seed_75106.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5035_target_1/seed_75106_multiview.mp4",
+      "bytes": 563824,
+      "sha256": "1e628da39fb1a79a3cf832c93f3af2c96c1ee3a187d056ac63a5186dc93f7043",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "14.360000",
+        "nb_frames": "359"
+      }
+    },
+    {
+      "file": "media/new/layout_5035_target_2_seed_75107.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_k25_ext/layout_5035_target_2/seed_75107_multiview.mp4",
+      "bytes": 527154,
+      "sha256": "e4c2311e150a99c046abddc8806c33dcb4a979c19c1cd11fbc10bfcf2b099e0f",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "14.160000",
+        "nb_frames": "354"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5030_target_0_seed_75090.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5030_target_0/seed_75090_multiview.mp4",
+      "bytes": 818876,
+      "sha256": "4abcbcb77eea781a972292795f89031ea00d60dfbf45f6b7f9747aa972176332",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "21.240000",
+        "nb_frames": "531"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5030_target_1_seed_75091.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5030_target_1/seed_75091_multiview.mp4",
+      "bytes": 599629,
+      "sha256": "96242a81618282bbf50dc1111b0c186f655b6c18fd830cb3d30fdf1060ee0fff",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "15.520000",
+        "nb_frames": "388"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5030_target_2_seed_75092.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5030_target_2/seed_75092_multiview.mp4",
+      "bytes": 1002651,
+      "sha256": "8af528955761aeba4953f857ef9d40db36fefd2594316489c2ac01389dccae41",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "27.680000",
+        "nb_frames": "692"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5031_target_0_seed_75093.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5031_target_0/seed_75093_multiview.mp4",
+      "bytes": 718070,
+      "sha256": "b11b490b2c07cb0703a0bc7003dfad673c341babfed98c02c1dc5e1e9f9fb574",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "19.520000",
+        "nb_frames": "488"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5031_target_1_seed_75094.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5031_target_1/seed_75094_multiview.mp4",
+      "bytes": 606867,
+      "sha256": "cd1aabcba4cfda0af8724d674990d9a52d151d03528b6f99d1e9cc618dfdeecd",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "15.760000",
+        "nb_frames": "394"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5031_target_2_seed_75095.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5031_target_2/seed_75095_multiview.mp4",
+      "bytes": 1032013,
+      "sha256": "3b846652940e42d3effc8dc14bfab9efadc613c7274bae6407aa1768867100ff",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "31.040000",
+        "nb_frames": "776"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5032_target_0_seed_75096.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5032_target_0/seed_75096_multiview.mp4",
+      "bytes": 820513,
+      "sha256": "4384dd2cf6b4299c0d691b2aada157dab17771b8a019a1eac3a167fcbf324552",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "21.920000",
+        "nb_frames": "548"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5032_target_1_seed_75097.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5032_target_1/seed_75097_multiview.mp4",
+      "bytes": 597677,
+      "sha256": "abac1695ad946f98fa19c06c552f76eea4394cc8a6d4b7eeecc64a7e200b10b5",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "15.560000",
+        "nb_frames": "389"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5032_target_2_seed_75098.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25/layout_5032_target_2/seed_75098_multiview.mp4",
+      "bytes": 1036484,
+      "sha256": "06c92256f25e14ccc4d45a25d6d1032117cf6f720ac383754ff01574de83844f",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "31.040000",
+        "nb_frames": "776"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5033_target_0_seed_75099.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5033_target_0/seed_75099_multiview.mp4",
+      "bytes": 654660,
+      "sha256": "d03061033d4e276a7deca6028f39d822537b31fe7974bd0cfbecf3c51e0772fa",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "16.960000",
+        "nb_frames": "424"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5033_target_1_seed_75100.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5033_target_1/seed_75100_multiview.mp4",
+      "bytes": 603710,
+      "sha256": "c5b6225b34de01b81b0908ad1c52ff8300f2dba067ccb29a8d02f81690d89afb",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "15.720000",
+        "nb_frames": "393"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5033_target_2_seed_75101.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5033_target_2/seed_75101_multiview.mp4",
+      "bytes": 530403,
+      "sha256": "5a8d78c6f90a783a60f10419d93f07916ae7a4d917a5f2674d70e45792b0f216",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "15.240000",
+        "nb_frames": "381"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5034_target_0_seed_75102.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5034_target_0/seed_75102_multiview.mp4",
+      "bytes": 817110,
+      "sha256": "0966f00fa932facc59975793e66a1c2e113fe80e10624374bb85b1a1c8f0e6df",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "21.240000",
+        "nb_frames": "531"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5034_target_1_seed_75103.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5034_target_1/seed_75103_multiview.mp4",
+      "bytes": 799275,
+      "sha256": "9db6c6551b677e76e5ada641400162e7b3ef7f5404479ad8ea7261ba5acd978f",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "20.320000",
+        "nb_frames": "508"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5034_target_2_seed_75104.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5034_target_2/seed_75104_multiview.mp4",
+      "bytes": 668584,
+      "sha256": "e572560d43327ef951d898e75b8aaaf7f9437021a358675c86ec64a3493db2b9",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "19.720000",
+        "nb_frames": "493"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5035_target_0_seed_75105.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5035_target_0/seed_75105_multiview.mp4",
+      "bytes": 716580,
+      "sha256": "004764b87ab0f65caaa9d5213b15e3f2175c6363a639f0c163eb1c3c43172961",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "19.880000",
+        "nb_frames": "497"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5035_target_1_seed_75106.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5035_target_1/seed_75106_multiview.mp4",
+      "bytes": 588957,
+      "sha256": "b3a9dcadeb2b16901c48da70a8b3a2f77392b434a31b28c626853e0eb79a38bd",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "15.480000",
+        "nb_frames": "387"
+      }
+    },
+    {
+      "file": "media/baseline/layout_5035_target_2_seed_75107.mp4",
+      "source": "/data/jaka-vla/results/lab_pi05_expert30_20261120_eval_base5744_k25_ext/layout_5035_target_2/seed_75107_multiview.mp4",
+      "bytes": 1045326,
+      "sha256": "006b1f68e7387933f3a9dcd0a45957b65a45431216d9c4399ca35513a1e8b030",
+      "ffprobe": {
+        "width": 1280,
+        "height": 800,
+        "r_frame_rate": "25/1",
+        "duration": "31.040000",
+        "nb_frames": "776"
+      }
+    }
+  ],
+  "checkpoint_audits": {
+    "new_parameter_tree_sha256": "930a11b38a262d8f4ccc97c362f6bf9c0b05f758087bf7df7941177bd4a8e41b",
+    "baseline_5744_parameter_tree_sha256": "db441cc459a238f92c7eb54d0c5a36b2a33dea1f725bd21890da3da20e5e07c2",
+    "audit_jsons": {
+      "new": "../../../docs/reports/20261120_pi05_expert30_audit_new.json",
+      "baseline": "../../../docs/reports/20261120_pi05_expert30_audit_baseline.json"
+    },
+    "training_record": "training_record.json",
+    "full_checkpoint_in_github": false,
+    "reason": "Full checkpoint directory is about 5.4 GiB; GitHub code commits cannot carry it and gh/release upload client is not installed on the server.",
+    "full_checkpoint_bytes": 5800000000,
+    "full_checkpoint_size_note": "Approximate on-disk size; checkpoint remains on the server and is not part of the GitHub commit."
+  },
+  "training_record": {
+    "completed": true,
+    "completed_updates": 4000,
+    "batch_size": 1,
+    "horizon": 50,
+    "fresh_optimizer_and_schedule": "fresh optimizer and LR schedule",
+    "eligible_anchors": 12639,
+    "consumed_anchors": 4000,
+    "unique_anchors": 4000,
+    "sample_order_sha256": "48d8688771ea8431cf1d57f02ed2c4b312c20eb345e86f3b979519d9f17e47a5",
+    "changed_frozen_parameters": [],
+    "trainable_parameters": 52153376,
+    "total_parameters": 3403421456,
+    "gpu_peak_mib": 8507,
+    "checkpoint": "/data/jaka-vla/checkpoints/openpi/pi05_zu7_lora_h50/lab_pi05_expert30_20261120_stage4000_retry1/4000",
+    "checkpoint_parameter_tree_sha256": "930a11b38a262d8f4ccc97c362f6bf9c0b05f758087bf7df7941177bd4a8e41b",
+    "initial_checkpoint": "/data/jaka-vla/checkpoints/openpi/pi05_zu7_lora_h50/lab_pi05_multilayout_20261119_97plus29_gpu_cumulative4000/3000",
+    "training_audit_sha256": "ef2848b86f562239483268a15e04f9ac762c91259936cd70ef178be16ef31863",
+    "dataset": "lab_expert_expansion_20261120_colorbalanced",
+    "dataset_summary_sha256": "f3b55e6d0d728fe8029da6e4a7afd27644c70a081542e86aec23d8e8a029e16d",
+    "consumed_sample_indices_sha256": "775af3a7155226b413608e5ef8131de9082be7aeb31eae017cd42024e21b06b6",
+    "planned_sample_indices_sha256": "cb4c0469c5b23319115c6bd3955db6aa07742911ba258e50b76ec4b011c0ce23",
+    "consumed_sample_count": 4000,
+    "consumed_sample_unique_count": 4000
+  }
+}

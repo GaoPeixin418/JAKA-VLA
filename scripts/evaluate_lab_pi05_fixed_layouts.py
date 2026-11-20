@@ -11,7 +11,7 @@ def main():
     p.add_argument('--layouts',type=int,nargs='+',default=[5000,5001,5002])
     p.add_argument('--targets',type=int,choices=[0,1,2],nargs='+',default=[0,1,2])
     p.add_argument('--save-observations',action='store_true')
-    p.add_argument('--k',type=int,choices=range(1,51),default=8)
+    p.add_argument('--k',type=int,choices=range(1,51),default=25)
     args=p.parse_args()
     if len(set(args.layouts))!=len(args.layouts) or len(set(args.targets))!=len(args.targets):raise ValueError('Duplicate evaluation case')
     if any(layout<5000 or layout>=6000 for layout in args.layouts):raise ValueError('Development layouts must be reserved in [5000,6000); keep final blind layouts separate')
