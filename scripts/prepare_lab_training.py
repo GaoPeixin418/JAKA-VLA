@@ -1,5 +1,5 @@
 """Merge accepted data, convert formats and audit new-rig inputs before training."""
-import argparse,json,os,subprocess
+import argparse,json,os,subprocess,hashlib
 from pathlib import Path
 ROOT=Path('/data/jaka-vla')
 
@@ -19,6 +19,25 @@ def main():
             subprocess.run([str(python),'-u',*map(str,argv)],cwd=ROOT,env=environment,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=1200)
         profile['stages'].append(stage);(run/'progress.json').write_text(json.dumps(profile,indent=2)+'\n')
     try:
+        if raw.exists():
+            # The collector already assembled this batch once. Preserve it, prove it
+            # matches the accepted source episodes byte-for-byte, then let the
+            # canonical merge stage rebuild raw with its coverage audit.
+            preserved=raw.with_name(raw.name+'_collector_assembled')
+            if preserved.exists(): raise FileExistsError(preserved)
+            expected=[]
+            for batch in args.batches:
+                progress=json.loads((batch/'progress.json').read_text())
+                if not progress.get('completed'): raise ValueError(f'Batch not finished: {batch}')
+                for row in progress['attempts']:
+                    if row.get('accepted'):
+                        source=Path(row['probe'])/'raw/data/episode_0000000.hdf5'
+                        expected.append(hashlib.sha256(source.read_bytes()).hexdigest())
+            manifest=json.loads((raw/'acceptance.json').read_text())
+            actual=[entry['sha256'] for entry in manifest]
+            if sorted(expected)!=sorted(actual): raise ValueError('Preassembled collector data does not match accepted expert HDF5 files')
+            raw.rename(preserved); profile['collector_assembled_raw']=str(preserved)
+            (run/'progress.json').write_text(json.dumps(profile,indent=2)+'\n')
         execute('merge',ROOT/'envs/robotwin/bin/python',['scripts/merge_lab_batches.py','--batches',*args.batches,'--output',raw])
         coverage=json.loads((raw/'coverage.json').read_text());profile['coverage']=coverage
         if coverage['episodes']<9 or coverage['distinct_layouts']<3 or set(coverage['color_counts'])!={'red','blue','yellow'}:

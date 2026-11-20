@@ -1,5 +1,5 @@
 """Assemble completed accepted batches and report target/layout coverage."""
-import argparse,json,subprocess,sys
+import argparse,json,subprocess,sys,hashlib
 from collections import Counter,defaultdict
 from pathlib import Path
 import h5py
@@ -9,7 +9,7 @@ ROOT=Path('/data/jaka-vla')
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--batches',nargs='+',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args();rows=[];keys=set();objects={};layout_targets=defaultdict(set);split_overrides={}
+    a=p.parse_args();rows=[];seeds=set();trajectory_hashes=set();objects={};layout_targets=defaultdict(set);layout_target_counts=defaultdict(int);split_overrides={}
     for batch in a.batches:
         progress=json.loads((batch/'progress.json').read_text())
         if not progress['completed']:raise ValueError(f'Batch not finished: {batch}')
@@ -20,9 +20,15 @@ def main():
             if spec['split']!='train':
                 if row['layout'] not in declared:raise ValueError('Nontraining layout cannot enter the training dataset')
                 split_overrides[row['layout']]={'from':spec['split'],'to':'train','batch':str(batch),'reason':progress.get('split_assignment',{}).get('note','declared training layout')}
-            key=(spec['version'],row['layout'],row['target'])
-            if key in keys:raise ValueError(f'Duplicate episode condition: {key}')
-            keys.add(key);layout_targets[row['layout']].add(row['target'])
+            seed=int(row['seed'])
+            if seed in seeds:raise ValueError(f'Duplicate expert seed: {seed}')
+            seeds.add(seed)
+            source=Path(row['probe'])/'raw/data/episode_0000000.hdf5'
+            digest=hashlib.sha256(source.read_bytes()).hexdigest()
+            if digest in trajectory_hashes:raise ValueError(f'Byte-identical expert trajectory: {source}')
+            trajectory_hashes.add(digest)
+            row['trajectory_sha256']=digest
+            layout_targets[row['layout']].add(row['target']);layout_target_counts[(row['layout'],row['target'])]+=1
             geometry=json.dumps(spec['objects'],sort_keys=True)
             if row['layout'] in objects and objects[row['layout']]!=geometry:raise ValueError('Target choice changed scene geometry')
             objects[row['layout']]=geometry;rows.append(row)
@@ -47,6 +53,8 @@ def main():
             for target in range(3)} for color in ('red','blue','yellow')},
         'target_position_counts':dict(Counter(r['target'] for r in rows)),
         'layout_targets':{str(k):sorted(v) for k,v in layout_targets.items()},
+        'layout_target_trajectory_counts':{f'{layout}:{target}':count for (layout,target),count in sorted(layout_target_counts.items())},
+        'unique_seed_count':len(seeds),'unique_trajectory_sha256_count':len(trajectory_hashes),
         'distinct_layouts':len(layout_targets),'complete_three_target_layouts':sum(len(x)==3 for x in layout_targets.values()),
         'frame_count_range':[min(frame_counts),max(frame_counts)],'minimum_verified_hold_s':min(holds),
         'target_xyz_min':np.min(positions,axis=0).tolist(),'target_xyz_max':np.max(positions,axis=0).tolist(),
